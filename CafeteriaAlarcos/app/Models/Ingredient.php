@@ -13,4 +13,9 @@ class Ingredient extends Model
         'name',
         'i_category_id',
     ];
+
+    public function icategory()
+    {
+        return $this->belongsTo(ICategory::class, 'i_category_id');
+    }
 }

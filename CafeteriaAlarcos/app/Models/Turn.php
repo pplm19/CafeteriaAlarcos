@@ -16,10 +16,4 @@ class Turn extends Model
         'end',
         'description',
     ];
-
-    protected $casts = [
-        'date' => 'date',
-        'start' => 'timestamp',
-        'end' => 'timestamp',
-    ];
 }
