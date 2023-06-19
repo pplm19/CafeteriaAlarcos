@@ -15,6 +15,22 @@
                         @endif
 
                         {{ __('You are logged in!') }}
+
+                        <nav class="nav flex-column">
+
+                            @auth
+                                <a class="nav-link" href="{{ route('profile.index') }}">Profile</a>
+                                <a class="nav-link" href="{{ route('userbookings.index') }}">Bookings</a>
+                            @else
+                                <a class="nav-link" href="{{ route('userbookings.create') }}">Bookings</a>
+                            @endauth
+
+                            <a class="nav-link" href="{{ route('userdishes.index') }}">Dishes</a>
+
+                            @hasrole('SuperAdmin')
+                                <a class="nav-link" href="{{ route('admin') }}">Admin</a>
+                            @endhasrole
+                        </nav>
                     </div>
                 </div>
             </div>
