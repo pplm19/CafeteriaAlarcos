@@ -39,15 +39,15 @@ class UserDishController extends Controller
 
             if ($request->has('ingredients')) {
                 $ingredients = $request->input('ingredients');
-                $query->whereHas('ingredients', function ($sq) use ($ingredients) {
-                    $sq->whereIn('ingredient_id', $ingredients);
+                $query->whereHas('ingredients', function ($subQuery) use ($ingredients) {
+                    $subQuery->whereIn('ingredient_id', $ingredients);
                 });
             }
 
             if ($request->has('allergens')) {
                 $allergens = $request->input('allergens');
-                $query->whereDoesntHave('allergens', function ($sq) use ($allergens) {
-                    $sq->whereIn('allergen_id', $allergens);
+                $query->whereDoesntHave('allergens', function ($subQuery) use ($allergens) {
+                    $subQuery->whereIn('allergen_id', $allergens);
                 });
             }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Configuration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ConfigurationController extends Controller
 {
@@ -57,6 +58,8 @@ class ConfigurationController extends Controller
         ]);
 
         $configuration->update($request->all());
+
+        Session::put($configuration['name'], $configuration['value']);
 
         return redirect()->route('configurations.index');
     }

@@ -15,4 +15,9 @@ class Table extends Model
         'minNumber',
         'description',
     ];
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

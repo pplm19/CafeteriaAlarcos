@@ -22,7 +22,7 @@ class BookingController extends Controller
         ];
 
         if ($request->has('search')) {
-            $data['bookings'] = Booking::join('turns', 'bookings.turn_id', '=', 'turns.id')->select('bookings.id as booking_id', 'bookings.*', 'turns.*')->whereDate('turns.date', $request->input('searchDate'))->orderBy('turns.date', 'DESC')->paginate(15);
+            $data['bookings'] = Booking::join('turns', 'bookings.turn_id', '=', 'turns.id')->select('bookings.id as booking_id', 'bookings.description as booking_description', 'bookings.*', 'turns.*')->whereDate('turns.date', $request->input('searchDate'))->orderBy('turns.date', 'DESC')->paginate(15);
 
             $request->flash();
         }
@@ -73,9 +73,16 @@ class BookingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Booking $booking)
+    // public function destroy(Booking $booking)
+    // {
+    //     //
+    // }
+
+    public function cancel(Booking $booking)
     {
-        $booking->delete();
+        $booking->update([
+            'cancelled' => true
+        ]);
 
         return redirect()->route('bookings.index');
     }

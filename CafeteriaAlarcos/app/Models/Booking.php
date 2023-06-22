@@ -14,6 +14,8 @@ class Booking extends Model
         'table_id',
         'turn_id',
         'description',
+        'guests',
+        'cancelled',
     ];
 
     public function user()

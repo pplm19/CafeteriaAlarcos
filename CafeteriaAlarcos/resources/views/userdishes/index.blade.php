@@ -78,7 +78,14 @@
                 <tr>
                     <th scope="row">{{ $dish['id'] }}</th>
                     <td>{{ $dish['name'] }}</td>
-                    <td> <img src="{{ asset('storage/images/dishes/' . $dish['image']) }}" alt="{{ $dish['name'] }}"></td>
+                    <td>
+                        @php($imgUrl = asset('storage/images/dishes/' . $dish['image']))
+                        @if (strpos($imgUrl, $dish['image']))
+                            <img src="{{ $imgUrl }}" alt="Imagen de {{ $dish['name'] }}">
+                        @else
+                            No hay ninguna imagen asignada a este plato
+                        @endif
+                    </td>
                     <td>{{ $dish['recipe'] }}</td>
                     <td>{{ $dish['description'] }}</td>
                     <td>{{ $dish['type']['name'] }}</td>

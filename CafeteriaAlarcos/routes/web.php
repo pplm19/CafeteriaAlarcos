@@ -39,7 +39,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'profile', 'middleware' => 'rol:User'], function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
 
     Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -54,7 +54,9 @@ Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
 
 Route::resource('/userbookings', UserBookingController::class)->parameters([
     'userbookings' => 'booking',
-])->except(['show', 'edit', 'update']);
+])->only(['index', 'create', 'store']);
+Route::put('/userbookings/cancel/{booking}', [UserBookingController::class, 'cancel'])->name('userbookings.cancel');
+Route::get('/userbookings/history', [UserBookingController::class, 'history'])->name('userbookings.history');
 
 
 Route::resource('/userdishes', UserDishController::class)->parameters([
@@ -67,8 +69,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
         return view('admin.home');
     })->name('admin');
 
-    Route::resource('/users', UserController::class)->except(['create', 'store', 'show']);
-    Route::get('/users/search', [ProfileController::class, 'editPassword'])->name('profile.editPassword');
+
+    Route::resource('/users', UserController::class)->only(['index', 'create', 'store']);
+    Route::put('/users/disable/{user}', [UserController::class, 'disable'])->name('users.disable');
+    Route::get('/users/registerRequests', [UserController::class, 'registerRequests'])->name('users.registerRequests');
+    Route::put('/users/accept/{user}', [UserController::class, 'accept'])->name('users.accept');
 
 
     Route::resource('/icategories', ICategoryController::class)->except(['show']);
@@ -93,7 +98,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
 
     Route::resource('/tables', TableController::class)->except(['show']);
 
-    Route::resource('/bookings', BookingController::class)->only(['index', 'destroy']);
+    Route::resource('/bookings', BookingController::class)->only(['index']);
+    Route::put('/bookings/cancel/{booking}', [BookingController::class, 'cancel'])->name('bookings.cancel');
 
 
     Route::resource('/configurations', ConfigurationController::class)->only(['index', 'edit', 'update']);

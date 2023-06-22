@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -31,9 +32,18 @@ class MenuController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
+            'dishes' => [
+                'nullable',
+                'array',
+                Rule::exists(Dish::class, 'id')
+            ],
         ]);
 
-        Menu::create($request->all());
+        $dishes = $request->input('dishes');
+
+        $menu = Menu::create($request->all());
+
+        if ($dishes) $menu->dishes()->sync($dishes);
 
         return redirect()->route('menus.index');
     }
@@ -62,9 +72,18 @@ class MenuController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
+            'dishes' => [
+                'nullable',
+                'array',
+                Rule::exists(Dish::class, 'id')
+            ],
         ]);
 
+        $dishes = $request->input('dishes');
+
         $menu->update($request->all());
+
+        $menu->dishes()->sync($dishes);
 
         return redirect()->route('menus.index');
     }

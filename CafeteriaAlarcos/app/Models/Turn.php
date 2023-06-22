@@ -16,4 +16,9 @@ class Turn extends Model
         'end',
         'description',
     ];
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

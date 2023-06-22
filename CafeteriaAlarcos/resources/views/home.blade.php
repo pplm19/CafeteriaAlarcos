@@ -17,13 +17,14 @@
                         {{ __('You are logged in!') }}
 
                         <nav class="nav flex-column">
-
-                            @auth
+                            @hasrole('User')
                                 <a class="nav-link" href="{{ route('profile.index') }}">Profile</a>
-                                <a class="nav-link" href="{{ route('userbookings.index') }}">Bookings</a>
+                                <a class="nav-link" href="{{ route('userbookings.create') }}">Realizar reserva</a>
+                                <a class="nav-link" href="{{ route('userbookings.index') }}">Reservas realizadas</a>
+                                <a class="nav-link" href="{{ route('userbookings.history') }}">Historial de reservas</a>
                             @else
                                 <a class="nav-link" href="{{ route('userbookings.create') }}">Bookings</a>
-                            @endauth
+                            @endhasrole
 
                             <a class="nav-link" href="{{ route('userdishes.index') }}">Dishes</a>
 

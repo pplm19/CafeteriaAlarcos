@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('table_id')->constrained();
             $table->foreignId('turn_id')->constrained();
             $table->string('description')->nullable();
+            $table->integer('guests');
+            $table->boolean('cancelled')->default(false);
 
             $table->timestamps();
         });

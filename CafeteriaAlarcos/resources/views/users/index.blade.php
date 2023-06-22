@@ -3,6 +3,8 @@
 @section('content')
     <h1>Usuarios</h1>
 
+    <a class="btn btn-primary" href="{{ route('users.create') }}">Crear administrador</a>
+
     <div class="w-25 mx-auto mb-4">
         <form action="{{ route('users.index') }}" method="GET">
             @csrf
@@ -88,7 +90,7 @@
     <table class="table table-striped-columns">
         <thead>
             <th scope="col">#</th>
-            <th>
+            <th scope="col">
                 <a href="{{ route('users.index', ['field' => 'username', 'direction' => old('field') === 'username' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
                     class="text-decoration-none text-black">Nombre
                     de usuario</a>
@@ -132,13 +134,11 @@
                         </ul>
                     </td>
                     <td>
-                        <form action="{{ route('users.destroy', $user['id']) }}" method="POST">
+                        <form action="{{ route('users.disable', $user['id']) }}" method="POST">
                             @csrf
-                            @method('DELETE')
+                            @method('PUT')
 
-                            <a class="btn btn-primary" href="{{ route('users.edit', $user['id']) }}">Editar permisos</a>
-
-                            <button type="submit" class="btn btn-danger">Borrar</button>
+                            <button type="submit" class="btn btn-danger">Deshabilitar usuario</button>
                         </form>
                     </td>
                 </tr>

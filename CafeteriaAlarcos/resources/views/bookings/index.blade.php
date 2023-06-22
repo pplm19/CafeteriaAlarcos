@@ -79,11 +79,11 @@
                         <td>{{ isset($booking['user']['phone']) ? $booking['user']['phone'] : 'N/A' }}</td>
 
                         <td>
-                            <form action="{{ route('bookings.destroy', $booking['id']) }}" method="POST">
+                            <form action="{{ route('bookings.cancel', $booking['id']) }}" method="POST">
                                 @csrf
-                                @method('DELETE')
+                                @method('PUT')
 
-                                <button type="submit" class="btn btn-danger">Borrar</button>
+                                <button type="submit" class="btn btn-danger">Cancelar reserva</button>
                             </form>
                         </td>
                     </tr>

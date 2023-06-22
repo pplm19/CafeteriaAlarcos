@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 
@@ -14,7 +15,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::has('roles')->where('disabled', false);
 
         if ($request->has('search')) {
             $request->validate([
@@ -57,8 +58,8 @@ class UserController extends Controller
 
             if ($request->has('roles')) {
                 $roles = $request->input('roles');
-                $query->whereHas('roles', function ($sq) use ($roles) {
-                    $sq->whereIn('role_id', $roles);
+                $query->whereHas('roles', function ($subQuery) use ($roles) {
+                    $subQuery->whereIn('role_id', $roles);
                 });
             }
         }
@@ -77,18 +78,35 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    // public function create()
-    // {
-    //     //
-    // }
+    public function create()
+    {
+        return view('users.create');
+    }
 
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'username' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => ['nullable', 'string', 'max:255'],
+            'lastname' => ['nullable', 'string', 'max:255'],
+            'phone' => ['nullable', 'string', 'regex:/^\+\d{2}\s\d{9}$/'],
+        ]);
+
+        $request->merge([
+            'password' => Hash::make($request->input('password')),
+        ]);
+
+        $user = User::create($request->all());
+
+        $user->assignRole(['User', 'SuperAdmin']);
+
+        return redirect()->route('users.index');
+    }
 
     /**
      * Display the specified resource.
@@ -101,38 +119,48 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
-    {
-        return view('users.edit', ['user' => $user, 'roles' => Role::all()]);
-    }
+    // public function edit(User $user)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
-    {
-        $request->validate([
-            'roles' => [
-                'nullable',
-                'array',
-                Rule::exists(Role::class, 'id')
-            ],
-        ]);
-
-        $roles = $request->input('roles');
-
-        $user->syncRoles($roles);
-
-        return redirect()->route('users.index');
-    }
+    // public function update(Request $request, User $user)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    // public function destroy(User $user)
+    // {
+    //     //
+    // }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function disable(User $user)
     {
-        $user->delete();
+        $user->update([
+            'disabled' => true
+        ]);
 
         return redirect()->route('users.index');
+    }
+
+    public function registerRequests()
+    {
+        return view('users.registerRequests', ['users' => User::doesntHave('roles')->paginate(15)]);
+    }
+
+    public function accept(User $user)
+    {
+        $user->assignRole('User');
+
+        return redirect()->route('users.registerRequests');
     }
 }

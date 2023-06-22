@@ -1,15 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Reservas</h1>
-
-    <a class="btn btn-primary" href="{{ route('userbookings.create') }}">Crear nueva reserva</a>
-
-    @if (session('error'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('error') }}
-        </div>
-    @endif
+    <h1>Historial de reservas</h1>
 
     <table class="table table-striped-columns">
         <thead>
@@ -26,8 +18,6 @@
             <th scope="col">Máximo</th>
             <th scope="col">Mínimo</th>
             <th scope="col">Descripción de la mesa</th>
-
-            <th scope="col">Acciones</th>
         </thead>
 
         <tbody>
@@ -46,15 +36,6 @@
                     <td>{{ $userbooking['table']['maxNumber'] }}</td>
                     <td>{{ $userbooking['table']['minNumber'] }}</td>
                     <td>{{ $userbooking['table']['description'] }}</td>
-
-                    <td>
-                        <form action="{{ route('userbookings.cancel', $userbooking['booking_id']) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-
-                            <button type="submit" class="btn btn-danger">Cancelar reserva</button>
-                        </form>
-                    </td>
                 </tr>
             @endforeach
         </tbody>

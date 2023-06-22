@@ -4,6 +4,7 @@
     <nav class="nav flex-column">
         <a class="nav-link" href="{{ route('home') }}">Home</a>
 
+        <a class="nav-link" href="{{ route('users.registerRequests') }}">Solicitudes de registro</a>
         <a class="nav-link" href="{{ route('users.index') }}">Users</a>
 
         <a class="nav-link" href="{{ route('icategories.index') }}">ICategories</a>
