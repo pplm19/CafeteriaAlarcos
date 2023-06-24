@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Table;
 use App\Models\Turn;
-use App\Notifications\CustomNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 
@@ -27,45 +27,39 @@ class UserBookingController extends Controller
      */
     public function index()
     {
-        return view('userbookings.index', ['userbookings' => Booking::join('turns', 'bookings.turn_id', '=', 'turns.id')->select('bookings.id as booking_id', 'bookings.description as booking_description', 'bookings.*', 'turns.*')->where('user_id', Auth::user()['id'])->whereDate('turns.date', '>=', Carbon::now())->orderBy('turns.date', 'DESC')->orderBy('turns.start', 'DESC')->paginate(15)]);
+        return view('userbookings.index', ['userbookings' => Booking::join('turns', 'bookings.turn_id', '=', 'turns.id')->select('bookings.id as booking_id', 'bookings.description as booking_description', 'bookings.*', 'turns.*')->where('user_id', Auth::user()['id'])->where('cancelled', false)->whereDate('turns.date', '>=', Carbon::now())->orderBy('turns.date', 'DESC')->orderBy('turns.start', 'DESC')->paginate(15)]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(Turn $turn)
     {
-        $request->validate([
-            'turn_id' => ['nullable', Rule::exists(Turn::class, 'id')],
-        ]);
 
-        $minBookingDays = Session::get('minDiasReserva');
-        $maxGuestsTurn = Session::get('maxComensalesTurno');
-        $tablesCount = Table::sum('quantity');
+        // from('tables')
+        //                 ->selectRaw('COALESCE(SUM(maxNumber * quantity), 0)')
+        //                 ->whereNotIn('tables.id', function ($subquery) {
+        //                     $subquery->from('bookings')
+        //                         ->select('bookings.table_id')
+        //                         ->whereColumn('turns.id', 'bookings.turn_id')
+        //                         ->distinct();
+        //                 });
+        //         },
 
-        $turns = Turn::whereDate('date', '>', Carbon::now()->addDays($minBookingDays))->doesntHave('bookings')->withSum('bookings', 'guests')->orWhereHas('bookings', function ($subQuery) use ($maxGuestsTurn) {
-            $subQuery->having('bookings_sum_guests', '<', $maxGuestsTurn);
-        })->withCount('bookings')->whereHas('bookings', function ($subQuery) use ($tablesCount) {
-            $subQuery->having('bookings_count', '<', $tablesCount);
-        })->get();
+        // $turns = Turn::whereDate('date', '>', Carbon::now()->addDays($minBookingDays))
+        //     ->doesntHave('bookings')
+        //     ->orWhereHas('bookings', function ($subQuery) use ($maxGuestsTurn, $tablesCount) {
+        //         $subQuery->havingRaw('SUM(guests) < ?', [$maxGuestsTurn])->havingRaw('COUNT(*) < ?', [$tablesCount]);
+        //     })->paginate(15);
 
-        $data = [
-            'turns' => $turns,
-        ];
+        // $tables = Table::doesntHave('bookings')
+        //     ->orWhereHas('bookings', function ($subQuery) {
+        //         $subQuery->havingRaw('SUM(guests) < ?', [$maxGuestsTurn])->havingRaw('COUNT(*) < ?', [$tablesCount]);
+        //     });
 
-        if ($request->has('search')) {
-            $turnId = $request->input('turn_id');
+        $tables = Table::all();
 
-            $data['tables'] = Table::doesntHave('bookings')->withCount(['bookings' => function ($subQuery) use ($turnId) {
-                $subQuery->where('turn_id', $turnId);
-            }])->orWhereHas('bookings', function ($subQuery) {
-                $subQuery->havingRaw('bookings_count < quantity');
-            })->get();
-
-            $request->flash();
-        }
-
-        return view('userbookings.create', $data);
+        return view('userbookings.create', ['turn' => $turn, 'tables' => $tables]);
     }
 
     /**
@@ -76,16 +70,18 @@ class UserBookingController extends Controller
         $request->validate([
             'table_id' => ['required', Rule::exists(Table::class, 'id')],
             'turn_id' => ['required', Rule::exists(Turn::class, 'id')],
-            'description' => ['nullable', 'string', 'max:255'],
             'guests' => ['required', 'numeric', 'min:1'],
+            'description' => ['nullable', 'string', 'max:255'],
         ]);
 
         $selectedTableId = $request->input('table_id');
         $selectedTable = Table::select('maxNumber', 'minNumber')->find($selectedTableId);
 
+        // Validar si quedan de ese tipo de mesa
+
         $guests = $request->input('guests');
 
-        if (($selectedTable['maxNumber'] <= $guests) || ($selectedTable['minNumber'] >= $guests)) {
+        if (($selectedTable['maxNumber'] < $guests) || ($selectedTable['minNumber'] > $guests)) {
             return back()->withInput()->withError("Debes seleccionar una mesa habilidata para $guests comensales");
         }
 
@@ -156,6 +152,53 @@ class UserBookingController extends Controller
     //     //
     // }
 
+    public function available()
+    {
+        $minBookingDays = Session::get('minDiasReserva');
+        $maxGuestsTurn = Session::get('maxComensalesTurno');
+
+        $turns = Turn::select('turns.*')
+            ->whereDate('date', '>', Carbon::now()->addDays($minBookingDays))
+            ->selectSub(
+                function ($query) use ($maxGuestsTurn) {
+                    $query->from('bookings')
+                        ->selectRaw('? - COALESCE(SUM(guests), 0)', [$maxGuestsTurn])
+                        ->whereColumn('turns.id', 'bookings.turn_id');
+                },
+                'turn_remaining_guests'
+            )
+            ->selectSub(
+                function ($query) {
+                    $query->from('tables')
+                        ->selectRaw('COALESCE(SUM(maxNumber * quantity), 0)')
+                        ->whereNotIn('tables.id', function ($subquery) {
+                            $subquery->from('bookings')
+                                ->select('bookings.table_id')
+                                ->whereColumn('turns.id', 'bookings.turn_id')
+                                ->distinct();
+                        });
+                },
+                'tables_remaining_guests'
+            )
+            ->havingRaw('turn_remaining_guests > 0 AND tables_remaining_guests > 0')
+            ->paginate(15);
+
+        $turns = Turn::select('turns.*')
+            ->whereDate('date', '>', Carbon::now()->addDays($minBookingDays))
+            ->selectSub(
+                function ($query) use ($maxGuestsTurn) {
+                    $query->from('bookings')
+                        ->selectRaw('? - COALESCE(SUM(guests), 0)', [$maxGuestsTurn])
+                        ->whereColumn('turns.id', 'bookings.turn_id');
+                },
+                'turn_remaining_guests'
+            )
+            ->havingRaw('turn_remaining_guests > 0 AND tables_remaining_guests > 0')
+            ->paginate(15);
+
+        return view('userbookings.available', ['turns' => $turns]);
+    }
+
     public function cancel(Booking $booking)
     {
         $maxCancelBookingDays = Session::get('maxDiasCancelacionReserva');
@@ -182,6 +225,6 @@ class UserBookingController extends Controller
 
     public function history()
     {
-        return view('userbookings.history', ['userbookings' => Booking::join('turns', 'bookings.turn_id', '=', 'turns.id')->select('bookings.id as booking_id', 'bookings.description as booking_description', 'bookings.*', 'turns.*')->where('user_id', Auth::user()['id'])->whereDate('turns.date', '<', Carbon::now())->orderBy('turns.date', 'DESC')->orderBy('turns.start', 'DESC')->paginate(15)]);
+        return view('userbookings.history', ['userbookings' => Booking::join('turns', 'bookings.turn_id', '=', 'turns.id')->select('bookings.id as booking_id', 'bookings.description as booking_description', 'bookings.*', 'turns.*')->where('user_id', Auth::user()['id'])->where('cancelled', true)->orWhereDate('turns.date', '<', Carbon::now())->orderBy('turns.date', 'DESC')->orderBy('turns.start', 'DESC')->paginate(15)]);
     }
 }

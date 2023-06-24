@@ -70,6 +70,11 @@
 
             <div class="mb-3">
                 <span>Categorías</span>
+                @error('dcategories')
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
                 @foreach ($dcategories as $dcategory)
                     <div class="form-check">
                         <input type="checkbox" name="dcategories[]" id="dcategories" value="{{ $dcategory['id'] }}"
@@ -79,15 +84,15 @@
                         </label>
                     </div>
                 @endforeach
-                @error('ingredients')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
             </div>
 
             <div class="mb-3">
                 <span>Ingredientes</span>
+                @error('ingredients')
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
                 @foreach ($ingredients as $ingredient)
                     <div class="form-check">
                         <input type="checkbox" name="ingredients[]" id="ingredients" value="{{ $ingredient['id'] }}"
@@ -97,15 +102,15 @@
                         </label>
                     </div>
                 @endforeach
-                @error('ingredients')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
             </div>
 
             <div class="mb-3">
                 <span>Alérgenos</span>
+                @error('allergens')
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
                 @foreach ($allergens as $allergen)
                     <div class="form-check">
                         <input type="checkbox" name="allergens[]" id="allergens" value="{{ $allergen['id'] }}"
@@ -115,11 +120,6 @@
                         </label>
                     </div>
                 @endforeach
-                @error('allergens')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
             </div>
 
             <div class="d-flex justify-content-end">

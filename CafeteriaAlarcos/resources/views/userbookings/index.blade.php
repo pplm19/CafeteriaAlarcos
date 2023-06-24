@@ -3,7 +3,7 @@
 @section('content')
     <h1>Reservas</h1>
 
-    <a class="btn btn-primary" href="{{ route('userbookings.create') }}">Crear nueva reserva</a>
+    <a class="btn btn-primary" href="{{ route('userbookings.available') }}">Realizar reserva</a>
 
     @if (session('error'))
         <div class="alert alert-danger" role="alert">

@@ -54,7 +54,9 @@ Route::group(['prefix' => 'profile', 'middleware' => 'rol:User'], function () {
 
 Route::resource('/userbookings', UserBookingController::class)->parameters([
     'userbookings' => 'booking',
-])->only(['index', 'create', 'store']);
+])->only(['index', 'store']);
+Route::get('/userbookings/create/{turn}', [UserBookingController::class, 'create'])->name('userbookings.create');
+Route::get('/userbookings/available', [UserBookingController::class, 'available'])->name('userbookings.available');
 Route::put('/userbookings/cancel/{booking}', [UserBookingController::class, 'cancel'])->name('userbookings.cancel');
 Route::get('/userbookings/history', [UserBookingController::class, 'history'])->name('userbookings.history');
 
@@ -71,7 +73,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
 
 
     Route::resource('/users', UserController::class)->only(['index', 'create', 'store']);
-    Route::put('/users/disable/{user}', [UserController::class, 'disable'])->name('users.disable');
+    Route::put('/users/toggleDisable/{user}', [UserController::class, 'toggleDisable'])->name('users.toggleDisable');
     Route::get('/users/registerRequests', [UserController::class, 'registerRequests'])->name('users.registerRequests');
     Route::put('/users/accept/{user}', [UserController::class, 'accept'])->name('users.accept');
 

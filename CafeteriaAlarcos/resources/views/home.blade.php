@@ -19,7 +19,7 @@
                         <nav class="nav flex-column">
                             @hasrole('User')
                                 <a class="nav-link" href="{{ route('profile.index') }}">Profile</a>
-                                <a class="nav-link" href="{{ route('userbookings.create') }}">Realizar reserva</a>
+                                <a class="nav-link" href="{{ route('userbookings.available') }}">Realizar reserva</a>
                                 <a class="nav-link" href="{{ route('userbookings.index') }}">Reservas realizadas</a>
                                 <a class="nav-link" href="{{ route('userbookings.history') }}">Historial de reservas</a>
                             @else

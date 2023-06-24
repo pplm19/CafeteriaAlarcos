@@ -65,6 +65,11 @@
 
             <div class="mb-3">
                 <span>Roles</span>
+                @error('roles')
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
                 @foreach ($roles as $role)
                     <div class="form-check">
                         <input type="checkbox" name="roles[]" id="roles" value="{{ $role['id'] }}"
@@ -74,11 +79,6 @@
                         </label>
                     </div>
                 @endforeach
-                @error('roles')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
             </div>
 
             <div class="d-flex justify-content-end">
@@ -134,11 +134,15 @@
                         </ul>
                     </td>
                     <td>
-                        <form action="{{ route('users.disable', $user['id']) }}" method="POST">
+                        <form action="{{ route('users.toggleDisable', $user['id']) }}" method="POST">
                             @csrf
                             @method('PUT')
 
-                            <button type="submit" class="btn btn-danger">Deshabilitar usuario</button>
+                            @if ($user['disabled'])
+                                <button type="submit" class="btn btn-success">Habilitar usuario</button>
+                            @else
+                                <button type="submit" class="btn btn-danger">Deshabilitar usuario</button>
+                            @endif
                         </form>
                     </td>
                 </tr>
