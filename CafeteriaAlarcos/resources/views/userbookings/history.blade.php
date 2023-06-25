@@ -15,17 +15,15 @@
             <th scope="col">Fin</th>
             <th scope="col">Descripción del turno</th>
 
-            <th scope="col">Máximo</th>
-            <th scope="col">Mínimo</th>
-            <th scope="col">Descripción de la mesa</th>
+            <th scope="col">Mesas</th>
         </thead>
 
         <tbody>
             @foreach ($userbookings as $userbooking)
                 <tr>
-                    <th scope="row">{{ $userbooking['booking_id'] }}</th>
-                    <th>{{ $userbooking['booking_description'] }}</th>
-                    <th>{{ $userbooking['guests'] }}</th>
+                    <th scope="row">{{ $userbooking['id'] }}</th>
+                    <th>{{ $userbooking['description'] }}</th>
+                    <td>{{ $userbooking['bookingTables']->sum('guests') }}</td>
 
                     <td>{{ $userbooking['turn']['name'] }}</td>
                     <td>{{ $userbooking['turn']['date'] }}</td>
@@ -33,9 +31,18 @@
                     <td>{{ $userbooking['turn']['end'] }}</td>
                     <td>{{ $userbooking['turn']['description'] }}</td>
 
-                    <td>{{ $userbooking['table']['maxNumber'] }}</td>
-                    <td>{{ $userbooking['table']['minNumber'] }}</td>
-                    <td>{{ $userbooking['table']['description'] }}</td>
+                    <td>
+                        <ul>
+                            @foreach ($userbooking['tables'] as $table)
+                                <li>
+                                    {{ $table['minNumber'] }} - {{ $table['maxNumber'] }} comensales
+                                    @isset($table['description'])
+                                        - {{ $table['description'] }}
+                                    @endisset
+                                </li>
+                            @endforeach
+                        </ul>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

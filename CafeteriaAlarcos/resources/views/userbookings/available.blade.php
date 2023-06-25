@@ -12,7 +12,8 @@
             <th scope="col">Fin</th>
             <th scope="col">Descripción del turno</th>
 
-            <th scope="col">Aforo restante</th>
+            <th scope="col">Aforo de local restante</th>
+            <th scope="col">Tipos de mesas disponibles</th>
 
             <th scope="col">Acciones</th>
         </thead>
@@ -28,7 +29,8 @@
                     <td>{{ $turn['end'] }}</td>
                     <td>{{ $turn['description'] }}</td>
 
-                    <td>{{ min($turn['turn_remaining_guests'], $turn['tables_remaining_guests']) }}</td>
+                    <td>{{ $turn['turn_remaining_guests'] }}</td>
+                    <td>{{ $turn['tables_remaining'] }}</td>
 
                     <td>
                         <a class="btn btn-primary" href="{{ route('userbookings.create', $turn['id']) }}">

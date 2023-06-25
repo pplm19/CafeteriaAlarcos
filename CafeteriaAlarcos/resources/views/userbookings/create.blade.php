@@ -37,37 +37,6 @@
             <input type="number" name="turn_id" value="{{ $turn['id'] }}" hidden>
 
             <div class="mb-3">
-                <label for="table_id" class="form-label">Mesa</label>
-                <select name="table_id" id="table_id" class="form-select @error('table_id') is-invalid @enderror">
-                    @if (old('table_id', null) === null)
-                        <option selected></option>
-                    @endif
-                    @foreach ($tables as $table)
-                        <option value="{{ $table['id'] }}" @selected($table['id'] == old('table_id', null))>
-                            {{ $table['minNumber'] }} - {{ $table['maxNumber'] }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('table_id')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="guests" class="form-label">Número de comensales</label>
-                <input type="number" name="guests" id="guests"
-                    class="form-control @error('guests') is-invalid @enderror" min="1"
-                    value="{{ old('guests') }}" />
-                @error('guests')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-
-            <div class="mb-3">
                 <label for="description" class="form-label">Descripción</label>
                 <input type="text" name="description" id="description"
                     class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}" />
@@ -76,6 +45,40 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col">
+                    <label for="table_id" class="form-label">Mesa</label>
+                    <select name="table_id" id="table_id" class="form-select @error('table_id') is-invalid @enderror">
+                        @if (old('table_id', null) === null)
+                            <option selected></option>
+                        @endif
+                        @foreach ($tables as $table)
+                            <option value="{{ $table['id'] }}" @selected($table['id'] == old('table_id', null))>
+                                Comensales: {{ $table['minNumber'] }} - {{ $table['maxNumber'] }}
+                                Disponibles: {{ $table['remaining_tables'] }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('table_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="col-4">
+                    <label for="guests" class="form-label">Número de comensales</label>
+                    <input type="number" name="guests" id="guests"
+                        class="form-control @error('guests') is-invalid @enderror" min="1"
+                        value="{{ old('guests') }}" />
+                    @error('guests')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
             </div>
 
             @auth

@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::has('roles')->where('disabled', false);
+        $query = User::has('roles');
 
         if ($request->has('search')) {
             $request->validate([
@@ -28,7 +28,7 @@ class UserController extends Controller
                     'nullable',
                     'array',
                     Rule::exists(Role::class, 'id')
-                ],
+                ]
             ]);
 
             $username = $request->input('username');
@@ -143,10 +143,10 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function disable(User $user)
+    public function toggleDisable(User $user)
     {
         $user->update([
-            'disabled' => true
+            'disabled' => !$user['disabled']
         ]);
 
         return redirect()->route('users.index');

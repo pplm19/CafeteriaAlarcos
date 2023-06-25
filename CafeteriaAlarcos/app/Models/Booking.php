@@ -11,10 +11,8 @@ class Booking extends Model
 
     protected $fillable = [
         'user_id',
-        'table_id',
         'turn_id',
         'description',
-        'guests',
         'cancelled',
     ];
 
@@ -23,9 +21,16 @@ class Booking extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function table()
+    public function bookingTables()
     {
-        return $this->belongsTo(Table::class);
+        return $this->hasMany(BookingTables::class);
+    }
+
+    public function tables()
+    {
+        return $this->belongsToMany(Table::class, 'booking_tables', 'booking_id', 'table_id')
+            ->withPivot('guests')
+            ->withTimestamps();
     }
 
     public function turn()

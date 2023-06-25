@@ -16,8 +16,15 @@ class Table extends Model
         'description',
     ];
 
+    public function bookingTables()
+    {
+        return $this->hasMany(BookingTables::class);
+    }
+
     public function bookings()
     {
-        return $this->hasMany(Booking::class);
+        return $this->belongsToMany(Table::class, 'booking_tables', 'table_id', 'booking_id')
+            ->withPivot('guests')
+            ->withTimestamps();
     }
 }
