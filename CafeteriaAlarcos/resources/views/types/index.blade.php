@@ -1,35 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Categorías de ingredientes</h1>
+    <div class="content py-5 px-1 px-md-5">
+        <div class="text-center mb-5">
+            <h1>Tipos de platos</h1>
+        </div>
 
-    <a class="btn btn-primary" href="{{ route('types.create') }}">Crear nuevo ingrediente</a>
+        <p class="d-flex justify-content-end">
+            <a class="btn btn-theme" href="{{ route('types.create') }}">Crear nuevo tipo de plato</a>
+        </p>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Acciones</th>
+                </thead>
 
-    <table class="table table-striped-columns">
-        <thead>
-            <th scope="col">#</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Acciones</th>
-        </thead>
+                <tbody>
+                    @foreach ($types as $type)
+                        <tr>
+                            <td>{{ $type['name'] }}</td>
+                            <td>
+                                <form action="{{ route('types.destroy', $type['id']) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
 
-        <tbody>
-            @foreach ($types as $type)
-                <tr>
-                    <th scope="row">{{ $type['id'] }}</th>
-                    <td>{{ $type['name'] }}</td>
-                    <td>
-                        <form action="{{ route('types.destroy', $type['id']) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
+                                    <a class="btn btn-primary" href="{{ route('types.edit', $type['id']) }}">Editar</a>
 
-                            <a class="btn btn-primary" href="{{ route('types.edit', $type['id']) }}">Editar</a>
+                                    <button type="submit" class="btn btn-danger">Borrar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
-                            <button type="submit" class="btn btn-danger">Borrar</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-    {{ $types->links() }}
+        {{ $types->links() }}
+    </div>
 @endsection

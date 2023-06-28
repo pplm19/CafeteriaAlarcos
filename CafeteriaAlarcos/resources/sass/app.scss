@@ -1,8 +1,24 @@
 // Fonts
-@import url('https://fonts.bunny.net/css?family=Nunito');
+// @import url('https://fonts.bunny.net/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,600,600i,700,700i|Satisfy|Comic+Neue:300,300i,400,400i,700,700i');
 
 // Variables
-@import 'variables';
+// @import 'variables';
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+// Bootstrap Icons
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+// Animate.css
+@import "animate.css/animate.min.css";
+
+// Boxicons
+@import 'boxicons/css/boxicons.min.css';
+
+// Glightbox
+@import 'glightbox/dist/css/glightbox.min.css';
+
+// Swiper
+@import 'swiper/swiper-bundle.min.css';

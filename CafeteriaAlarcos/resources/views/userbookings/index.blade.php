@@ -13,7 +13,6 @@
 
     <table class="table table-striped-columns">
         <thead>
-            <th scope="col">#</th>
             <th scope="col">Descripción</th>
             <th scope="col">Comensales</th>
 
@@ -31,7 +30,6 @@
         <tbody>
             @foreach ($userbookings as $userbooking)
                 <tr>
-                    <th scope="row">{{ $userbooking['id'] }}</th>
                     <th>{{ $userbooking['description'] }}</th>
                     <td>{{ $userbooking['bookingTables']->sum('guests') }}</td>
 

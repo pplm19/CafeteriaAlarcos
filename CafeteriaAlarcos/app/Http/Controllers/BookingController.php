@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Turn;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -11,23 +12,18 @@ class BookingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $request->validate([
-            'searchDate' => ['nullable', 'date'],
-        ]);
-
-        $data = [
-            'turns' => Turn::distinct('date')->get('date')
-        ];
-
-        if ($request->has('search')) {
-            $data['bookings'] = Booking::join('turns', 'bookings.turn_id', '=', 'turns.id')->select('bookings.id as booking_id', 'bookings.description as booking_description', 'bookings.*', 'turns.*')->whereDate('turns.date', $request->input('searchDate'))->orderBy('turns.date', 'DESC')->paginate(15);
-
-            $request->flash();
-        }
-
-        return view('bookings.index', $data);
+        return view(
+            'bookings.index',
+            [
+                'bookings' => Booking::where('cancelled', false)
+                    ->whereHas('turn', function ($query) {
+                        $query->whereDate('date', '>=', Carbon::now())->orderBy('date', 'DESC')->orderBy('start', 'DESC');
+                    })
+                    ->paginate(15)
+            ]
+        );
     }
 
     /**

@@ -31,15 +31,15 @@ use App\Http\Controllers\UserDishController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('index');
+})->name('index');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::group(['prefix' => 'profile', 'middleware' => 'rol:User'], function () {
+Route::group(['prefix' => 'profile', 'middleware' => 'role:User'], function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
 
     Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
