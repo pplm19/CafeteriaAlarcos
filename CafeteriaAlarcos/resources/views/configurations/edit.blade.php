@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,14 +14,15 @@
                             Editar configuración de {{ $configuration['name'] }}
                         </h3>
 
-                        <form action="{{ route('configurations.update', $configuration['id']) }}" method="POST">
+                        <form action="{{ route('configurations.update', $configuration['id']) }}" method="POST"
+                            class="needs-validation" novalidate>
                             @csrf
                             @method('PUT')
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror"
-                                    value="{{ $configuration['name'] }}" required readonly />
+                                    value="{{ $configuration['name'] }}" readonly />
                                 <label for="name"><i class='bx bxs-food-menu'></i> Nombre</label>
 
                                 @error('name')
@@ -30,7 +35,7 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="value" id="value"
                                     class="form-control @error('value') is-invalid @enderror"
-                                    value="{{ $configuration['value'] }}" required autofocus />
+                                    value="{{ $configuration['value'] }}" required maxlength="255" autofocus />
                                 <label for="value"><i class='bx bxs-food-menu'></i> Valor</label>
 
                                 @error('value')

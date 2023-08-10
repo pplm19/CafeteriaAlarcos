@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="content py-5 px-1 px-md-5">
         <div class="row justify-content-center mb-5">
@@ -8,13 +12,13 @@
                     <div class="card-body">
                         <h1 class="card-title">Usuarios</h1>
 
-                        <form action="{{ route('userdishes.index') }}" method="GET">
+                        <form action="{{ route('users.index') }}" method="GET" class="needs-validation" novalidate>
                             @csrf
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="username" id="username"
                                     class="form-control @error('username') is-invalid @enderror"
-                                    value="{{ old('username') }}" placeholder="Nombre de usuario" />
+                                    value="{{ old('username') }}" placeholder="Nombre de usuario" maxlength="255" />
                                 <label for="username"><i class="bx bxs-user"></i> Nombre de usuario</label>
 
                                 @error('username')
@@ -27,7 +31,7 @@
                             <div class="form-floating mt-3">
                                 <input type="email" name="email" id="email"
                                     class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
-                                    placeholder="Email" />
+                                    placeholder="Email" maxlength="255" />
                                 <label for="email"><i class="bx bxs-envelope"></i> Email</label>
 
                                 @error('email')
@@ -40,7 +44,7 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                    placeholder="Nombre" />
+                                    placeholder="Nombre" maxlength="255" />
                                 <label for="name"><i class="bx bxs-user"></i> Nombre</label>
 
                                 @error('name')
@@ -53,7 +57,7 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="lastname" id="lastname"
                                     class="form-control @error('lastname') is-invalid @enderror"
-                                    value="{{ old('lastname') }}" placeholder="Nombre" />
+                                    value="{{ old('lastname') }}" placeholder="Nombre" maxlength="255" />
                                 <label for="lastname"><i class="bx bxs-user"></i> Apellidos</label>
 
                                 @error('lastname')
@@ -66,7 +70,7 @@
                             <div class="form-floating mt-3">
                                 <input type="tel" name="phone" id="phone"
                                     class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}"
-                                    placeholder="Número de teléfono" />
+                                    placeholder="Número de teléfono" pattern="^\+\d{2}\s\d{9}$" />
                                 <label for="phone"><i class="bx bxs-phone"></i> Número de teléfono</label>
 
                                 @error('phone')
@@ -106,6 +110,13 @@
                 </div>
             </div>
         </div>
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <p class="d-flex justify-content-end">
             <a class="btn btn-theme" href="{{ route('users.create') }}">Crear administrador</a>

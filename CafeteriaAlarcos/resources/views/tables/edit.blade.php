@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,14 +14,16 @@
                             Editar mesa
                         </h3>
 
-                        <form action="{{ route('tables.update', $table['id']) }}" method="POST">
+                        <form action="{{ route('tables.update', $table['id']) }}" method="POST" class="needs-validation"
+                            novalidate>
                             @csrf
                             @method('PUT')
 
                             <div class="form-floating mt-3">
                                 <input type="number" min="1" name="quantity" id="quantity"
                                     class="form-control @error('quantity') is-invalid @enderror"
-                                    value="{{ $table['quantity'] }}" required placeholder="Cantidad" autofocus />
+                                    value="{{ $table['quantity'] }}" placeholder="Cantidad" required min="1"
+                                    max="65535" autofocus />
                                 <label for="quantity"><i class='bx bxs-food-menu'></i> Cantidad</label>
 
                                 @error('quantity')
@@ -30,7 +36,8 @@
                             <div class="form-floating mt-3">
                                 <input type="number" min="1" name="maxNumber" id="maxNumber"
                                     class="form-control @error('maxNumber') is-invalid @enderror"
-                                    value="{{ $table['maxNumber'] }}" required placeholder="Máximo" />
+                                    value="{{ $table['maxNumber'] }}" placeholder="Máximo" required min="1"
+                                    max="65535" />
                                 <label for="maxNumber"><i class='bx bxs-food-menu'></i> Máximo</label>
 
                                 @error('maxNumber')
@@ -43,7 +50,8 @@
                             <div class="form-floating mt-3">
                                 <input type="number" min="1" name="minNumber" id="minNumber"
                                     class="form-control @error('minNumber') is-invalid @enderror"
-                                    value="{{ $table['minNumber'] }}" placeholder="Mínimo" />
+                                    value="{{ $table['minNumber'] }}" placeholder="Mínimo" required min="1"
+                                    max="65535" />
                                 <label for="minNumber"><i class='bx bxs-food-menu'></i> Mínimo</label>
 
                                 @error('minNumber')
@@ -56,7 +64,7 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="description" id="description"
                                     class="form-control @error('description') is-invalid @enderror"
-                                    value="{{ $table['description'] }}" placeholder="Descripción" autofocus />
+                                    value="{{ $table['description'] }}" placeholder="Descripción" maxlength="255" />
                                 <label for="description"><i class='bx bxs-food-menu'></i> Descripción</label>
 
                                 @error('description')

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,13 +14,13 @@
                             Crear ingrediente
                         </h3>
 
-                        <form action="{{ route('ingredients.store') }}" method="POST">
+                        <form action="{{ route('ingredients.store') }}" method="POST" class="needs-validation" novalidate>
                             @csrf
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                    required placeholder="Nombre" autofocus />
+                                    placeholder="Nombre" required maxlength="255" autofocus />
                                 <label for="name"><i class='bx bxs-food-menu'></i> Nombre</label>
 
                                 @error('name')
@@ -28,9 +32,9 @@
 
                             <div class="form-floating mt-3">
                                 <select name="i_category_id" id="i_category_id"
-                                    class="form-select @error('i_category_id') is-invalid @enderror">
+                                    class="form-select @error('i_category_id') is-invalid @enderror" required>
                                     @if (old('i_category_id', null) === null)
-                                        <option selected>Selecciona una categoría</option>
+                                        <option selected disabled value="">Selecciona una categoría</option>
                                     @endif
                                     @foreach ($icategories as $icategory)
                                         <option value="{{ $icategory['id'] }}" @selected($icategory['id'] == old('i_category_id', null))>

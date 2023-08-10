@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,14 +14,15 @@
                             Editar plato
                         </h3>
 
-                        <form action="{{ route('dishes.update', $dish['id']) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('dishes.update', $dish['id']) }}" method="POST" enctype="multipart/form-data"
+                            class="needs-validation" novalidate>
                             @csrf
                             @method('PUT')
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ $dish['name'] }}"
-                                    required placeholder="Nombre" autofocus />
+                                    placeholder="Nombre" required maxlength="255" autofocus />
                                 <label for="name"><i class='bx bxs-food-menu'></i> Nombre</label>
 
                                 @error('name')
@@ -42,7 +47,7 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="recipe" id="recipe"
                                     class="form-control @error('recipe') is-invalid @enderror" value="{{ $dish['recipe'] }}"
-                                    placeholder="Receta" />
+                                    placeholder="Receta" maxlength="255" />
                                 <label for="recipe"><i class='bx bxs-food-menu'></i> Receta</label>
 
                                 @error('recipe')
@@ -55,7 +60,7 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="description" id="description"
                                     class="form-control @error('description') is-invalid @enderror"
-                                    value="{{ $dish['description'] }}" placeholder="Descripción" />
+                                    value="{{ $dish['description'] }}" placeholder="Descripción" maxlength="255" />
                                 <label for="description"><i class='bx bxs-food-menu'></i> Descripción</label>
 
                                 @error('description')
@@ -67,7 +72,7 @@
 
                             <div class="form-floating mt-3">
                                 <select name="type_id" id="type_id"
-                                    class="form-select @error('type_id') is-invalid @enderror">
+                                    class="form-select @error('type_id') is-invalid @enderror" required>
                                     @foreach ($types as $type)
                                         <option value="{{ $type['id'] }}" @selected($dish['type_id'] == $type['id'])>
                                             {{ $type['name'] }}

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -16,13 +20,14 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate>
                             @csrf
 
                             <div class="form-floating mt-3">
                                 <input type="email" name="email" id="email"
                                     class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
-                                    autofocus autocomplete="email" required placeholder="{{ __('Email Address') }}" />
+                                    autofocus autocomplete="email" placeholder="{{ __('Email Address') }}" required
+                                    maxlength="255" />
                                 <label for="email"><i class="bx bxs-envelope"></i> {{ __('Email Address') }}</label>
 
                                 @error('email')
@@ -35,7 +40,8 @@
                             <div class="form-floating mt-3">
                                 <input type="password" name="password" id="password"
                                     class="form-control @error('password') is-invalid @enderror"
-                                    autocomplete="current-password" required placeholder="{{ __('Password') }}" />
+                                    autocomplete="current-password" placeholder="{{ __('Password') }}" required
+                                    minlength="8" />
                                 <label for="password"><i class="bx bxs-lock"></i> {{ __('Password') }}</label>
 
                                 <a class="btn btn-link text-decoration-none text-theme p-0 mt-2"
@@ -58,13 +64,6 @@
                                     {{ __('Remember Me') }}
                                 </label>
                             </div>
-
-                            {{-- <div class="form-check mt-3 p-0">
-                                <a class="btn btn-link text-decoration-none text-theme p-0"
-                                    href="{{ route('password.request') }}">
-                                    <i class="bx bx-reset align-middle"></i> {{ __('Forgot Your Password?') }}
-                                </a>
-                            </div> --}}
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme"><i

@@ -1,58 +1,86 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
-    <div class="w-25 mx-auto">
-        <form action="{{ route('profile.update') }}" method="POST">
-            @csrf
-            @method('PUT')
+    <div class="container content pt-10rem">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            Editar perfil
+                        </h3>
 
-            <div class="mb-3">
-                <label for="username" class="form-label">Nombre de usuario</label>
-                <input type="text" name="username" id="username"
-                    class="form-control @error('username') is-invalid @enderror" value="{{ $user['username'] }}" />
-                @error('username')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
+                        <form action="{{ route('profile.update') }}" method="POST" class="needs-validation" novalidate>
+                            @csrf
+                            @method('PUT')
 
-            <div class="mb-3">
-                <label for="name" class="form-label">Nombre</label>
-                <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
-                    value="{{ $user['name'] }}" />
-                @error('name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
+                            <div class="form-floating mt-3">
+                                <input type="text" name="username" id="username"
+                                    class="form-control @error('username') is-invalid @enderror"
+                                    value="{{ $user['username'] }}" autocomplete="username"
+                                    placeholder="{{ __('Username') }}" required maxlength="255" autofocus />
+                                <label for="username"><i class="bx bxs-user"></i> {{ __('Username') }}</label>
 
-            <div class="mb-3">
-                <label for="lastname" class="form-label">Apellidos</label>
-                <input type="text" name="lastname" id="lastname"
-                    class="form-control @error('lastname') is-invalid @enderror" value="{{ $user['lastname'] }}" />
-                @error('lastname')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
+                                @error('username')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
 
-            <div class="mb-3">
-                <label for="phone" class="form-label">Número de teléfono</label>
-                <input type="tel" name="phone" id="phone"
-                    class="form-control @error('phone') is-invalid @enderror" value="{{ $user['phone'] }}" />
-                @error('phone')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
+                            <div class="form-floating mt-3">
+                                <input type="text" name="name" id="name"
+                                    class="form-control @error('name') is-invalid @enderror" value="{{ $user['name'] }}"
+                                    autocomplete="name" placeholder="{{ __('Name') }}" required maxlength="255" />
+                                <label for="name"><i class="bx bxs-user"></i> {{ __('Name') }}</label>
 
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">Editar perfil</button>
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-floating mt-3">
+                                <input type="text" name="lastname" id="lastname"
+                                    class="form-control @error('lastname') is-invalid @enderror"
+                                    value="{{ $user['lastname'] }}" autocomplete="lastname"
+                                    placeholder="{{ __('Lastname') }}" required maxlength="255" />
+                                <label for="lastname"><i class="bx bxs-user"></i> {{ __('Lastname') }}</label>
+
+                                @error('lastname')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-floating mt-3">
+                                <input type="tel" name="phone" id="phone"
+                                    class="form-control @error('phone') is-invalid @enderror" value="{{ $user['phone'] }}"
+                                    autocomplete="phone" placeholder="{{ __('Phone') }}" pattern="^\+\d{2}\s\d{9}$" />
+                                <label for="phone"><i class="bx bxs-phone"></i> {{ __('Phone') }}</label>
+
+                                @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <button type="submit" class="btn btn-theme">
+                                    <i class="bi bi-pencil-fill"></i> Editar perfil
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 @endsection

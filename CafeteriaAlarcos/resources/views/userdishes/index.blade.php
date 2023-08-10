@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="content py-5 px-1 px-md-5">
         <div class="row justify-content-center mb-5">
@@ -8,13 +12,13 @@
                     <div class="card-body">
                         <h1 class="card-title">Platos</h1>
 
-                        <form action="{{ route('userdishes.index') }}" method="GET">
+                        <form action="{{ route('userdishes.index') }}" method="GET" class="needs-validation" novalidate>
                             @csrf
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                    placeholder="Nombre" />
+                                    placeholder="Nombre" maxlength="255" />
                                 <label for="name"><i class='bx bxs-food-menu'></i> Nombre</label>
 
                                 @error('name')

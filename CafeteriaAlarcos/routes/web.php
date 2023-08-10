@@ -30,16 +30,25 @@ use App\Http\Controllers\UserDishController;
 |
 */
 
+
+///////////////////
+// Public routes //
+///////////////////
 Route::get('/', function () {
     return view('index');
 })->name('index');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('/userdishes', UserDishController::class)->parameters([
+    'userdishes' => 'dish',
+])->only(['index', 'show']);
 
 
-Route::group(['prefix' => 'profile', 'middleware' => 'role:User'], function () {
+/////////////////
+// Auth routes //
+/////////////////
+Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
 
     Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -52,20 +61,26 @@ Route::group(['prefix' => 'profile', 'middleware' => 'role:User'], function () {
 });
 
 
-Route::resource('/userbookings', UserBookingController::class)->parameters([
-    'userbookings' => 'booking',
-])->only(['index', 'store']);
-Route::get('/userbookings/create/{turn}', [UserBookingController::class, 'create'])->name('userbookings.create');
-Route::get('/userbookings/available', [UserBookingController::class, 'available'])->name('userbookings.available');
-Route::put('/userbookings/cancel/{booking}', [UserBookingController::class, 'cancel'])->name('userbookings.cancel');
-Route::get('/userbookings/history', [UserBookingController::class, 'history'])->name('userbookings.history');
+/////////////////
+// User routes //
+/////////////////
+Route::group(['prefix' => 'userbookings', 'middleware' => 'role:User'], function () {
+    Route::resource('/', UserBookingController::class, ['names' => [
+        'index' => 'userbookings.index',
+        'store' => 'userbookings.store',
+    ]])->parameters([
+        'userbookings' => 'booking',
+    ])->only(['index', 'store']);
+    Route::get('/create/{turn}', [UserBookingController::class, 'create'])->name('userbookings.create');
+    Route::get('/available', [UserBookingController::class, 'available'])->name('userbookings.available');
+    Route::put('/cancel/{booking}', [UserBookingController::class, 'cancel'])->name('userbookings.cancel');
+    Route::get('/history', [UserBookingController::class, 'history'])->name('userbookings.history');
+});
 
 
-Route::resource('/userdishes', UserDishController::class)->parameters([
-    'userdishes' => 'dish',
-])->only(['index', 'show']);
-
-
+//////////////////
+// Admin routes //
+//////////////////
 Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function () {
     Route::get('/', function () {
         return view('admin.home');

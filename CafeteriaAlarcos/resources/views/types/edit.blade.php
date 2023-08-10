@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,14 +14,15 @@
                             Editar tipo de plato
                         </h3>
 
-                        <form action="{{ route('types.update', $type['id']) }}" method="POST">
+                        <form action="{{ route('types.update', $type['id']) }}" method="POST" class="needs-validation"
+                            novalidate>
                             @csrf
                             @method('PUT')
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ $type['name'] }}"
-                                    required autofocus />
+                                    required maxlength="255" autofocus />
                                 <label for="name"><i class='bx bxs-food-menu'></i> Nombre</label>
 
                                 @error('name')

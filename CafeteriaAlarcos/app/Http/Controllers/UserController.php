@@ -92,8 +92,8 @@ class UserController extends Controller
             'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'name' => ['nullable', 'string', 'max:255'],
-            'lastname' => ['nullable', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'regex:/^\+\d{2}\s\d{9}$/'],
         ]);
 
@@ -149,7 +149,7 @@ class UserController extends Controller
             'disabled' => !$user['disabled']
         ]);
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', sprintf('El usuario %s ha sido %s.', $user->username, $user['disabled'] ? 'deshabilitado' : 'habilitado'));
     }
 
     public function registerRequests()
@@ -161,6 +161,6 @@ class UserController extends Controller
     {
         $user->assignRole('User');
 
-        return redirect()->route('users.registerRequests');
+        return redirect()->route('users.registerRequests')->with('success', sprintf('El usuario %s ha sido aceptado.', $user->username));
     }
 }

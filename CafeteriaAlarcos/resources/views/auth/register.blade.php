@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,14 +14,14 @@
                             {{ __('Register') }}
                         </h3>
 
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register') }}" class="needs-validation" novalidate>
                             @csrf
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="username" id="username"
                                     class="form-control @error('username') is-invalid @enderror"
-                                    value="{{ old('username') }}" autocomplete="username" required
-                                    placeholder="{{ __('Username') }}" autofocus />
+                                    value="{{ old('username') }}" autocomplete="username" placeholder="{{ __('Username') }}"
+                                    required maxlength="255" autofocus />
                                 <label for="username"><i class="bx bxs-user"></i> {{ __('Username') }}</label>
 
                                 @error('username')
@@ -30,7 +34,7 @@
                             <div class="form-floating mt-3">
                                 <input type="email" name="email" id="email" class="form-control"
                                     class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
-                                    autocomplete="email" required placeholder="{{ __('Email Address') }}" />
+                                    autocomplete="email" placeholder="{{ __('Email Address') }}" required maxlength="255" />
                                 <label for="email"><i class="bx bxs-envelope"></i> {{ __('Email Address') }}</label>
 
                                 @error('email')
@@ -43,7 +47,7 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                    autocomplete="name" required placeholder="{{ __('Name') }}" />
+                                    autocomplete="name" placeholder="{{ __('Name') }}" required maxlength="255" />
                                 <label for="name"><i class="bx bxs-user"></i> {{ __('Name') }}</label>
 
                                 @error('name')
@@ -56,8 +60,8 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="lastname" id="lastname"
                                     class="form-control @error('lastname') is-invalid @enderror"
-                                    value="{{ old('lastname') }}" autocomplete="lastname" required
-                                    placeholder="{{ __('Lastname') }}" />
+                                    value="{{ old('lastname') }}" autocomplete="lastname"
+                                    placeholder="{{ __('Lastname') }}" required maxlength="255" />
                                 <label for="lastname"><i class="bx bxs-user"></i> {{ __('Lastname') }}</label>
 
                                 @error('lastname')
@@ -70,7 +74,7 @@
                             <div class="form-floating mt-3">
                                 <input type="tel" name="phone" id="phone"
                                     class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}"
-                                    autocomplete="phone" required placeholder="{{ __('Phone') }}" />
+                                    autocomplete="phone" placeholder="{{ __('Phone') }}" pattern="^\+\d{2}\s\d{9}$" />
                                 <label for="phone"><i class="bx bxs-phone"></i> {{ __('Phone') }}</label>
 
                                 @error('phone')
@@ -83,7 +87,8 @@
                             <div class="form-floating mt-3">
                                 <input type="password" name="password" id="password"
                                     class="form-control @error('password') is-invalid @enderror"
-                                    autocomplete="current-password" required placeholder="{{ __('Password') }}" />
+                                    autocomplete="current-password" placeholder="{{ __('Password') }}" required
+                                    minlength="8" />
                                 <label for="password"><i class="bx bxs-lock"></i> {{ __('Password') }}</label>
 
                                 @error('password')
@@ -95,8 +100,8 @@
 
                             <div class="form-floating mt-3">
                                 <input type="password" name="password_confirmation" id="password-confirm"
-                                    class="form-control" autocomplete="new-password" required
-                                    placeholder="{{ __('Confirm Password') }}" />
+                                    class="form-control" autocomplete="new-password"
+                                    placeholder="{{ __('Confirm Password') }}" required minlength="8" />
                                 <label for="password-confirm"><i class="bx bxs-lock"></i>
                                     {{ __('Confirm Password') }}</label>
 
@@ -115,7 +120,7 @@
 
                         <div class="text-center mt-2">
                             <a class="btn btn-link text-decoration-none text-theme" href="{{ route('login') }}">
-                                <i class='bx bxs-user'></i> ¿Ya tienes una cuenta? Inicia sesión
+                                <i class='bx bxs-user'></i> {{ __('Already have an account? Sign in') }}
                             </a>
                         </div>
                     </div>

@@ -21,9 +21,11 @@
                                 <h2 class="animate__animated animate__fadeInDown"><span>Cafetería</span> Alarcos</h2>
                                 <p class="animate__animated animate__fadeInUp">La cafetería Alarcos es el lugar donde
                                     los alumnos de restauración del IES Sta María de Alarcos realizan sus prácticas.</p>
-                                @hasrole('User')
-                                    <a href="{{ route('userbookings.available') }}"
-                                        class="btn-menu animate__animated animate__fadeInUp">Realizar una reserva</a>
+                                @auth
+                                    @hasrole('User')
+                                        <a href="{{ route('userbookings.available') }}"
+                                            class="btn-menu animate__animated animate__fadeInUp">Realizar una reserva</a>
+                                    @endhasrole
                                 @else
                                     <div>
                                         <a href="{{ route('login') }}"
@@ -32,7 +34,7 @@
                                         <a href="{{ route('register') }}"
                                             class="btn-book animate__animated animate__fadeInUp">Regístrate</a>
                                     </div>
-                                @endhasrole
+                                @endauth
                             </div>
                         </div>
                     </div>
@@ -45,9 +47,11 @@
                                 <p class="animate__animated animate__fadeInUp">Para poder reservar una mesa debes
                                     registrate previamente en la aplicación. Para poder registrarte debes ser miembro de
                                     la comunidad educativa.</p>
-                                @hasrole('User')
-                                    <a href="{{ route('userbookings.available') }}"
-                                        class="btn-menu animate__animated animate__fadeInUp">Realizar una reserva</a>
+                                @auth
+                                    @hasrole('User')
+                                        <a href="{{ route('userbookings.available') }}"
+                                            class="btn-menu animate__animated animate__fadeInUp">Realizar una reserva</a>
+                                    @endhasrole
                                 @else
                                     <div>
                                         <a href="{{ route('login') }}"
@@ -56,7 +60,7 @@
                                         <a href="{{ route('register') }}"
                                             class="btn-book animate__animated animate__fadeInUp">Regístrate</a>
                                     </div>
-                                @endhasrole
+                                @endauth
                             </div>
                         </div>
                     </div>
@@ -68,9 +72,11 @@
                                 <h2 class="animate__animated animate__fadeInDown">Comida sana y equilibrada</h2>
                                 <p class="animate__animated animate__fadeInUp">Todos nuestros menús están elaborados con
                                     productos de primera calidad. Nuestras recetas son sanas y equilibradas.</p>
-                                @hasrole('User')
-                                    <a href="{{ route('userbookings.available') }}"
-                                        class="btn-menu animate__animated animate__fadeInUp">Realizar una reserva</a>
+                                @auth
+                                    @hasrole('User')
+                                        <a href="{{ route('userbookings.available') }}"
+                                            class="btn-menu animate__animated animate__fadeInUp">Realizar una reserva</a>
+                                    @endhasrole
                                 @else
                                     <div>
                                         <a href="{{ route('login') }}"
@@ -79,7 +85,7 @@
                                         <a href="{{ route('register') }}"
                                             class="btn-book animate__animated animate__fadeInUp">Regístrate</a>
                                     </div>
-                                @endhasrole
+                                @endauth
                             </div>
                         </div>
                     </div>

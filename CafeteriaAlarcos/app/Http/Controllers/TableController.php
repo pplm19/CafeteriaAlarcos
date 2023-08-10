@@ -29,9 +29,9 @@ class TableController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'quantity' => ['required', 'numeric', 'min:1'],
-            'maxNumber' => ['required', 'numeric', 'min:1'],
-            'minNumber' => ['nullable', 'numeric', 'min:1'],
+            'quantity' => ['required', 'numeric', 'min:1', 'max:65535'],
+            'maxNumber' => ['required', 'numeric', 'min:1', 'max:65535'],
+            'minNumber' => ['required', 'numeric', 'min:1', 'max:65535'],
             'description' => ['nullable', 'string', 'max:255'],
         ]);
 
@@ -62,9 +62,9 @@ class TableController extends Controller
     public function update(Request $request, Table $table)
     {
         $request->validate([
-            'quantity' => ['required', 'numeric', 'min:1'],
-            'maxNumber' => ['required', 'numeric', 'min:1'],
-            'minNumber' => ['nullable', 'numeric', 'min:1'],
+            'quantity' => ['required', 'numeric', 'min:1', 'max:65535'],
+            'maxNumber' => ['required', 'numeric', 'min:1', 'max:65535'],
+            'minNumber' => ['required', 'numeric', 'min:1', 'max:65535'],
             'description' => ['nullable', 'string', 'max:255'],
         ]);
 

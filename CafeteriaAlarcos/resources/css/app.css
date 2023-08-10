@@ -1630,3 +1630,9 @@ a.text-theme:hover {
 .tdImg {
     max-height: 200px;
 }
+
+/* Add asterisk to required fields */
+/* .form-control:required + label:after {
+    content: "*";
+    color: red;
+} */

@@ -34,11 +34,15 @@ class PermissionsSeeder extends Seeder
         $userU = User::factory()->create([
             'username' => 'Normal user',
             'email' => 'test@example.com',
+            'name' => 'Normal',
+            'lastname' => 'User'
         ]);
 
         $userSA = User::factory()->create([
             'username' => 'SuperAdmin User',
             'email' => 'superadmin@example.com',
+            'name' => 'SuperAdmin',
+            'lastname' => 'User'
         ]);
 
         // Assign roles

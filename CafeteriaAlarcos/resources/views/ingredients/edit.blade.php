@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,14 +14,15 @@
                             Editar ingrediente
                         </h3>
 
-                        <form action="{{ route('ingredients.update', $ingredient['id']) }}" method="POST">
+                        <form action="{{ route('ingredients.update', $ingredient['id']) }}" method="POST"
+                            class="needs-validation" novalidate>
                             @csrf
                             @method('PUT')
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror"
-                                    value="{{ $ingredient['name'] }}" required autofocus />
+                                    value="{{ $ingredient['name'] }}" required maxlength="255" autofocus />
                                 <label for="name"><i class='bx bxs-food-menu'></i> Nombre</label>
 
                                 @error('name')
@@ -29,7 +34,7 @@
 
                             <div class="form-floating mt-3">
                                 <select name="i_category_id" id="i_category_id"
-                                    class="form-select @error('i_category_id') is-invalid @enderror">
+                                    class="form-select @error('i_category_id') is-invalid @enderror" required>
                                     @foreach ($icategories as $icategory)
                                         <option value="{{ $icategory['id'] }}" @selected($ingredient['i_category_id'] == $icategory['id'])>
                                             {{ $icategory['name'] }}

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,14 +14,15 @@
                             Editar menú
                         </h3>
 
-                        <form action="{{ route('menus.update', $menu['id']) }}" method="POST">
+                        <form action="{{ route('menus.update', $menu['id']) }}" method="POST" class="needs-validation"
+                            novalidate>
                             @csrf
                             @method('PUT')
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ $menu['name'] }}"
-                                    required placeholder="Nombre" autofocus />
+                                    placeholder="Nombre" required maxlength="255" autofocus />
                                 <label for="name"><i class='bx bxs-food-menu'></i> Nombre</label>
 
                                 @error('name')
@@ -30,7 +35,7 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="description" id="description"
                                     class="form-control @error('description') is-invalid @enderror"
-                                    value="{{ $menu['description'] }}" placeholder="Descripción" />
+                                    value="{{ $menu['description'] }}" placeholder="Descripción" maxlength="255" />
                                 <label for="description"><i class='bx bxs-food-menu'></i> Descripción</label>
 
                                 @error('description')

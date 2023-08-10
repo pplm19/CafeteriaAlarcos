@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('username');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('name')->nullable();
-            $table->string('lastname')->nullable();
+            $table->string('name');
+            $table->string('lastname');
             $table->string('phone', 11)->nullable();
             $table->boolean('disabled')->default(false);
 

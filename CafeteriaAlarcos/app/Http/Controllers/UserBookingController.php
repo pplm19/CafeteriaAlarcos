@@ -71,7 +71,7 @@ class UserBookingController extends Controller
         $request->validate([
             'table_id' => ['required', Rule::exists(Table::class, 'id')],
             'turn_id' => ['required', Rule::exists(Turn::class, 'id')],
-            'guests' => ['required', 'numeric', 'min:1'],
+            'guests' => ['required', 'numeric', 'min:1', 'max:65535'],
             'description' => ['nullable', 'string', 'max:255'],
         ]);
 

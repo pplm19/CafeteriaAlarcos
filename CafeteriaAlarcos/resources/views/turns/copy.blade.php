@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,12 +14,13 @@
                             Copiar estructura de turnos
                         </h3>
 
-                        <form action="{{ route('turns.storeCopyStructure') }}" method="POST">
+                        <form action="{{ route('turns.storeCopyStructure') }}" method="POST" class="needs-validation"
+                            novalidate>
                             @csrf
 
                             <div class="form-floating mt-3">
                                 <input type="date" name="copyFrom" id="copyFrom" value="{{ $copyFrom }}"
-                                    class="form-control @error('copyFrom') is-invalid @enderror" required readonly>
+                                    class="form-control @error('copyFrom') is-invalid @enderror" readonly>
                                 <label for="copyFrom"><i class='bx bxs-food-menu'></i> Fecha de copia</label>
 
                                 @error('copyFrom')

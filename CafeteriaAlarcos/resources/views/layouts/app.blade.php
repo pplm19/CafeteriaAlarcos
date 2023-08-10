@@ -27,8 +27,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js'])
-
-    @yield('head')
+    @stack('scripts')
 </head>
 
 <body>
@@ -61,6 +60,10 @@
                         <li><a class="nav-link @if (request()->is('userdishes')) active @endif"
                                 href="{{ route('userdishes.index') }}">Platos</a></li>
                         <li><a class="nav-link scrollto" href="{{ route('index') }}#contact">Contacto</a></li>
+                        @auth
+                            <li><a class="nav-link @if (request()->is('profile*')) active @endif"
+                                    href="{{ route('profile.index') }}">Perfil</a></li>
+                        @endauth
                         @hasrole('SuperAdmin')
                             <li class="dropdown">
                                 <a href="" @class(['active' => request()->is('admin*')])><span>Administración</span>

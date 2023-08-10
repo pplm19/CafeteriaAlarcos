@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="container content pt-10rem">
         <div class="row justify-content-center">
@@ -10,13 +14,13 @@
                             Crear estructura de turnos
                         </h3>
 
-                        <form action="{{ route('turns.store') }}" method="POST">
+                        <form action="{{ route('turns.store') }}" method="POST" class="needs-validation" novalidate>
                             @csrf
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                    required placeholder="Nombre" autofocus />
+                                    placeholder="Nombre" required maxlength="255" autofocus />
                                 <label for="name"><i class='bx bxs-food-menu'></i> Nombre</label>
 
                                 @error('name')
@@ -33,7 +37,8 @@
                                         readonly />
                                 @else
                                     <input type="date" name="date" id="date"
-                                        class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}" />
+                                        class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}"
+                                        required />
                                 @endisset
                                 <label for="date"><i class='bx bxs-food-menu'></i> Fecha</label>
 
@@ -47,7 +52,7 @@
                             <div class="form-floating mt-3">
                                 <input type="time" name="start" id="start"
                                     class="form-control @error('start') is-invalid @enderror" value="{{ old('start') }}"
-                                    placeholder="Inicio" />
+                                    placeholder="Inicio" required />
                                 <label for="start"><i class='bx bxs-food-menu'></i> Inicio</label>
 
                                 @error('start')
@@ -73,7 +78,7 @@
                             <div class="form-floating mt-3">
                                 <input type="text" name="description" id="description"
                                     class="form-control @error('description') is-invalid @enderror"
-                                    value="{{ old('description') }}" placeholder="Descripción" />
+                                    value="{{ old('description') }}" placeholder="Descripción" maxlength="255" />
                                 <label for="description"><i class='bx bxs-food-menu'></i> Descripción</label>
 
                                 @error('description')

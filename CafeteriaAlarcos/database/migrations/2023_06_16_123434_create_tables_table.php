@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantity');
-            $table->integer('maxNumber');
-            $table->integer('minNumber')->nullable();
+            $table->smallInteger('quantity')->unsigned();
+            $table->smallInteger('maxNumber')->unsigned();
+            $table->smallInteger('minNumber')->unsigned();
             $table->string('description')->nullable();
 
             $table->timestamps();

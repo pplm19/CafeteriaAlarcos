@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('booking_id')->constrained();
             $table->foreignId('table_id')->constrained();
-            $table->integer('guests');
+            $table->smallInteger('guests')->unsigned();
 
             $table->timestamps();
         });

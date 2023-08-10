@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/bootstrapValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="content py-5 px-1 px-md-5">
         <div class="row justify-content-center mb-5">
@@ -14,14 +18,14 @@
                             </a>
                         </p>
 
-                        <form action="{{ route('turns.index') }}" method="GET" class="mt-3">
+                        <form action="{{ route('turns.index') }}" method="GET" class="needs-validation mt-3" novalidate>
                             @csrf
 
                             <div class="form-floating mt-3">
                                 <select name="searchDate" id="searchDate"
                                     class="form-select @error('searchDate') is-invalid @enderror" required>
                                     @if (old('searchDate', null) === null)
-                                        <option selected></option>
+                                        <option selected disabled value="">Selecciona una fecha</option>
                                     @endif
                                     @foreach ($turns as $turn)
                                         <option value="{{ $turn['date'] }}" @selected($turn['date'] == old('searchDate', null))>

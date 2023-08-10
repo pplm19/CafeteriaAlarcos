@@ -3,7 +3,10 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "setup": "composer install && php artisan storage:link",
+        "seed": "php artisan migrate:fresh --seed --seeder=PermissionsSeeder && php artisan db:seed --class=ConfigurationSeeder && php artisan db:seed --class=TypeSeeder",
+        "devSeed": "npm run seed && php artisan db:seed --class=DevSeeder"
     },
     "devDependencies": {
         "@popperjs/core": "2.11.6",
