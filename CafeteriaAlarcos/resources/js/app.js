@@ -154,7 +154,7 @@ import { Swiper } from "swiper";
         "click",
         ".scrollto",
         function (e) {
-            if (select(this.hash)) {
+            if (this.hash && select(this.hash)) {
                 e.preventDefault();
 
                 let navbar = select("#navbar");
@@ -261,13 +261,12 @@ import { Swiper } from "swiper";
         const footer = select("footer");
 
         const footerPosition = () => {
-            const hasScroll = body.offsetHeight > window.innerHeight;
+            console.log("Resize");
 
-            if (hasScroll) {
-                footer.classList.remove("fixed-bottom");
-            } else {
-                footer.classList.add("fixed-bottom");
-            }
+            const hasScroll = window.innerHeight - body.offsetHeight < 80;
+
+            if (hasScroll) footer.classList.remove("fixed-bottom");
+            else footer.classList.add("fixed-bottom");
         };
 
         footerPosition();

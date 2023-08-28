@@ -75,6 +75,8 @@
             </table>
         </div>
 
-        {{ $dishes->links() }}
+        <div class="d-flex justify-content-center d-sm-block">
+            {{ $dishes->links() }}
+        </div>
     </div>
 @endsection

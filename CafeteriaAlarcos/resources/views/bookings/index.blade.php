@@ -62,6 +62,8 @@
             </table>
         </div>
 
-        {{ $bookings->links() }}
+        <div class="d-flex justify-content-center d-sm-block">
+            {{ $bookings->links() }}
+        </div>
     </div>
 @endsection

@@ -51,7 +51,11 @@ class UserDishController extends Controller
                 });
             }
 
+            $request->merge(['search' => true]);
+
             $request->flash();
+        } else {
+            $request->flush();
         }
 
         return view('userdishes.index', ['dishes' => $query->paginate(15), 'ingredients' => Ingredient::all(), 'allergens' => Allergen::all()]);

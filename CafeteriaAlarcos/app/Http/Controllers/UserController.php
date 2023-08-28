@@ -62,6 +62,8 @@ class UserController extends Controller
                     $subQuery->whereIn('role_id', $roles);
                 });
             }
+
+            $request->merge(['search' => true]);
         }
 
         if ($request->has('field')) {
@@ -71,6 +73,7 @@ class UserController extends Controller
         }
 
         if ($request->hasAny(['search', 'field'])) $request->flash();
+        else $request->flush();
 
         return view('users.index', ['users' => $query->paginate(15), 'roles' => Role::all()]);
     }

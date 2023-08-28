@@ -33,7 +33,7 @@
 <body>
     <div id="app">
         <section id="topbar"
-            class="d-flex align-items-center fixed-top {{ request()->is('/') ? 'topbar-transparent' : '' }}">
+            class="d-flex align-items-center fixed-top {{ request()->is('/') ? 'topbar-transparent' : '' }} px-md-3">
             <div
                 class="container-fluid container-xl d-flex align-items-center justify-content-center justify-content-lg-start">
                 <i class="bi bi-phone d-flex align-items-center"><span>926 23 06 47</span></i>
@@ -44,12 +44,15 @@
 
         <!-- ======= Header ======= -->
         <header id="header"
-            class="fixed-top d-flex align-items-center {{ request()->is('/') ? 'header-transparent' : '' }}">
+            class="fixed-top d-flex align-items-center {{ request()->is('/') ? 'header-transparent' : '' }} px-md-3">
             <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-
                 <div class="logo me-auto">
-                    <h1><a href="{{ route('index') }}"><img src="{{ asset('img/logo.png') }}" alt=""
-                                class="img-fluid"><span> Cafetería</span> Alarcos</a></h1>
+                    <h1>
+                        <a href="{{ route('index') }}">
+                            <img src="{{ asset('img/logo.png') }}" alt="Logo de la cafetería" class="img-fluid">
+                            <span class="d-none d-md-inline"> Cafetería</span> Alarcos
+                        </a>
+                    </h1>
                 </div>
 
                 <nav id="navbar" class="navbar order-last order-lg-0">
@@ -135,11 +138,13 @@
         </header><!-- End Header -->
 
         <main>
+            @include('layouts.alerts')
+
             @yield('content')
         </main>
 
         <!-- ======= Footer ======= -->
-        <footer id="footer" class="fixed-bottom">
+        <footer id="footer">
             <div class="container">
                 <h3><a href="{{ route('index') }}">Cafetería Alarcos</a></h3>
                 <p>Frase interesante.</p>
@@ -163,8 +168,9 @@
             </div>
         </footer><!-- End Footer -->
 
-        <a href="#" class="back-to-top scrollto d-flex align-items-center justify-content-center"><i
-                class="bi bi-arrow-up-short"></i></a>
+        <a href="#" class="back-to-top scrollto d-flex align-items-center justify-content-center">
+            <i class="bi bi-arrow-up-short"></i>
+        </a>
 
         {{-- @include('cookie-consent::index') --}}
     </div>

@@ -43,6 +43,8 @@
             </tbody>
         </table>
 
-        {{ $turns->links() }}
+        <div class="d-flex justify-content-center d-sm-block">
+            {{ $turns->links() }}
+        </div>
     </div>
 @endsection

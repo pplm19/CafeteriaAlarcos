@@ -98,7 +98,6 @@ h6 {
     height: 70px;
     z-index: 997;
     transition: all 0.5s;
-    padding: 10px 0;
     background: rgba(26, 24, 22, 0.85);
 }
 
@@ -1636,3 +1635,11 @@ a.text-theme:hover {
     content: "*";
     color: red;
 } */
+
+.w-35 {
+    width: 35%;
+}
+
+#alerts {
+    z-index: 10;
+}

@@ -6,12 +6,6 @@
 
         <a class="btn btn-primary" href="{{ route('userbookings.available') }}">Realizar reserva</a>
 
-        @if (session('error'))
-            <div class="alert alert-danger" role="alert">
-                {{ session('error') }}
-            </div>
-        @endif
-
         <table class="table table-striped-columns">
             <thead>
                 <th scope="col">Descripción</th>
@@ -66,6 +60,8 @@
             </tbody>
         </table>
 
-        {{ $userbookings->links() }}
+        <div class="d-flex justify-content-center d-sm-block">
+            {{ $userbookings->links() }}
+        </div>
     </div>
 @endsection

@@ -42,6 +42,8 @@
             </table>
         </div>
 
-        {{ $tables->links() }}
+        <div class="d-flex justify-content-center d-sm-block">
+            {{ $tables->links() }}
+        </div>
     </div>
 @endsection

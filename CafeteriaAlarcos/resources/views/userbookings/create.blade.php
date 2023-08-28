@@ -35,12 +35,6 @@
             <form action="{{ route('userbookings.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
 
-                @if (session('error'))
-                    <div class="alert alert-danger" role="alert">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
                 <input type="number" name="turn_id" value="{{ $turn['id'] }}" hidden>
 
                 <div class="row g-3 mb-3">

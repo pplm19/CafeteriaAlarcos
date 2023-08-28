@@ -36,7 +36,8 @@
                 </tbody>
             </table>
         </div>
-
-        {{ $icategories->links() }}
+        <div class="d-flex justify-content-center d-sm-block">
+            {{ $icategories->links() }}
+        </div>
     </div>
 @endsection

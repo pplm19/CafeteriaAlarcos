@@ -22,9 +22,13 @@ class TurnController extends Controller
         ];
 
         if ($request->has('search')) {
-            $data['turnsList'] = Turn::whereDate('date', $request->input('searchDate'))->paginate(15);
+            $data['turnsList'] = Turn::whereDate('date', $request->input('searchDate'))->get();
+
+            $request->merge(['search' => true]);
 
             $request->flash();
+        } else {
+            $request->flush();
         }
 
         return view('turns.index', $data);

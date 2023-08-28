@@ -40,6 +40,8 @@
             </table>
         </div>
 
-        {{ $ingredients->links() }}
+        <div class="d-flex justify-content-center d-sm-block">
+            {{ $ingredients->links() }}
+        </div>
     </div>
 @endsection

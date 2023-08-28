@@ -53,6 +53,8 @@
             </tbody>
         </table>
 
-        {{ $userbookings->links() }}
+        <div class="d-flex justify-content-center d-sm-block">
+            {{ $userbookings->links() }}
+        </div>
     </div>
 @endsection

@@ -6,12 +6,6 @@
             <h1>Solicitudes de registro</h1>
         </div>
 
-        @if (session('success'))
-            <div class="alert alert-success" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead>
@@ -45,6 +39,8 @@
             </table>
         </div>
 
-        {{ $users->links() }}
+        <div class="d-flex justify-content-center d-sm-block">
+            {{ $users->links() }}
+        </div>
     </div>
 @endsection

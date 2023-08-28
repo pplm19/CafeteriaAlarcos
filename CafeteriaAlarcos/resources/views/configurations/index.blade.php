@@ -28,7 +28,9 @@
                 </tbody>
             </table>
 
-            {{ $configurations->links() }}
+            <div class="d-flex justify-content-center d-sm-block">
+                {{ $configurations->links() }}
+            </div>
         </div>
     </div>
 @endsection

@@ -37,7 +37,9 @@
                 </tbody>
             </table>
 
-            {{ $dcategories->links() }}
+            <div class="d-flex justify-content-center d-sm-block">
+                {{ $dcategories->links() }}
+            </div>
         </div>
     </div>
 @endsection
