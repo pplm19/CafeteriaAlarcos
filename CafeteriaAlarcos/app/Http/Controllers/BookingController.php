@@ -12,18 +12,33 @@ class BookingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view(
-            'bookings.index',
-            [
-                'bookings' => Booking::where('cancelled', false)
-                    ->whereHas('turn', function ($query) {
-                        $query->whereDate('date', '>=', Carbon::now())->orderBy('date', 'DESC')->orderBy('start', 'DESC');
-                    })
-                    ->paginate(15)
-            ]
-        );
+        if ($request->has('search')) {
+            $request->validate([
+                'date' => ['date']
+            ]);
+
+            $request->flash();
+
+            $date = $request->input('date');
+        } else {
+            $request->flush();
+
+            $date = Carbon::now()->toDateString();
+
+            $request->merge(['date' => $date]);
+
+            $request->flash();
+        }
+
+        return view('bookings.index', [
+            'bookings' => Booking::where('cancelled', false)
+                ->whereHas('turn', function ($query) use ($date) {
+                    $query->whereDate('date', '=', $date)->orderBy('date', 'DESC')->orderBy('start', 'DESC');
+                })
+                ->paginate(15)
+        ]);
     }
 
     /**
