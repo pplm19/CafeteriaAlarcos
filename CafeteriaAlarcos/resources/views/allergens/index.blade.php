@@ -12,8 +12,8 @@
         <div class="table-responsive">
             <table class="table table-striped-columns">
                 <thead>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col" class="text-center align-middle">Nombre</th>
+                    <th scope="col" class="text-center align-middle">Acciones</th>
                 </thead>
 
                 <tbody>

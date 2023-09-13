@@ -17,13 +17,15 @@ class CheckDisabled
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check() && (auth()->user()['disabled'])) {
+            $reason = auth()->user()['disabled_reason'];
+
             Auth::logout();
 
             $request->session()->invalidate();
 
             $request->session()->regenerateToken();
 
-            return redirect()->route('login')->withError('Tu cuenta se encuentra suspendida, por favor contacta con un administrador.');
+            return redirect()->route('login')->withError($reason ?? 'Tu cuenta se encuentra suspendida, por favor contacta con un administrador.');
         }
 
         return $next($request);

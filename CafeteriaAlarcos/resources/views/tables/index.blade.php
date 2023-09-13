@@ -12,11 +12,11 @@
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Máximo</th>
-                    <th scope="col">Mínimo</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col" class="text-center align-middle">Cantidad</th>
+                    <th scope="col" class="text-center align-middle">Máximo</th>
+                    <th scope="col" class="text-center align-middle">Mínimo</th>
+                    <th scope="col" class="text-center align-middle">Descripción</th>
+                    <th scope="col" class="text-center align-middle">Acciones</th>
                 </thead>
 
                 <tbody>

@@ -62,7 +62,7 @@
                             <div class="form-floating mt-3">
                                 <input type="tel" name="phone" id="phone"
                                     class="form-control @error('phone') is-invalid @enderror" value="{{ $user['phone'] }}"
-                                    autocomplete="phone" placeholder="{{ __('Phone') }}" pattern="^\+\d{2}\s\d{9}$" />
+                                    autocomplete="phone" placeholder="{{ __('Phone') }}" pattern="^\d{9}$" />
                                 <label for="phone"><i class="bx bxs-phone"></i> {{ __('Phone') }}</label>
 
                                 @error('phone')

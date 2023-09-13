@@ -8,18 +8,18 @@
 
         <table class="table table-striped-columns">
             <thead>
-                <th scope="col">Descripción</th>
-                <th scope="col">Comensales</th>
+                <th scope="col" class="text-center align-middle">Descripción</th>
+                <th scope="col" class="text-center align-middle">Comensales</th>
 
-                <th scope="col">Nombre del turno</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Inicio</th>
-                <th scope="col">Fin</th>
-                <th scope="col">Descripción del turno</th>
+                <th scope="col" class="text-center align-middle">Nombre del turno</th>
+                <th scope="col" class="text-center align-middle">Fecha</th>
+                <th scope="col" class="text-center align-middle">Inicio</th>
+                <th scope="col" class="text-center align-middle">Fin</th>
+                <th scope="col" class="text-center align-middle">Descripción del turno</th>
 
-                <th scope="col">Mesas</th>
+                <th scope="col" class="text-center align-middle">Mesas</th>
 
-                <th scope="col">Acciones</th>
+                <th scope="col" class="text-center align-middle">Acciones</th>
             </thead>
 
             <tbody>

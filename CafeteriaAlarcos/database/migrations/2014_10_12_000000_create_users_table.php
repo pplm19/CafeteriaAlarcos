@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('name');
             $table->string('lastname');
-            $table->string('phone', 11)->nullable();
+            $table->string('phone', 9)->nullable();
             $table->boolean('disabled')->default(false);
+            $table->string('disabled_reason')->nullable();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

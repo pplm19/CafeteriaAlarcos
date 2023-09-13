@@ -137,7 +137,7 @@
             </div>
         </header><!-- End Header -->
 
-        <main>
+        <main id="content">
             @include('layouts.alerts')
 
             @yield('content')

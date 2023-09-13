@@ -261,8 +261,6 @@ import { Swiper } from "swiper";
         const footer = select("footer");
 
         const footerPosition = () => {
-            console.log("Resize");
-
             const hasScroll = window.innerHeight - body.offsetHeight < 80;
 
             if (hasScroll) footer.classList.remove("fixed-bottom");

@@ -9,9 +9,9 @@
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Valor</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col" class="text-center align-middle">Nombre</th>
+                    <th scope="col" class="text-center align-middle">Valor</th>
+                    <th scope="col" class="text-center align-middle">Acciones</th>
                 </thead>
 
                 <tbody>

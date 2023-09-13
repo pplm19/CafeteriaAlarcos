@@ -5,7 +5,7 @@
 @endPushOnce
 
 @section('content')
-    <div class="content py-5 px-2 px-md-4 px-lg-5 row g-0 gap-3">
+    <div class="content py-5 px-2 px-md-4 px-lg-5 row g-0">
         <div class="col-12 col-lg-4 col-xl-3">
             <div class="card">
                 <div class="card-body">
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="col px-3">
+        <div class="col-12 col-lg-8 col-xl-9 ps-0 ps-lg-3 pt-3 pt-lg-0">
             <p class="d-flex justify-content-end">
                 <a class="btn btn-theme" href="{{ route('turns.create') }}">
                     <i class="bi bi-plus-circle-fill"></i> Crear nueva estructura de turnos
@@ -79,11 +79,11 @@
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
                         <thead>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Inicio</th>
-                            <th scope="col">Fin</th>
-                            <th scope="col">Descripción</th>
+                            <th scope="col" class="text-center align-middle">Nombre</th>
+                            <th scope="col" class="text-center align-middle">Fecha</th>
+                            <th scope="col" class="text-center align-middle">Inicio</th>
+                            <th scope="col" class="text-center align-middle">Fin</th>
+                            <th scope="col" class="text-center align-middle">Descripción</th>
                         </thead>
 
                         <tbody>

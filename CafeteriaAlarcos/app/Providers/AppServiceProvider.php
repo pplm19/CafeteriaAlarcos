@@ -6,6 +6,7 @@ use App\Models\Configuration;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,10 +25,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
-        $configurations = Configuration::all();
+        if (Schema::hasTable('configurations')) {
+            $configurations = Configuration::all();
 
-        foreach ($configurations as $configuration) {
-            Session::put($configuration['name'], $configuration['value']);
+            foreach ($configurations as $configuration) {
+                Session::put($configuration['name'], $configuration['value']);
+            }
         }
     }
 }

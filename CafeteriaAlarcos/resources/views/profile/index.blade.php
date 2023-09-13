@@ -9,13 +9,13 @@
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead>
-                    <th scope="col">Nombre de usuario</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">Teléfono</th>
-                    <th scope="col">Roles</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col" class="text-center align-middle">Nombre de usuario</th>
+                    <th scope="col" class="text-center align-middle">Email</th>
+                    <th scope="col" class="text-center align-middle">Nombre</th>
+                    <th scope="col" class="text-center align-middle">Apellido</th>
+                    <th scope="col" class="text-center align-middle">Teléfono</th>
+                    <th scope="col" class="text-center align-middle">Roles</th>
+                    <th scope="col" class="text-center align-middle">Acciones</th>
                 </thead>
 
                 <tbody>

@@ -1631,15 +1631,15 @@ a.text-theme:hover {
 }
 
 /* Add asterisk to required fields */
-/* .form-control:required + label:after {
+.form-control:required + label:after {
     content: "*";
     color: red;
-} */
+}
 
 .w-35 {
     width: 35%;
 }
 
 #alerts {
-    z-index: 10;
+    z-index: 1000;
 }

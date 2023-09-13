@@ -12,14 +12,14 @@
         <div class="table-responsive">
             <table class="table table-striped-columns">
                 <thead>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col">Receta</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Categorías</th>
-                    <th scope="col">Ingredientes</th>
-                    <th scope="col">Alérgenos</th>
+                    <th scope="col" class="text-center align-middle">Nombre</th>
+                    <th scope="col" class="text-center align-middle">Imagen</th>
+                    <th scope="col" class="text-center align-middle">Receta</th>
+                    <th scope="col" class="text-center align-middle">Descripción</th>
+                    <th scope="col" class="text-center align-middle">Tipo</th>
+                    <th scope="col" class="text-center align-middle">Categorías</th>
+                    <th scope="col" class="text-center align-middle">Ingredientes</th>
+                    <th scope="col" class="text-center align-middle">Alérgenos</th>
                 </thead>
 
                 <tbody>

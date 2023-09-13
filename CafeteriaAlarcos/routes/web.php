@@ -88,7 +88,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
 
 
     Route::resource('/users', UserController::class)->only(['index', 'create', 'store']);
-    Route::put('/users/toggleDisable/{user}', [UserController::class, 'toggleDisable'])->name('users.toggleDisable');
+    Route::post('/users/toggleDisable', [UserController::class, 'toggleDisable'])->name('users.toggleDisable');
     Route::get('/users/registerRequests', [UserController::class, 'registerRequests'])->name('users.registerRequests');
     Route::put('/users/accept/{user}', [UserController::class, 'accept'])->name('users.accept');
 

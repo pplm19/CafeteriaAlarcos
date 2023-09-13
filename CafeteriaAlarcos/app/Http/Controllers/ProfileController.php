@@ -24,7 +24,7 @@ class ProfileController extends Controller
             'username' => ['required', 'max:255'],
             'name' => ['nullable', 'max:255'],
             'lastname' => ['nullable', 'max:255'],
-            'phone' => ['nullable', 'string', 'regex:/^\+\d{2}\s\d{9}$/'],
+            'phone' => ['nullable', 'string', 'regex:/^\d{9}$/'],
         ]);
 
         $user = Auth::user();

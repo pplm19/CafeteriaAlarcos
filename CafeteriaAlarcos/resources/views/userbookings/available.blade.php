@@ -6,17 +6,17 @@
 
         <table class="table table-striped-columns">
             <thead>
-                <th scope="col">#</th>
-                <th scope="col">Nombre del turno</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Inicio</th>
-                <th scope="col">Fin</th>
-                <th scope="col">Descripción del turno</th>
+                <th scope="col" class="text-center align-middle">#</th>
+                <th scope="col" class="text-center align-middle">Nombre del turno</th>
+                <th scope="col" class="text-center align-middle">Fecha</th>
+                <th scope="col" class="text-center align-middle">Inicio</th>
+                <th scope="col" class="text-center align-middle">Fin</th>
+                <th scope="col" class="text-center align-middle">Descripción del turno</th>
 
-                <th scope="col">Aforo de local restante</th>
-                <th scope="col">Tipos de mesas disponibles</th>
+                <th scope="col" class="text-center align-middle">Aforo de local restante</th>
+                <th scope="col" class="text-center align-middle">Tipos de mesas disponibles</th>
 
-                <th scope="col">Acciones</th>
+                <th scope="col" class="text-center align-middle">Acciones</th>
             </thead>
 
             <tbody>

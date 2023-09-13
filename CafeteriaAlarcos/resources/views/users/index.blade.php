@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @pushOnce('scripts')
-    @vite(['resources/js/bootstrapValidation.js'])
+    @vite(['resources/js/bootstrapValidation.js', 'resources/js/disabledUserModal.js'])
 @endPushOnce
 
 @section('content')
-    <div class="content py-5 px-2 px-md-4 px-lg-5 row g-0 gap-3">
+    <div class="content py-5 px-2 px-md-4 px-lg-5 row g-0">
         <div class="col-12 col-lg-4 col-xl-3">
             <div class="card">
                 <div class="card-body">
@@ -69,7 +69,7 @@
                         <div class="form-floating mt-3">
                             <input type="tel" name="phone" id="phone"
                                 class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}"
-                                placeholder="Número de teléfono" pattern="^\+\d{2}\s\d{9}$" />
+                                placeholder="Número de teléfono" pattern="^\d{9}$" />
                             <label for="phone"><i class="bx bxs-phone"></i> Número de teléfono</label>
 
                             @error('phone')
@@ -114,38 +114,39 @@
             </div>
         </div>
 
-        <div class="col px-3">
+        <div class="col-12 col-lg-8 col-xl-9 ps-0 ps-lg-3 pt-3 pt-lg-0">
             <p class="d-flex justify-content-end">
                 <a class="btn btn-theme" href="{{ route('users.create') }}">Crear administrador</a>
             </p>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
                     <thead>
-                        <th scope="col">
+                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'username', 'direction' => old('field') === 'username' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
                                 class="text-decoration-none text-black">Nombre
                                 de usuario</a>
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'email', 'direction' => old('field') === 'email' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
                                 class="text-decoration-none text-black">Email</a>
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'name', 'direction' => old('field') === 'name' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
                                 class="text-decoration-none text-black">Nombre</a>
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'lastname', 'direction' => old('field') === 'lastname' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
                                 class="text-decoration-none text-black">Apellido</a>
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'phone', 'direction' => old('field') === 'phone' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
                                 class="text-decoration-none text-black">Teléfono</a>
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
                             Roles
                         </th>
-                        <th scope="col">Acciones</th>
+                        <th scope="col" class="text-center align-middle" class="text-center align-middle">Acciones
+                        </th>
                     </thead>
 
                     <tbody>
@@ -164,16 +165,20 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    <form action="{{ route('users.toggleDisable', $user['id']) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
+                                    @if ($user['disabled'])
+                                        <form action="{{ route('users.toggleDisable') }}" method="POST">
+                                            @csrf
 
-                                        @if ($user['disabled'])
+                                            <input type="hidden" name="user_id" value="{{ $user['id'] }}">
                                             <button type="submit" class="btn btn-success">Habilitar usuario</button>
-                                        @else
-                                            <button type="submit" class="btn btn-danger">Deshabilitar usuario</button>
-                                        @endif
-                                    </form>
+                                        </form>
+                                    @else
+                                        <button type="button" class="btn btn-danger btn-disable-user"
+                                            data-bs-toggle="modal" data-bs-target="#disableModal"
+                                            data-user-id="{{ $user['id'] }}">
+                                            Deshabilitar usuario
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -183,6 +188,41 @@
 
             <div class="w-100 ps-sm-4 pe-sm-3 d-flex justify-content-center d-sm-block">
                 {{ $users->links() }}
+            </div>
+        </div>
+
+        <div class="modal fade" id="disableModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="disableModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="disableModalLabel">Motivo de supensión</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form action="{{ route('users.toggleDisable') }}" method="POST" class="needs-validation m-0"
+                        novalidate>
+                        @csrf
+
+                        <div class="modal-body">
+                            <input type="hidden" name="user_id" id="user_id" value="3">
+                            <textarea type="text" name="disable_reason" id="disable_reason"
+                                class="form-control @error('disable_reason') is-invalid @enderror"
+                                placeholder="Tu cuenta ha sido deshabilitada, contacta con un administrador para obtener más información"
+                                maxlength="255" style="resize: none"></textarea>
+
+                            @error('disable_reason')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-theme">Suspender cuenta</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

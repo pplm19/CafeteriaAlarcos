@@ -55,7 +55,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'name' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'phone' => ['nullable', 'string', 'regex:/^\+\d{2}\s\d{9}$/'],
+            'phone' => ['nullable', 'string', 'regex:/^\d{9}$/'],
         ]);
     }
 
@@ -67,13 +67,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'name' => $data['name'],
             'lastname' => $data['lastname'],
-            'phone' => str_replace(['+', ' '], '', $data['phone']),
+            'phone' => $data['phone'],
         ]);
+
+        session()->flash('success', 'Tu cuenta ha sido creada, revisa tu correo para verificar el email.');
+
+        return $user;
     }
 }

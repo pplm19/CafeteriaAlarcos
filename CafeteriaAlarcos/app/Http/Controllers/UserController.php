@@ -31,29 +31,36 @@ class UserController extends Controller
                 ]
             ]);
 
+            $searched = false;
+
             $username = $request->input('username');
             if (strlen($username) > 0) {
                 $query->where('username', 'LIKE', '%' . $username . '%');
+                $searched = true;
             }
 
             $email = $request->input('email');
             if (strlen($email) > 0) {
                 $query->where('email', 'LIKE', '%' . $email . '%');
+                $searched = true;
             }
 
             $name = $request->input('name');
             if (strlen($name) > 0) {
                 $query->where('name', 'LIKE', '%' . $name . '%');
+                $searched = true;
             }
 
             $lastname = $request->input('lastname');
             if (strlen($lastname) > 0) {
                 $query->where('lastname', 'LIKE', '%' . $lastname . '%');
+                $searched = true;
             }
 
             $phone = $request->input('phone');
             if (strlen($phone) > 0) {
                 $query->where('phone', 'LIKE', '%' . $phone . '%');
+                $searched = true;
             }
 
             if ($request->has('roles')) {
@@ -61,19 +68,23 @@ class UserController extends Controller
                 $query->whereHas('roles', function ($subQuery) use ($roles) {
                     $subQuery->whereIn('role_id', $roles);
                 });
+                $searched = true;
             }
 
-            $request->merge(['search' => true]);
-        }
+            if ($searched) {
+                $request->merge(['search' => true]);
 
-        if ($request->has('field')) {
+                $request->flash();
+            }
+        } else if ($request->has('field')) {
             $orderField = $request->input('field');
             $orderDirection = $request->input('direction', 'ASC');
             $query->orderBy($orderField, $orderDirection);
-        }
 
-        if ($request->hasAny(['search', 'field'])) $request->flash();
-        else $request->flush();
+            $request->flash();
+        } else {
+            $request->flush();
+        }
 
         return view('users.index', ['users' => $query->paginate(15), 'roles' => Role::all()]);
     }
@@ -97,7 +108,7 @@ class UserController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'name' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'phone' => ['nullable', 'string', 'regex:/^\+\d{2}\s\d{9}$/'],
+            'phone' => ['nullable', 'string', 'regex:/^\d{9}$/'],
         ]);
 
         $request->merge([
@@ -143,16 +154,24 @@ class UserController extends Controller
     //     //
     // }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function toggleDisable(User $user)
+    public function toggleDisable(Request $request)
     {
-        $user->update([
-            'disabled' => !$user['disabled']
+        $request->validate([
+            'user_id' => ['required', Rule::exists(User::class, 'id')],
+            'disable_reason' => ['nullable', 'string', 'max:255'],
         ]);
 
-        return redirect()->route('users.index')->with('success', sprintf('El usuario %s ha sido %s.', $user->username, $user['disabled'] ? 'deshabilitado' : 'habilitado'));
+        $userId = $request->input('user_id');
+        $disableReason = $request->input('disable_reason');
+
+        $user = User::find($userId);
+
+        $user->update([
+            'disabled' => !$user['disabled'],
+            'disabled_reason' => $disableReason,
+        ]);
+
+        return back()->with('success', sprintf('El usuario %s ha sido %s.', $user->username, $user['disabled'] ? 'deshabilitado' : 'habilitado'));
     }
 
     public function registerRequests()
