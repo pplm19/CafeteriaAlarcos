@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AllergenController;
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\DCategoryController;
@@ -38,7 +39,7 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::resource('/userdishes', UserDishController::class)->parameters([
     'userdishes' => 'dish',
@@ -64,7 +65,7 @@ Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
 /////////////////
 // User routes //
 /////////////////
-Route::group(['prefix' => 'userbookings', 'middleware' => 'role:User'], function () {
+Route::group(['prefix' => 'userbookings', 'middleware' =>  ['role:User', 'verified']], function () {
     Route::resource('/', UserBookingController::class, ['names' => [
         'index' => 'userbookings.index',
         'store' => 'userbookings.store',
