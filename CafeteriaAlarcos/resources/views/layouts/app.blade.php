@@ -69,12 +69,27 @@
                         @endauth
                         @hasrole('SuperAdmin')
                             <li class="dropdown">
-                                <a href="" @class(['active' => request()->is('admin*')])><span>Administración</span>
-                                    <i class="bi bi-chevron-down"></i></a>
+                                <a href="" @class(['active' => request()->is('admin*')])>
+                                    <span>Administración</span>
+                                    @if (Cache::get('userRequests') > 0)
+                                        <span class="badge text-bg-danger ms-2">{{ Cache::get('userRequests') }}</span>
+                                    @endif
+                                    <i class="bi bi-chevron-down"></i>
+                                </a>
                                 <ul>
                                     <li class="dropdown">
-                                        <a href="" @class(['active' => request()->is('admin/users*')])><span>Usuarios</span>
-                                            <i class="bi bi-chevron-right"></i></a>
+                                        <a href="" @class(['active' => request()->is('admin/users*')])>
+                                            <div class="d-flex align-items-center">
+                                                <span>
+                                                    Usuarios
+                                                </span>
+                                                @if (Cache::get('userRequests') > 0)
+                                                    <span
+                                                        class="badge text-bg-danger ms-2">{{ Cache::get('userRequests') }}</span>
+                                                @endif
+                                            </div>
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
                                         <ul>
                                             <li>
                                                 <a href="{{ route('users.index') }}" @class([
@@ -86,7 +101,13 @@
                                             </li>
                                             <li>
                                                 <a href="{{ route('users.registerRequests') }}"
-                                                    @class(['active' => request()->is('admin/users/registerRequests')])>Solicitudes de registro</a>
+                                                    @class(['active' => request()->is('admin/users/registerRequests')])>
+                                                    Solicitudes de registro
+                                                    @if (Cache::get('userRequests') > 0)
+                                                        <span
+                                                            class="badge text-bg-danger ms-2">{{ Cache::get('userRequests') }}</span>
+                                                    @endif
+                                                </a>
                                             </li>
                                         </ul>
                                     </li>

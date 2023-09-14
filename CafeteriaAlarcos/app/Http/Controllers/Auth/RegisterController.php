@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\CustomNotification;
 
 class RegisterController extends Controller
 {
@@ -77,6 +79,13 @@ class RegisterController extends Controller
         ]);
 
         session()->flash('success', 'Tu cuenta ha sido creada, revisa tu correo para verificar el email.');
+
+        Cache::increment('userRequests');
+
+        // $admins = User::role('SuperAdmin')->get();
+        // foreach ($admins as $admin) {
+        //     $admin->notify(new CustomNotification([]));
+        // }
 
         return $user;
     }

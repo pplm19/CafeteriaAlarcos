@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\BookingTables;
+use App\Models\Configuration;
 use App\Models\Table;
 use App\Models\Turn;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
 class UserBookingController extends Controller
@@ -98,7 +98,9 @@ class UserBookingController extends Controller
             return back()->withInput()->withError("Debes seleccionar una mesa habilidata para $guests comensales");
         }
 
-        $minBookingDays = Session::get('minDiasReserva');
+        $minBookingDays = Cache::remember('minDiasReserva', now()->addHour(), function () {
+            return Configuration::where('name', 'minDiasReserva')->value('value');
+        });
 
         $selectedTurnId = $request->input('turn_id');
         $selectedTurnDate = Turn::select('date')->find($selectedTurnId)['date'];
@@ -120,7 +122,9 @@ class UserBookingController extends Controller
             ->join('booking_tables', 'booking_tables.booking_id', '=', 'bookings.id')
             ->sum('guests');
 
-        $maxGuestsTurn = Session::get('maxComensalesTurno');
+        $maxGuestsTurn = Cache::remember('maxComensalesTurno', now()->addHour(), function () {
+            return Configuration::where('name', 'maxComensalesTurno')->value('value');
+        });
 
         if (($turnGuests + $guests) > $maxGuestsTurn) {
             return back()->withInput()->withError("El aforo está al máximo en este turno");
@@ -175,8 +179,12 @@ class UserBookingController extends Controller
 
     public function available()
     {
-        $minBookingDays = Session::get('minDiasReserva');
-        $maxGuestsTurn = Session::get('maxComensalesTurno');
+        $minBookingDays = Cache::remember('minBookingDays', now()->addHour(), function () {
+            return Configuration::where('name', 'minBookingDays')->value('value');
+        });
+        $maxGuestsTurn = Cache::remember('maxComensalesTurno', now()->addHour(), function () {
+            return Configuration::where('name', 'maxComensalesTurno')->value('value');
+        });
 
         $turns = Turn::select('turns.*')
             ->whereDate('date', '>', Carbon::now()->addDays($minBookingDays))
@@ -212,7 +220,9 @@ class UserBookingController extends Controller
 
     public function cancel(Booking $booking)
     {
-        $maxCancelBookingDays = Session::get('maxDiasCancelacionReserva');
+        $maxCancelBookingDays = Cache::remember('maxDiasCancelacionReserva', now()->addHour(), function () {
+            return Configuration::where('name', 'maxDiasCancelacionReserva')->value('value');
+        });
 
         $now = Carbon::now();
         $date = Carbon::parse($booking['turn']['date']);

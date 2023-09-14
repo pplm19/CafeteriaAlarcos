@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
@@ -171,6 +172,14 @@ class UserController extends Controller
             'disabled_reason' => $disableReason,
         ]);
 
+        if (count($user['roles']) == 0) {
+            if ($user['disabled']) {
+                Cache::decrement('userRequests');
+            } else {
+                Cache::increment('userRequests');
+            }
+        }
+
         return back()->with('success', sprintf('El usuario %s ha sido %s.', $user->username, $user['disabled'] ? 'deshabilitado' : 'habilitado'));
     }
 
@@ -182,6 +191,8 @@ class UserController extends Controller
     public function accept(User $user)
     {
         $user->assignRole('User');
+
+        Cache::decrement('userRequests');
 
         return redirect()->route('users.registerRequests')->with('success', sprintf('El usuario %s ha sido aceptado.', $user->username));
     }

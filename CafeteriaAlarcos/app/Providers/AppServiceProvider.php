@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\Configuration;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,12 +27,17 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
-        if (Schema::hasTable('configurations')) {
-            $configurations = Configuration::all();
+        // VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+        //     return (new MailMessage)
+        //         ->subject('Test subject')
+        //         ->line('Line')
+        //         ->action('Action', $url);
+        // });
 
-            foreach ($configurations as $configuration) {
-                Session::put($configuration['name'], $configuration['value']);
-            }
+        if (Schema::hasTable('users')) {
+            Cache::rememberForever('userRequests', function () {
+                return User::doesntHave('roles')->count();
+            });
         }
     }
 }
