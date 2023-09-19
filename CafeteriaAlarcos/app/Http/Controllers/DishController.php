@@ -144,15 +144,30 @@ class DishController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dish $dish)
+    public function destroy(Request $request)
     {
-        $image = $dish['image'];
+        $request->validate([
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(Dish::class, 'id')
+            ]
+        ]);
 
-        $dish->delete();
+        $dishes = $request->input('select');
 
-        $imagePath = public_path('/storage/images/dishes/' . $image);
-        if (File::exists($imagePath)) {
-            File::delete($imagePath);
+        foreach ($dishes as $dish) {
+            // [ERROR] ID dependency
+            $dishData = Dish::find($dish);
+
+            $image = $dishData['image'];
+
+            $dishData->delete();
+
+            $imagePath = public_path('/storage/images/dishes/' . $image);
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            }
         }
 
         return redirect()->route('dishes.index'); // Success

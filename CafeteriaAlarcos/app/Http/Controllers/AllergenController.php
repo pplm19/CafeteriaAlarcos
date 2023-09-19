@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Allergen;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AllergenController extends Controller
 {
@@ -70,9 +71,22 @@ class AllergenController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Allergen $allergen)
+    public function destroy(Request $request)
     {
-        $allergen->delete();
+        $request->validate([
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(Allergen::class, 'id')
+            ]
+        ]);
+
+        $allergens = $request->input('select');
+
+        foreach ($allergens as $allergen) {
+            // [ERROR] ID dependency
+            Allergen::find($allergen)->delete();
+        }
 
         return redirect()->route('allergens.index'); // Success
     }

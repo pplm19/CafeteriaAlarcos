@@ -11,14 +11,14 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
+            <table class="table table-bordered table-striped-columns table-hover align-middle">
+                <thead class="table-dark">
                     <th scope="col" class="text-center align-middle">Nombre de usuario</th>
                     <th scope="col" class="text-center align-middle">Email</th>
                     <th scope="col" class="text-center align-middle">Nombre</th>
                     <th scope="col" class="text-center align-middle">Apellido</th>
                     <th scope="col" class="text-center align-middle">Teléfono</th>
-                    <th scope="col" class="text-center align-middle">Acciones</th>
+                    <th scope="col" class="text-center align-middle w-10">Acciones</th>
                 </thead>
 
                 <tbody>
@@ -29,25 +29,25 @@
                             <td>{{ $user['name'] }}</td>
                             <td>{{ isset($user['lastname']) ? $user['lastname'] : 'N/A' }}</td>
                             <td>{{ isset($user['phone']) ? $user['phone'] : 'N/A' }}</td>
-                            <td class="d-flex justify-content-center flex-wrap  gap-2">
+                            <td class="d-flex justify-content-center flex-wrap gap-2">
                                 @if ($user['disabled'])
                                     <form action="{{ route('users.toggleDisable') }}" method="POST">
                                         @csrf
 
                                         <input type="hidden" name="user_id" value="{{ $user['id'] }}">
-                                        <button type="submit" class="btn btn-success">Habilitar usuario</button>
+                                        <button type="submit" class="btn btn-success">Habilitar</button>
                                     </form>
                                 @else
                                     <form action="{{ route('users.accept', $user['id']) }}" method="POST">
                                         @csrf
                                         @method('PUT')
 
-                                        <button type="submit" class="btn btn-success">Aceptar usuario</button>
+                                        <button type="submit" class="btn btn-success">Aceptar</button>
                                     </form>
 
                                     <button type="button" class="btn btn-danger btn-disable-user" data-bs-toggle="modal"
                                         data-bs-target="#declineModal" data-user-id="{{ $user['id'] }}">
-                                        Rechazar usuario
+                                        Rechazar
                                     </button>
                                 @endif
                             </td>

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\Turn;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class BookingController extends Controller
 {
@@ -89,11 +89,23 @@ class BookingController extends Controller
     //     //
     // }
 
-    public function cancel(Booking $booking)
+    public function cancel(Request $request)
     {
-        $booking->update([
-            'cancelled' => true
+        $request->validate([
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(Booking::class, 'id')
+            ]
         ]);
+
+        $icategories = $request->input('select');
+
+        foreach ($icategories as $icategory) {
+            Booking::find($icategory)->update([
+                'cancelled' => true
+            ]);
+        }
 
         return redirect()->route('bookings.index');
     }

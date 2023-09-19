@@ -74,9 +74,22 @@ class IngredientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ingredient $ingredient)
+    public function destroy(Request $request)
     {
-        $ingredient->delete();
+        $request->validate([
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(Ingredient::class, 'id')
+            ]
+        ]);
+
+        $ingredients = $request->input('select');
+
+        foreach ($ingredients as $ingredient) {
+            // [ERROR] ID dependency
+            Ingredient::find($ingredient)->delete();
+        }
 
         return redirect()->route('ingredients.index'); // Success
     }

@@ -5,7 +5,7 @@
 @endPushOnce
 
 @section('content')
-    <div class="content py-5 px-2 px-md-4 px-lg-5 row g-0 gap-3">
+    <div class="content py-5 px-2 px-md-4 px-lg-5 row g-0">
         <div class="col-12 col-lg-4 col-xl-3">
             <div class="card">
                 <div class="card-body">
@@ -83,21 +83,24 @@
             </div>
         </div>
 
-        <div class="col row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-0 px-3">
+        <div
+            class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-0 row g-0 row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-4">
             @foreach ($dishes as $dish)
                 <div class="col px-0 px-md-3 mb-4">
                     <div class="card h-100">
                         @php($imgUrl = asset('storage/images/dishes/' . $dish['image']))
                         @php($hasImg = strpos($imgUrl, $dish['image']))
-
                         @if ($hasImg)
-                            <img src="{{ $imgUrl }}" alt="Imagen de {{ $dish['name'] }}"
-                                class="img-fluid w-100 rounded-full">
+                            <a href="">
+                                <img src="{{ $imgUrl }}" alt="Imagen de {{ $dish['name'] }}"
+                                    class="img-fluid w-100 rounded-full aspect-ratio-1x1">
+                            </a>
                         @endif
 
-
                         <div class="card-body d-flex flex-column">
-                            <h3 class="card-title mb-0">{{ $dish['name'] }}</h3>
+                            <h3 class="card-title mb-0">
+                                <a href="">{{ $dish['name'] }}</a>
+                            </h3>
 
                             <p class="card-text"><small class="text-muted">{{ $dish['type']['name'] }}</small></p>
 
@@ -139,10 +142,6 @@
                                     </li>
                                 @endif
                             </ul>
-
-                            <div class="mt-auto d-flex justify-content-end">
-                                <a href="#" class="btn btn-primary">Ver detalles (WIP)</a>
-                            </div>
                         </div>
                     </div>
                 </div>

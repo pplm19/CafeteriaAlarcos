@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @pushOnce('scripts')
-    @vite(['resources/js/bootstrapValidation.js'])
+    @vite(['resources/js/bootstrapValidation.js', 'resources/js/checkboxValidation.js'])
 @endPushOnce
 
 @section('content')
@@ -53,62 +53,68 @@
         <div class="col-12 col-lg-8 col-xl-9 ps-0 ps-lg-3 pt-3 pt-lg-0">
             <p class="d-flex justify-content-end">
                 <a class="btn btn-theme" href="{{ route('turns.create') }}">
-                    <i class="bi bi-plus-circle-fill"></i> Crear nueva estructura de turnos
+                    <i class="bi bi-plus-circle-fill"></i> Crear estructura
                 </a>
             </p>
 
             @isset($turnsList)
-                <div class="py-3 d-flex justify-content-end gap-2">
-                    <a class="btn btn-primary" href="{{ route('turns.create', ['date' => old('searchDate')]) }}">
-                        Crear turno
-                    </a>
+                <form action="{{ route('turns.destroy') }}" method="POST" class="checkbox-validation">
+                    @csrf
 
-                    <a class="btn btn-secondary" href="{{ route('turns.copyStructure', ['date' => old('searchDate')]) }}">
-                        Copiar estructura de turnos
-                    </a>
+                    <input type="hidden" name="searchDate" value="{{ old('searchDate') }}">
 
-                    <form action="{{ route('turns.destroyStructure') }}" method="POST">
-                        @csrf
+                    <div class="py-3 d-flex justify-content-end gap-2">
+                        <a href="{{ route('turns.create', ['date' => old('searchDate')]) }}"
+                            class="btn btn-primary btn-rounded">
+                            Crear turno
+                        </a>
 
-                        <input type="date" name="date" value="{{ old('searchDate') }}" hidden>
+                        <a href="{{ route('turns.copyStructure', ['date' => old('searchDate')]) }}"
+                            class="btn btn-secondary btn-rounded">
+                            Copiar estructura
+                        </a>
 
-                        <button type="submit" class="btn btn-danger">Eliminar estructura de turnos</button>
-                    </form>
-                </div>
+                        <a href="{{ route('turns.destroyStructure', ['date' => old('searchDate')]) }}"
+                            class="btn btn-danger btn-rounded">
+                            Eliminar estructura
+                        </a>
 
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <th scope="col" class="text-center align-middle">Nombre</th>
-                            <th scope="col" class="text-center align-middle">Fecha</th>
-                            <th scope="col" class="text-center align-middle">Inicio</th>
-                            <th scope="col" class="text-center align-middle">Fin</th>
-                            <th scope="col" class="text-center align-middle">Descripción</th>
-                        </thead>
+                        <button type="submit" class="btn btn-danger btn-rounded">Eliminar seleccionados</button>
+                    </div>
 
-                        <tbody>
-                            @foreach ($turnsList as $turn)
-                                <tr>
-                                    <td>{{ $turn['name'] }}</td>
-                                    <td>{{ $turn['date'] }}</td>
-                                    <td>{{ $turn['start'] }}</td>
-                                    <td>{{ $turn['end'] }}</td>
-                                    <td>{{ $turn['description'] }}</td>
-                                    <td>
-                                        <form action="{{ route('turns.destroy', $turn['id']) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped-columns table-hover align-middle">
+                            <thead class="table-dark">
+                                <th scope="col" class="text-center align-middle w-10">#</th>
+                                <th scope="col" class="text-center align-middle">Nombre</th>
+                                <th scope="col" class="text-center align-middle">Fecha</th>
+                                <th scope="col" class="text-center align-middle">Inicio</th>
+                                <th scope="col" class="text-center align-middle">Fin</th>
+                                <th scope="col" class="text-center align-middle">Descripción</th>
+                                <th scope="col" class="text-center align-middle w-10">Acciones</th>
+                            </thead>
 
+                            <tbody>
+                                @foreach ($turnsList as $turn)
+                                    <tr>
+                                        <td class="text-center align-middle">
+                                            <input class="form-check-input" type="checkbox" name="select[]"
+                                                value="{{ $turn['id'] }}">
+                                        </td>
+                                        <td>{{ $turn['name'] }}</td>
+                                        <td>{{ $turn['date'] }}</td>
+                                        <td>{{ $turn['start'] }}</td>
+                                        <td>{{ $turn['end'] }}</td>
+                                        <td>{{ $turn['description'] }}</td>
+                                        <td class="text-center align-middle">
                                             <a class="btn btn-primary" href="{{ route('turns.edit', $turn['id']) }}">Editar</a>
-
-                                            <button type="submit" class="btn btn-danger">Borrar</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
             @endisset
         </div>
     </div>

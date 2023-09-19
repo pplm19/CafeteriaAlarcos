@@ -18,20 +18,22 @@ class UserController extends Controller
     {
         $query = User::has('roles');
 
-        if ($request->has('search')) {
-            $request->validate([
-                'username' => ['nullable', 'string', 'max:255'],
-                'email' => ['nullable', 'string', 'email', 'max:255'],
-                'name' => ['nullable', 'string', 'max:255'],
-                'lastname' => ['nullable', 'string', 'max:255'],
-                'phone' => ['nullable', 'string'],
-                'roles' => [
-                    'nullable',
-                    'array',
-                    Rule::exists(Role::class, 'id')
-                ]
-            ]);
+        $request->validate([
+            'username' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'name' => ['nullable', 'string', 'max:255'],
+            'lastname' => ['nullable', 'string', 'max:255'],
+            'phone' => ['nullable', 'string'],
+            'roles' => [
+                'nullable',
+                'array',
+                Rule::exists(Role::class, 'id')
+            ],
+            'field' => ['nullable', Rule::in('username', 'email', 'name', 'lastname', 'phone')],
+            'direction' => ['nullable', Rule::in('ASC', 'DESC')],
+        ]);
 
+        if ($request->has('search')) {
             $searched = false;
 
             $username = $request->input('username');
@@ -77,15 +79,17 @@ class UserController extends Controller
 
                 $request->flash();
             }
-        } else if ($request->has('field')) {
+        }
+
+        if ($request->has('field')) {
             $orderField = $request->input('field');
             $orderDirection = $request->input('direction', 'ASC');
             $query->orderBy($orderField, $orderDirection);
 
             $request->flash();
-        } else {
-            $request->flush();
         }
+
+        if (!$request->hasAny(['search', 'field'])) $request->flush();
 
         return view('users.index', ['users' => $query->paginate(15), 'roles' => Role::all()]);
     }

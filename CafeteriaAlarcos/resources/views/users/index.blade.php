@@ -14,6 +14,11 @@
                     <form action="{{ route('users.index') }}" method="GET" class="needs-validation" novalidate>
                         @csrf
 
+                        @if (old('field', null) != null)
+                            <input type="hidden" name="field" value="{{ old('field') }}">
+                            <input type="hidden" name="direction" value="{{ old('direction') }}">
+                        @endif
+
                         <div class="form-floating mt-3">
                             <input type="text" name="username" id="username"
                                 class="form-control @error('username') is-invalid @enderror" value="{{ old('username') }}"
@@ -119,37 +124,90 @@
                 <a class="btn btn-theme" href="{{ route('users.create') }}">Crear administrador</a>
             </p>
             <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
+                <table class="table table-bordered table-striped-columns table-hover align-middle">
+                    <thead class="table-dark">
+                        <th scope="col" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'username', 'direction' => old('field') === 'username' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-black">Nombre
-                                de usuario</a>
+                                class="text-decoration-none text-white">
+                                Nombre de usuario
+                                @if (old('field', null) === 'username')
+                                    @if (old('direction') === 'ASC')
+                                        <i class="bi bi-chevron-up"></i>
+                                    @else
+                                        <i class="bi bi-chevron-down"></i>
+                                    @endif
+                                @else
+                                    <i class="bi bi-chevron-expand"></i>
+                                @endif
+                            </a>
                         </th>
-                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
+                        <th scope="col" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'email', 'direction' => old('field') === 'email' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-black">Email</a>
+                                class="text-decoration-none text-white">
+                                Email
+                                @if (old('field', null) === 'email')
+                                    @if (old('direction') === 'ASC')
+                                        <i class="bi bi-chevron-up"></i>
+                                    @else
+                                        <i class="bi bi-chevron-down"></i>
+                                    @endif
+                                @else
+                                    <i class="bi bi-chevron-expand"></i>
+                                @endif
+                            </a>
                         </th>
-                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
+                        <th scope="col" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'name', 'direction' => old('field') === 'name' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-black">Nombre</a>
+                                class="text-decoration-none text-white">
+                                Nombre
+                                @if (old('field', null) === 'name')
+                                    @if (old('direction') === 'ASC')
+                                        <i class="bi bi-chevron-up"></i>
+                                    @else
+                                        <i class="bi bi-chevron-down"></i>
+                                    @endif
+                                @else
+                                    <i class="bi bi-chevron-expand"></i>
+                                @endif
+                            </a>
                         </th>
-                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
+                        <th scope="col" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'lastname', 'direction' => old('field') === 'lastname' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-black">Apellido</a>
+                                class="text-decoration-none text-white">
+                                Apellido
+                                @if (old('field', null) === 'lastname')
+                                    @if (old('direction') === 'ASC')
+                                        <i class="bi bi-chevron-up"></i>
+                                    @else
+                                        <i class="bi bi-chevron-down"></i>
+                                    @endif
+                                @else
+                                    <i class="bi bi-chevron-expand"></i>
+                                @endif
+                            </a>
                         </th>
-                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
+                        <th scope="col" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'phone', 'direction' => old('field') === 'phone' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-black">Teléfono</a>
+                                class="text-decoration-none text-white">
+                                Teléfono
+                                @if (old('field', null) === 'phone')
+                                    @if (old('direction') === 'ASC')
+                                        <i class="bi bi-chevron-up"></i>
+                                    @else
+                                        <i class="bi bi-chevron-down"></i>
+                                    @endif
+                                @else
+                                    <i class="bi bi-chevron-expand"></i>
+                                @endif
+                            </a>
                         </th>
-                        <th scope="col" class="text-center align-middle" class="text-center align-middle">
+                        <th scope="col" class="text-center align-middle">
                             Roles
                         </th>
-                        <th scope="col" class="text-center align-middle" class="text-center align-middle">Acciones
-                        </th>
+                        <th scope="col" class="text-center align-middle w-10">Acciones</th>
                     </thead>
 
-                    <tbody>
+                    <tbody class="table-group-divider">
                         @foreach ($users as $user)
                             <tr>
                                 <td>{{ $user['username'] }}</td>
@@ -164,7 +222,7 @@
                                         @endforeach
                                     </ul>
                                 </td>
-                                <td>
+                                <td class="text-center align-middle">
                                     @if ($user['disabled'])
                                         <form action="{{ route('users.toggleDisable') }}" method="POST">
                                             @csrf

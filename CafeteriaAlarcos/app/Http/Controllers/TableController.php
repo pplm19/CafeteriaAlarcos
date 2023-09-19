@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TableController extends Controller
 {
@@ -76,9 +77,22 @@ class TableController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Table $table)
+    public function destroy(Request $request)
     {
-        $table->delete();
+        $request->validate([
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(Table::class, 'id')
+            ]
+        ]);
+
+        $icategories = $request->input('select');
+
+        foreach ($icategories as $icategory) {
+            // [ERROR] ID dependency
+            Table::find($icategory)->delete();
+        }
 
         return redirect()->route('tables.index'); // Success
     }

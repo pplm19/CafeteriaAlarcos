@@ -34,7 +34,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-edit-alt'></i> Editar categoría de plato
+                                    <i class='bx bxs-edit-alt'></i> Editar categoría
                                 </button>
                             </div>
                         </form>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @pushOnce('scripts')
-    @vite(['resources/js/bootstrapValidation.js'])
+    @vite(['resources/js/bootstrapValidation.js', 'resources/js/checkboxValidation.js'])
 @endPushOnce
 
 @section('content')
@@ -38,61 +38,60 @@
         </div>
 
         <div class="col-12 col-lg-8 col-xl-9 ps-0 ps-lg-3 pt-3 pt-lg-0">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <th scope="col" class="text-center align-middle">Descripción</th>
-                        <th scope="col" class="text-center align-middle">Comensales</th>
+            <form action="{{ route('bookings.cancel') }}" method="POST" class="checkbox-validation">
+                @csrf
 
-                        <th scope="col" class="text-center align-middle">Nombre del turno</th>
-                        <th scope="col" class="text-center align-middle">Fecha</th>
-                        <th scope="col" class="text-center align-middle">Inicio</th>
-                        <th scope="col" class="text-center align-middle">Fin</th>
-                        <th scope="col" class="text-center align-middle">Descripción del turno</th>
+                <p class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-danger btn-rounded">Cancelar seleccionados</button>
+                </p>
 
-                        <th scope="col" class="text-center align-middle">Mesas</th>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped-columns table-hover align-middle">
+                        <thead class="table-dark">
+                            <th scope="col" class="text-center align-middle w-10">#</th>
 
-                        <th scope="col" class="text-center align-middle">Acciones</th>
-                    </thead>
+                            <th scope="col" class="text-center align-middle">Descripción</th>
+                            <th scope="col" class="text-center align-middle">Comensales</th>
 
-                    <tbody>
-                        @foreach ($bookings as $booking)
-                            <tr>
-                                <th>{{ $booking['description'] }}</th>
-                                <td>{{ $booking['bookingTables']->sum('guests') }}</td>
+                            <th scope="col" class="text-center align-middle">Nombre del turno</th>
+                            <th scope="col" class="text-center align-middle">Fecha</th>
+                            <th scope="col" class="text-center align-middle">Inicio</th>
+                            <th scope="col" class="text-center align-middle">Fin</th>
+                            <th scope="col" class="text-center align-middle">Descripción del turno</th>
 
-                                <td>{{ $booking['turn']['name'] }}</td>
-                                <td>{{ $booking['turn']['date'] }}</td>
-                                <td>{{ $booking['turn']['start'] }}</td>
-                                <td>{{ $booking['turn']['end'] }}</td>
-                                <td>{{ $booking['turn']['description'] }}</td>
+                            <th scope="col" class="text-center align-middle">Mesas</th>
+                        </thead>
 
-                                <td>
-                                    <ul>
-                                        @foreach ($booking['tables'] as $table)
-                                            <li>
-                                                {{ $table['minNumber'] }} - {{ $table['maxNumber'] }} comensales
-                                                @isset($table['description'])
-                                                    - {{ $table['description'] }}
-                                                @endisset
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </td>
+                        <tbody>
+                            @foreach ($bookings as $booking)
+                                <tr>
+                                    <th>{{ $booking['description'] }}</th>
+                                    <td>{{ $booking['bookingTables']->sum('guests') }}</td>
 
-                                <td>
-                                    <form action="{{ route('bookings.cancel', $booking['id']) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
+                                    <td>{{ $booking['turn']['name'] }}</td>
+                                    <td>{{ $booking['turn']['date'] }}</td>
+                                    <td>{{ $booking['turn']['start'] }}</td>
+                                    <td>{{ $booking['turn']['end'] }}</td>
+                                    <td>{{ $booking['turn']['description'] }}</td>
 
-                                        <button type="submit" class="btn btn-danger">Cancelar reserva</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                                    <td>
+                                        <ul>
+                                            @foreach ($booking['tables'] as $table)
+                                                <li>
+                                                    {{ $table['minNumber'] }} - {{ $table['maxNumber'] }} comensales
+                                                    @isset($table['description'])
+                                                        - {{ $table['description'] }}
+                                                    @endisset
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </form>
 
             <div class="d-flex justify-content-center d-sm-block">
                 {{ $bookings->links() }}

@@ -1608,6 +1608,10 @@ a.text-theme:hover {
     padding: 10rem 0;
 }
 
+.w-10 {
+    width: 10%;
+}
+
 .btn-theme {
     padding: 10px 24px;
     border: 0;
@@ -1619,6 +1623,12 @@ a.text-theme:hover {
     -moz-transition: 0.4s;
     -ms-transition: 0.4s;
     -o-transition: 0.4s;
+}
+
+.btn-rounded {
+    padding: 10px 24px;
+    border: 0;
+    border-radius: 50px;
 }
 
 .btn-theme:hover {
@@ -1640,6 +1650,15 @@ a.text-theme:hover {
     width: 35%;
 }
 
+.aspect-ratio-1x1 {
+    aspect-ratio: 1;
+}
+
 #alerts {
     z-index: 1000;
+}
+
+/* Fix in order not to break navbar dropdown */
+.fixed-bottom {
+    z-index: 990;
 }

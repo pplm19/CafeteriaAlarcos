@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ICategory;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ICategoryController extends Controller
 {
@@ -70,9 +71,22 @@ class ICategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ICategory $icategory)
+    public function destroy(Request $request)
     {
-        $icategory->delete();
+        $request->validate([
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(ICategory::class, 'id')
+            ]
+        ]);
+
+        $icategories = $request->input('select');
+
+        foreach ($icategories as $icategory) {
+            // [ERROR] ID dependency
+            ICategory::find($icategory)->delete();
+        }
 
         return redirect()->route('icategories.index'); // Success
     }

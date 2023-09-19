@@ -44,7 +44,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-copy'></i> Copiar estructura de turnos
+                                    <i class='bx bxs-copy'></i> Copiar estructura
                                 </button>
                             </div>
                         </form>

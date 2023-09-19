@@ -71,6 +71,8 @@
                                 <i class="bx bx-user-plus align-middle"></i> ¿No tienes una cuenta? Regístrate
                             </a>
                         </div>
+
+                        <span class="text-muted">Los campos marcados con * son obligatorios.</span>
                     </div>
                 </div>
             </div>

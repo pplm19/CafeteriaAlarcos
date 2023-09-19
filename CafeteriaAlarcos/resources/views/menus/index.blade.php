@@ -1,50 +1,58 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/checkboxValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="content py-5 px-1 px-md-5">
         <div class="text-center mb-5">
             <h1>Menú</h1>
         </div>
 
-        <p class="d-flex justify-content-end">
-            <a class="btn btn-theme" href="{{ route('menus.create') }}">Crear nuevo menú</a>
-        </p>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <th scope="col" class="text-center align-middle">Nombre</th>
-                    <th scope="col" class="text-center align-middle">Descripción</th>
-                    <th scope="col" class="text-center align-middle">Platos</th>
-                    <th scope="col" class="text-center align-middle">Acciones</th>
-                </thead>
+        <form action="{{ route('menus.destroy') }}" method="POST" class="checkbox-validation">
+            @csrf
 
-                <tbody>
-                    @foreach ($menus as $menu)
-                        <tr>
-                            <td>{{ $menu['name'] }}</td>
-                            <td>{{ $menu['description'] }}</td>
-                            <td>
-                                <ol>
-                                    @foreach ($menu['dishes'] as $dish)
-                                        <li>{{ $dish['name'] }}</li>
-                                    @endforeach
-                                </ol>
-                            </td>
-                            <td>
-                                <form action="{{ route('menus.destroy', $menu['id']) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
+            <p class="d-flex justify-content-end gap-2">
+                <a class="btn btn-theme" href="{{ route('menus.create') }}">Crear menú</a>
+                <button type="submit" class="btn btn-danger btn-rounded">Eliminar seleccionados</button>
+            </p>
 
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped-columns table-hover align-middle">
+                    <thead class="table-dark">
+                        <th scope="col" class="text-center align-middle w-10">#</th>
+                        <th scope="col" class="text-center align-middle">Nombre</th>
+                        <th scope="col" class="text-center align-middle">Descripción</th>
+                        <th scope="col" class="text-center align-middle">Platos</th>
+                        <th scope="col" class="text-center align-middle w-10">Acciones</th>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($menus as $menu)
+                            <tr>
+                                <td class="text-center align-middle">
+                                    <input class="form-check-input" type="checkbox" name="select[]"
+                                        value="{{ $menu['id'] }}">
+                                </td>
+                                <td>{{ $menu['name'] }}</td>
+                                <td>{{ $menu['description'] }}</td>
+                                <td>
+                                    <ol>
+                                        @foreach ($menu['dishes'] as $dish)
+                                            <li>{{ $dish['name'] }}</li>
+                                        @endforeach
+                                    </ol>
+                                </td>
+                                <td class="text-center align-middle">
                                     <a class="btn btn-primary" href="{{ route('menus.edit', $menu['id']) }}">Editar</a>
-
-                                    <button type="submit" class="btn btn-danger">Borrar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </form>
 
         <div class="d-flex justify-content-center d-sm-block">
             {{ $menus->links() }}

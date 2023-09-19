@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Turn;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -21,7 +22,7 @@ class TurnController extends Controller
             'turns' => Turn::distinct('date')->orderBy('date', 'DESC')->get('date')
         ];
 
-        if ($request->has('search')) {
+        if ($request->has('searchDate')) {
             $data['turnsList'] = Turn::whereDate('date', $request->input('searchDate'))->get();
 
             $request->merge(['search' => true]);
@@ -30,6 +31,7 @@ class TurnController extends Controller
         } else {
             $request->flush();
         }
+
 
         return view('turns.index', $data);
     }
@@ -97,11 +99,26 @@ class TurnController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Turn $turn)
+    public function destroy(Request $request)
     {
-        $turn->delete();
+        $request->validate([
+            'searchDate' => ['nullable', 'date'],
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(Turn::class, 'id')
+            ]
+        ]);
 
-        return redirect()->route('turns.index'); // Success
+        $request->flash();
+
+        $turns = $request->input('select');
+
+        foreach ($turns as $turn) {
+            Turn::find($turn)->delete();
+        }
+
+        return back(); // Success
     }
 
     public function copyStructure(Request $request)

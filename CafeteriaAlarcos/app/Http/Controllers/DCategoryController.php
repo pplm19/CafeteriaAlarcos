@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DCategory;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DCategoryController extends Controller
 {
@@ -70,9 +71,22 @@ class DCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DCategory $dcategory)
+    public function destroy(Request $request)
     {
-        $dcategory->delete();
+        $request->validate([
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(DCategory::class, 'id')
+            ]
+        ]);
+
+        $dcategories = $request->input('select');
+
+        foreach ($dcategories as $dcategory) {
+            // [ERROR] ID dependency
+            DCategory::find($dcategory)->delete();
+        }
 
         return redirect()->route('dcategories.index'); // Success
     }

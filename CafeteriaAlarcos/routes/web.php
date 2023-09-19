@@ -94,30 +94,39 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
     Route::put('/users/accept/{user}', [UserController::class, 'accept'])->name('users.accept');
 
 
-    Route::resource('/icategories', ICategoryController::class)->except(['show']);
+    Route::resource('/icategories', ICategoryController::class)->except(['show', 'destroy']);
+    Route::post('/icategories/destroy', [ICategoryController::class, 'destroy'])->name('icategories.destroy');
 
-    Route::resource('/ingredients', IngredientController::class)->except(['show']);
+    Route::resource('/ingredients', IngredientController::class)->except(['show', 'destroy']);
+    Route::post('/ingredients/destroy', [IngredientController::class, 'destroy'])->name('ingredients.destroy');
 
-    Route::resource('/dishes', DishController::class)->except(['show']);
+    Route::resource('/dishes', DishController::class)->except(['show', 'destroy']);
+    Route::post('/dishes/destroy', [DishController::class, 'destroy'])->name('dishes.destroy');
 
-    Route::resource('/types', TypeController::class)->except(['show']);
+    Route::resource('/types', TypeController::class)->except(['show', 'destroy']);
+    Route::post('/types/destroy', [TypeController::class, 'destroy'])->name('types.destroy');
 
-    Route::resource('/dcategories', DCategoryController::class)->except(['show']);
+    Route::resource('/dcategories', DCategoryController::class)->except(['show', 'destroy']);
+    Route::post('/dcategories/destroy', [DCategoryController::class, 'destroy'])->name('dcategories.destroy');
 
-    Route::resource('/allergens', AllergenController::class)->except(['show']);
+    Route::resource('/allergens', AllergenController::class)->except(['show', 'destroy']);
+    Route::post('/allergens/destroy', [AllergenController::class, 'destroy'])->name('allergens.destroy');
 
-    Route::resource('/menus', MenuController::class)->except(['show']);
+    Route::resource('/menus', MenuController::class)->except(['show', 'destroy']);
+    Route::post('/menus/destroy', [MenuController::class, 'destroy'])->name('menus.destroy');
 
 
-    Route::resource('/turns', TurnController::class)->except(['show']);
+    Route::resource('/turns', TurnController::class)->except(['show', 'destroy']);
+    Route::post('/turns/destroy', [TurnController::class, 'destroy'])->name('turns.destroy');
     Route::get('/turns/copyStructure', [TurnController::class, 'copyStructure'])->name('turns.copyStructure');
     Route::post('/turns/storeCopyStructure', [TurnController::class, 'storeCopyStructure'])->name('turns.storeCopyStructure');
-    Route::post('/turns/destroyStructure', [TurnController::class, 'destroyStructure'])->name('turns.destroyStructure');
+    Route::get('/turns/destroyStructure', [TurnController::class, 'destroyStructure'])->name('turns.destroyStructure');
 
-    Route::resource('/tables', TableController::class)->except(['show']);
+    Route::resource('/tables', TableController::class)->except(['show', 'destroy']);
+    Route::post('/tables/destroy', [TableController::class, 'destroy'])->name('tables.destroy');
 
     Route::resource('/bookings', BookingController::class)->only(['index']);
-    Route::put('/bookings/cancel/{booking}', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::post('/bookings/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 
 
     Route::resource('/configurations', ConfigurationController::class)->only(['index', 'edit', 'update']);

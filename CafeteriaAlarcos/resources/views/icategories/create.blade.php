@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title">
-                            Crear categoría
+                            Crear categoría de ingrediente
                         </h3>
 
                         <form action="{{ route('icategories.store') }}" method="POST" class="needs-validation" novalidate>
@@ -32,7 +32,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-plus-circle'></i> Crear categoría de ingrediente
+                                    <i class='bx bxs-plus-circle'></i> Crear categoría
                                 </button>
                             </div>
                         </form>

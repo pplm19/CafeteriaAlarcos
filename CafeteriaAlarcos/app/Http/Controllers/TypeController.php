@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TypeController extends Controller
 {
@@ -70,9 +71,22 @@ class TypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Type $type)
+    public function destroy(Request $request)
     {
-        $type->delete();
+        $request->validate([
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(Type::class, 'id')
+            ]
+        ]);
+
+        $types = $request->input('select');
+
+        foreach ($types as $type) {
+            // [ERROR] ID dependency
+            Type::find($type)->delete();
+        }
 
         return redirect()->route('types.index'); // Success
     }

@@ -32,9 +32,12 @@ class UserDishController extends Controller
                 ],
             ]);
 
+            $searched = false;
+
             $name = $request->input('name');
             if (strlen($name) > 0) {
                 $query->where('name', 'LIKE', '%' . $name . '%');
+                $searched = true;
             }
 
             if ($request->has('ingredients')) {
@@ -42,6 +45,7 @@ class UserDishController extends Controller
                 $query->whereHas('ingredients', function ($subQuery) use ($ingredients) {
                     $subQuery->whereIn('ingredient_id', $ingredients);
                 });
+                $searched = true;
             }
 
             if ($request->has('allergens')) {
@@ -49,11 +53,14 @@ class UserDishController extends Controller
                 $query->whereDoesntHave('allergens', function ($subQuery) use ($allergens) {
                     $subQuery->whereIn('allergen_id', $allergens);
                 });
+                $searched = true;
             }
 
-            $request->merge(['search' => true]);
+            if ($searched) {
+                $request->merge(['search' => true]);
 
-            $request->flash();
+                $request->flash();
+            }
         } else {
             $request->flush();
         }

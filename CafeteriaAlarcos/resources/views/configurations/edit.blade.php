@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title">
-                            Editar configuración de {{ $configuration['name'] }}
+                            Editar configuración
                         </h3>
 
                         <form action="{{ route('configurations.update', $configuration['id']) }}" method="POST"

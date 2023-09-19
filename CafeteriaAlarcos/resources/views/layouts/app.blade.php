@@ -147,12 +147,7 @@
                         @csrf
                     </form>
                 @else
-                    {{-- Config value --}}
-                    @if (Cookie::get('laravel_cookie_consent') !== null)
-                        <a href="{{ route('login') }}" class="book-a-table-btn scrollto">Iniciar sesión</a>
-                    @else
-                        <a href="{{ route('register') }}" class="book-a-table-btn scrollto">Regístrate</a>
-                    @endif
+                    <a href="{{ route('register') }}" class="book-a-table-btn scrollto">Regístrate</a>
                 @endauth
 
             </div>

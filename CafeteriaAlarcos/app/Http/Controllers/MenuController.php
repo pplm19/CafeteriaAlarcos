@@ -91,9 +91,22 @@ class MenuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Menu $menu)
+    public function destroy(Request $request)
     {
-        $menu->delete();
+        $request->validate([
+            'select' => [
+                'required',
+                'array',
+                Rule::exists(Menu::class, 'id')
+            ]
+        ]);
+
+        $menus = $request->input('select');
+
+        foreach ($menus as $menu) {
+            // [ERROR] ID dependency
+            Menu::find($menu)->delete();
+        }
 
         return redirect()->route('menus.index');
     }

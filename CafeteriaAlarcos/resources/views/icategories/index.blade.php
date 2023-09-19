@@ -1,41 +1,50 @@
 @extends('layouts.app')
 
+@pushOnce('scripts')
+    @vite(['resources/js/checkboxValidation.js'])
+@endPushOnce
+
 @section('content')
     <div class="content py-5 px-1 px-md-5">
         <div class="text-center mb-5">
             <h1>Categorías de ingredientes</h1>
         </div>
 
-        <p class="d-flex justify-content-end">
-            <a class="btn btn-theme" href="{{ route('icategories.create') }}">Crear nuevo ingrediente</a>
-        </p>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <th scope="col" class="text-center align-middle">Nombre</th>
-                    <th scope="col" class="text-center align-middle">Acciones</th>
-                </thead>
+        <form action="{{ route('icategories.destroy') }}" method="POST" class="checkbox-validation">
+            @csrf
 
-                <tbody>
-                    @foreach ($icategories as $icategory)
-                        <tr>
-                            <td>{{ $icategory['name'] }}</td>
-                            <td>
-                                <form action="{{ route('icategories.destroy', $icategory['id']) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
+            <p class="d-flex justify-content-end gap-2">
+                <a class="btn btn-theme" href="{{ route('icategories.create') }}">Crear categoría</a>
+                <button type="submit" class="btn btn-danger btn-rounded">Eliminar seleccionados</button>
+            </p>
 
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped-columns table-hover align-middle">
+                    <thead class="table-dark">
+                        <th scope="col" class="text-center align-middle w-10">#</th>
+                        <th scope="col" class="text-center align-middle">Nombre</th>
+                        <th scope="col" class="text-center align-middle w-10">Acciones</th>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($icategories as $icategory)
+                            <tr>
+                                <td class="text-center align-middle">
+                                    <input class="form-check-input" type="checkbox" name="select[]"
+                                        value="{{ $icategory['id'] }}">
+                                </td>
+                                <td>{{ $icategory['name'] }}</td>
+                                <td class="text-center align-middle">
                                     <a class="btn btn-primary"
                                         href="{{ route('icategories.edit', $icategory['id']) }}">Editar</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </form>
 
-                                    <button type="submit" class="btn btn-danger">Borrar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
         <div class="d-flex justify-content-center d-sm-block">
             {{ $icategories->links() }}
         </div>

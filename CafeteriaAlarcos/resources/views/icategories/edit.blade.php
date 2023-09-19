@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title">
-                            Editar categoría
+                            Editar categoría de ingrediente
                         </h3>
 
                         <form action="{{ route('icategories.update', $icategory['id']) }}" method="POST"
@@ -35,7 +35,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-edit-alt'></i> Editar categoría de ingrediente
+                                    <i class='bx bxs-edit-alt'></i> Editar categoría
                                 </button>
                             </div>
                         </form>

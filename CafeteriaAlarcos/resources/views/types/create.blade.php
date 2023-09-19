@@ -32,7 +32,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-plus-circle'></i> Crear tipo de plato
+                                    <i class='bx bxs-plus-circle'></i> Crear tipo
                                 </button>
                             </div>
                         </form>
