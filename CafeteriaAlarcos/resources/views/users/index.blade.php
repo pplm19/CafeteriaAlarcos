@@ -121,7 +121,9 @@
 
         <div class="col-12 col-lg-8 col-xl-9 ps-0 ps-lg-3 pt-3 pt-lg-0">
             <p class="d-flex justify-content-end">
-                <a class="btn btn-theme" href="{{ route('users.create') }}">Crear administrador</a>
+                <a class="btn btn-theme" href="{{ route('users.create') }}">
+                    <i class="bx bx-user-plus"></i> Crear administrador
+                </a>
             </p>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped-columns table-hover align-middle">
@@ -228,13 +230,15 @@
                                             @csrf
 
                                             <input type="hidden" name="user_id" value="{{ $user['id'] }}">
-                                            <button type="submit" class="btn btn-success">Habilitar usuario</button>
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="bi bi-toggle-on"></i> Habilitar usuario
+                                            </button>
                                         </form>
                                     @else
                                         <button type="button" class="btn btn-danger btn-disable-user"
                                             data-bs-toggle="modal" data-bs-target="#disableModal"
                                             data-user-id="{{ $user['id'] }}">
-                                            Deshabilitar usuario
+                                            <i class="bi bi-toggle-off"></i> Deshabilitar usuario
                                         </button>
                                     @endif
                                 </td>
@@ -263,7 +267,7 @@
                         @csrf
 
                         <div class="modal-body">
-                            <input type="hidden" name="user_id" id="user_id" value="3">
+                            <input type="hidden" name="user_id" id="user_id">
                             <textarea type="text" name="disable_reason" id="disable_reason"
                                 class="form-control @error('disable_reason') is-invalid @enderror"
                                 placeholder="Tu cuenta ha sido deshabilitada, contacta con un administrador para obtener más información"

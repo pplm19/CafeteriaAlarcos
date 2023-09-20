@@ -14,8 +14,12 @@
             @csrf
 
             <p class="d-flex justify-content-end gap-2">
-                <a class="btn btn-theme" href="{{ route('menus.create') }}">Crear menú</a>
-                <button type="submit" class="btn btn-danger btn-rounded">Eliminar seleccionados</button>
+                <a class="btn btn-theme" href="{{ route('menus.create') }}">
+                    <i class="bi bi-plus-circle"></i> Crear menú
+                </a>
+                <button type="submit" class="btn btn-danger btn-rounded">
+                    <i class="bi bi-trash"></i> Eliminar seleccionados
+                </button>
             </p>
 
             <div class="table-responsive">
@@ -45,13 +49,20 @@
                                     </ol>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <a class="btn btn-primary" href="{{ route('menus.edit', $menu['id']) }}">Editar</a>
+                                    <a class="btn btn-primary" href="{{ route('menus.edit', $menu['id']) }}">
+                                        <i class='bx bxs-edit-alt'></i> Editar
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+
+            @include('layouts.confirmModal', [
+                'title' => 'Confirmar borrado',
+                'content' => '¿Estás seguro de que quieres borrar estos registros?',
+            ])
         </form>
 
         <div class="d-flex justify-content-center d-sm-block">

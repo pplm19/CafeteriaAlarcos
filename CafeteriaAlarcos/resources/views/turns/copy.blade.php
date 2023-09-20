@@ -44,7 +44,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-copy'></i> Copiar estructura
+                                    <i class="bi bi-clipboard2-plus"></i> Copiar estructura
                                 </button>
                             </div>
                         </form>

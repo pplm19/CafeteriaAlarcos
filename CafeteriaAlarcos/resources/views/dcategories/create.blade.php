@@ -32,7 +32,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-plus-circle'></i> Crear categoría
+                                    <i class="bi bi-plus-circle"></i> Crear categoría
                                 </button>
                             </div>
                         </form>

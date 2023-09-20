@@ -45,7 +45,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-plus-circle'></i> Crear menú
+                                    <i class="bi bi-plus-circle"></i> Crear menú
                                 </button>
                             </div>
                         </form>

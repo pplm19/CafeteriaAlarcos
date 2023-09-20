@@ -42,7 +42,9 @@
                 @csrf
 
                 <p class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-danger btn-rounded">Cancelar seleccionados</button>
+                    <button type="submit" class="btn btn-danger btn-rounded">
+                        <i class="bi bi-x-circle"></i> Cancelar seleccionados
+                    </button>
                 </p>
 
                 <div class="table-responsive">
@@ -91,6 +93,11 @@
                         </tbody>
                     </table>
                 </div>
+
+                @include('layouts.confirmModal', [
+                    'title' => 'Confirmar cancelación',
+                    'content' => '¿Estás seguro de que quieres cancelar estas reservas?',
+                ])
             </form>
 
             <div class="d-flex justify-content-center d-sm-block">

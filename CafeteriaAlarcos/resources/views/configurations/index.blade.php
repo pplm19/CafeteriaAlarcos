@@ -20,8 +20,9 @@
                             <td>{{ $configuration['name'] }}</td>
                             <td>{{ $configuration['value'] }}</td>
                             <td class="text-center align-middle">
-                                <a class="btn btn-primary"
-                                    href="{{ route('configurations.edit', $configuration['id']) }}">Editar</a>
+                                <a class="btn btn-primary" href="{{ route('configurations.edit', $configuration['id']) }}">
+                                    <i class='bx bxs-edit-alt'></i> Editar
+                                </a>
                             </td>
                         </tr>
                     @endforeach

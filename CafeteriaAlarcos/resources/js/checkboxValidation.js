@@ -6,12 +6,13 @@ window.addEventListener("DOMContentLoaded", () => {
             const checked = form.querySelectorAll(
                 "input[type=checkbox]:checked"
             );
+            const confirmModalElement = form.querySelector("#confirmModal");
 
             if (checked.length === 0) {
                 event.preventDefault();
                 event.stopPropagation();
 
-                let inputError = document.getElementById("checkbox-error");
+                let inputError = form.querySelector("#checkbox-error");
 
                 if (!inputError) {
                     const alertsContainer = document.getElementById("alerts");
@@ -37,6 +38,67 @@ window.addEventListener("DOMContentLoaded", () => {
                     inputError.textContent =
                         "Debes seleccionar al menos una opción";
                 }
+            } else if (confirmModalElement) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const confirmModal = new window.bootstrap.Modal(
+                    confirmModalElement
+                );
+                const confirmButton =
+                    confirmModalElement.querySelector("#confirm");
+                const cancelButtons = Array.from(
+                    confirmModalElement.querySelectorAll(
+                        "button[data-bs-dismiss=modal]"
+                    )
+                );
+
+                const addConfirmEventListener = () => {
+                    confirmButton.addEventListener("click", handleConfirmClick);
+                };
+
+                const removeConfirmEventListener = () => {
+                    confirmButton.removeEventListener(
+                        "click",
+                        handleConfirmClick
+                    );
+                };
+
+                const handleConfirmClick = () => {
+                    form.submit();
+                    removeEventListeners();
+                };
+
+                const addCancelEventListeners = () => {
+                    cancelButtons.forEach((cancelButton) => {
+                        cancelButton.addEventListener(
+                            "click",
+                            handleCancelClick
+                        );
+                    });
+                };
+
+                const removeCancelEventListeners = () => {
+                    cancelButtons.forEach((cancelButton) => {
+                        cancelButton.removeEventListener(
+                            "click",
+                            handleCancelClick
+                        );
+                    });
+                };
+
+                const handleCancelClick = () => {
+                    removeEventListeners();
+                };
+
+                const removeEventListeners = () => {
+                    removeConfirmEventListener();
+                    removeCancelEventListeners();
+                };
+
+                addConfirmEventListener();
+                addCancelEventListeners();
+                confirmModal.show();
             }
         });
     });

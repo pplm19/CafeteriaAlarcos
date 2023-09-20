@@ -90,7 +90,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-plus-circle'></i> Crear estructura
+                                    <i class="bi bi-plus-circle"></i> Crear estructura
                                 </button>
                             </div>
                         </form>

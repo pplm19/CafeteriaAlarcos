@@ -113,8 +113,9 @@
                             </div>
 
                             <div class="text-center mt-3">
-                                <button type="submit" class="btn btn-theme"><i class="bx bx-user-plus"></i>
-                                    {{ __('Register') }}</button>
+                                <button type="submit" class="btn btn-theme">
+                                    <i class="bx bx-user-plus"></i> {{ __('Register') }}
+                                </button>
                             </div>
                         </form>
                     </div>

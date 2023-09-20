@@ -19,7 +19,7 @@
                             @csrf
                             @method('PUT')
 
-                            <div class="mb-3">
+                            <div>
                                 <label for="name" class="form-label">Nombre</label>
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ $turn['name'] }}"
@@ -31,7 +31,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mt-3">
                                 <label for="date" class="form-label">Fecha</label>
                                 <input type="date" name="date" id="date"
                                     class="form-control @error('date') is-invalid @enderror" value="{{ $turn['date'] }}"
@@ -43,7 +43,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mt-3">
                                 <label for="start" class="form-label">Inicio</label>
                                 <input type="time" name="start" id="start"
                                     class="form-control @error('start') is-invalid @enderror" value="{{ $turn['start'] }}"
@@ -55,7 +55,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mt-3">
                                 <label for="end" class="form-label">Fin</label>
                                 <input type="time" name="end" id="end"
                                     class="form-control @error('end') is-invalid @enderror" value="{{ $turn['end'] }}" />
@@ -66,7 +66,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mt-3">
                                 <label for="description" class="form-label">Descripción</label>
                                 <input type="text" name="description" id="description"
                                     class="form-control @error('description') is-invalid @enderror"
@@ -78,8 +78,10 @@
                                 @enderror
                             </div>
 
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">Editar turno</button>
+                            <div class="text-center mt-3">
+                                <button type="submit" class="btn btn-theme">
+                                    <i class='bx bxs-edit-alt'></i> Editar turno
+                                </button>
                             </div>
                         </form>
                     </div>

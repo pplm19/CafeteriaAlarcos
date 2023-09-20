@@ -14,8 +14,12 @@
             @csrf
 
             <p class="d-flex justify-content-end gap-2">
-                <a class="btn btn-theme" href="{{ route('icategories.create') }}">Crear categoría</a>
-                <button type="submit" class="btn btn-danger btn-rounded">Eliminar seleccionados</button>
+                <a class="btn btn-theme" href="{{ route('icategories.create') }}">
+                    <i class="bi bi-plus-circle"></i> Crear categoría
+                </a>
+                <button type="submit" class="btn btn-danger btn-rounded">
+                    <i class="bi bi-trash"></i> Eliminar seleccionados
+                </button>
             </p>
 
             <div class="table-responsive">
@@ -35,8 +39,9 @@
                                 </td>
                                 <td>{{ $icategory['name'] }}</td>
                                 <td class="text-center align-middle">
-                                    <a class="btn btn-primary"
-                                        href="{{ route('icategories.edit', $icategory['id']) }}">Editar</a>
+                                    <a class="btn btn-primary" href="{{ route('icategories.edit', $icategory['id']) }}">
+                                        <i class='bx bxs-edit-alt'></i> Editar
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

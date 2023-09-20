@@ -35,19 +35,23 @@
                                         @csrf
 
                                         <input type="hidden" name="user_id" value="{{ $user['id'] }}">
-                                        <button type="submit" class="btn btn-success">Habilitar</button>
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-toggle-on"></i> Habilitar
+                                        </button>
                                     </form>
                                 @else
                                     <form action="{{ route('users.accept', $user['id']) }}" method="POST">
                                         @csrf
                                         @method('PUT')
 
-                                        <button type="submit" class="btn btn-success">Aceptar</button>
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-check-circle"></i> Aceptar
+                                        </button>
                                     </form>
 
                                     <button type="button" class="btn btn-danger btn-disable-user" data-bs-toggle="modal"
                                         data-bs-target="#declineModal" data-user-id="{{ $user['id'] }}">
-                                        Rechazar
+                                        <i class="bi bi-x-circle"></i> Rechazar
                                     </button>
                                 @endif
                             </td>
@@ -75,7 +79,7 @@
                         @csrf
 
                         <div class="modal-body">
-                            <input type="hidden" name="user_id" id="user_id" value="3">
+                            <input type="hidden" name="user_id" id="user_id">
                             <textarea type="text" name="disable_reason" id="disable_reason"
                                 class="form-control @error('disable_reason') is-invalid @enderror"
                                 placeholder="Tu cuenta ha sido rechazada, contacta con un administrador para obtener más información"

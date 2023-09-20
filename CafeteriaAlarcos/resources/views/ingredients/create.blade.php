@@ -53,7 +53,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-plus-circle'></i> Crear ingrediente
+                                    <i class="bi bi-plus-circle"></i> Crear ingrediente
                                 </button>
                             </div>
                         </form>

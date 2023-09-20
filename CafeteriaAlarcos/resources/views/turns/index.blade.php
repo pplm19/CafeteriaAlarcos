@@ -51,10 +51,22 @@
         </div>
 
         <div class="col-12 col-lg-8 col-xl-9 ps-0 ps-lg-3 pt-3 pt-lg-0">
-            <p class="d-flex justify-content-end">
+            <p class="d-flex justify-content-end gap-2">
                 <a class="btn btn-theme" href="{{ route('turns.create') }}">
-                    <i class="bi bi-plus-circle-fill"></i> Crear estructura
+                    <i class="bi bi-plus-circle"></i> Crear estructura
                 </a>
+                @isset($turnsList)
+                    <a href="{{ route('turns.copyStructure', ['date' => old('searchDate')]) }}"
+                        class="btn btn-secondary btn-rounded">
+                        <i class="bi bi-clipboard2-plus"></i> Copiar estructura
+                    </a>
+
+                    <a href="{{ route('turns.destroyStructure', ['date' => old('searchDate')]) }}"
+                        class="btn btn-danger btn-rounded">
+                        <i class="bi bi-trash"></i> Eliminar estructura
+                    </a>
+                @endisset
+
             </p>
 
             @isset($turnsList)
@@ -64,22 +76,13 @@
                     <input type="hidden" name="searchDate" value="{{ old('searchDate') }}">
 
                     <div class="py-3 d-flex justify-content-end gap-2">
-                        <a href="{{ route('turns.create', ['date' => old('searchDate')]) }}"
-                            class="btn btn-primary btn-rounded">
-                            Crear turno
+                        <a href="{{ route('turns.create', ['date' => old('searchDate')]) }}" class="btn btn-theme">
+                            <i class="bi bi-plus-circle"></i> Crear turno
                         </a>
 
-                        <a href="{{ route('turns.copyStructure', ['date' => old('searchDate')]) }}"
-                            class="btn btn-secondary btn-rounded">
-                            Copiar estructura
-                        </a>
-
-                        <a href="{{ route('turns.destroyStructure', ['date' => old('searchDate')]) }}"
-                            class="btn btn-danger btn-rounded">
-                            Eliminar estructura
-                        </a>
-
-                        <button type="submit" class="btn btn-danger btn-rounded">Eliminar seleccionados</button>
+                        <button type="submit" class="btn btn-danger btn-rounded">
+                            <i class="bi bi-trash"></i> Eliminar seleccionados
+                        </button>
                     </div>
 
                     <div class="table-responsive">
@@ -107,13 +110,20 @@
                                         <td>{{ $turn['end'] }}</td>
                                         <td>{{ $turn['description'] }}</td>
                                         <td class="text-center align-middle">
-                                            <a class="btn btn-primary" href="{{ route('turns.edit', $turn['id']) }}">Editar</a>
+                                            <a class="btn btn-primary" href="{{ route('turns.edit', $turn['id']) }}">
+                                                <i class='bx bxs-edit-alt'></i> Editar
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+
+                    @include('layouts.confirmModal', [
+                        'title' => 'Confirmar borrado',
+                        'content' => '¿Estás seguro de que quieres borrar estos registros?',
+                    ])
                 </form>
             @endisset
         </div>

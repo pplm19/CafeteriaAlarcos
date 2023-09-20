@@ -156,7 +156,7 @@
 
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
-                                    <i class='bx bxs-plus-circle'></i> Crear plato
+                                    <i class="bi bi-plus-circle"></i> Crear plato
                                 </button>
                             </div>
                         </form>
