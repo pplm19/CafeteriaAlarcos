@@ -33,9 +33,9 @@ class AllergenController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        Allergen::create($request->all());
+        $allergen = Allergen::create($request->all());
 
-        return redirect()->route('allergens.index'); // Success
+        return redirect()->route('allergens.index')->withSuccess("¡Alérgeno creado! Se ha creado satisfactoriamente el alérgeno $allergen->name.");
     }
 
     /**
@@ -51,7 +51,7 @@ class AllergenController extends Controller
      */
     public function edit(Allergen $allergen)
     {
-        return view('allergens.edit', ['allergen' => $allergen]); // Success
+        return view('allergens.edit', ['allergen' => $allergen]);
     }
 
     /**
@@ -65,7 +65,7 @@ class AllergenController extends Controller
 
         $allergen->update($request->all());
 
-        return redirect()->route('allergens.index'); // Success
+        return redirect()->route('allergens.index')->withSuccess('¡Alérgeno actualizado! Los cambios se han guardado correctamente.');
     }
 
     /**
@@ -88,6 +88,6 @@ class AllergenController extends Controller
             Allergen::find($allergen)->delete();
         }
 
-        return redirect()->route('allergens.index'); // Success
+        return redirect()->route('allergens.index')->withSuccess('¡Alérgenos eliminados! Los registros han sido eliminados exitosamente .');
     }
 }

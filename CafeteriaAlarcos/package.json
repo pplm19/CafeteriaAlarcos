@@ -6,7 +6,8 @@
         "build": "vite build",
         "setup": "composer install && php artisan storage:link",
         "seed": "php artisan migrate:fresh --seed --seeder=PermissionsSeeder && php artisan db:seed --class=ConfigurationSeeder && php artisan db:seed --class=TypeSeeder",
-        "devSeed": "npm run seed && php artisan db:seed --class=DevSeeder"
+        "devSeed": "npm run seed && php artisan db:seed --class=DevSeeder",
+        "clearCache": "php artisan cache:clear "
     },
     "devDependencies": {
         "@popperjs/core": "2.11.6",

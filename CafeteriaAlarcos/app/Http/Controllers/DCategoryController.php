@@ -33,9 +33,9 @@ class DCategoryController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        DCategory::create($request->all());
+        $dcategory = DCategory::create($request->all());
 
-        return redirect()->route('dcategories.index'); // Success
+        return redirect()->route('dcategories.index')->withSuccess("¡Categoría creada! Se ha creado satisfactoriamente la categoría $dcategory->name.");
     }
 
     /**
@@ -51,7 +51,7 @@ class DCategoryController extends Controller
      */
     public function edit(DCategory $dcategory)
     {
-        return view('dcategories.edit', ['dcategory' => $dcategory]); // Success
+        return view('dcategories.edit', ['dcategory' => $dcategory]);
     }
 
     /**
@@ -65,7 +65,7 @@ class DCategoryController extends Controller
 
         $dcategory->update($request->all());
 
-        return redirect()->route('dcategories.index'); // Success
+        return redirect()->route('dcategories.index')->withSuccess('¡Categoría actualizada! Los cambios se han guardado correctamente.');
     }
 
     /**
@@ -88,6 +88,6 @@ class DCategoryController extends Controller
             DCategory::find($dcategory)->delete();
         }
 
-        return redirect()->route('dcategories.index'); // Success
+        return redirect()->route('dcategories.index')->withSuccess('¡Categorías eliminadas! Los registros han sido eliminados exitosamente .');
     }
 }

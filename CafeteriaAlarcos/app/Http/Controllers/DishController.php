@@ -74,7 +74,7 @@ class DishController extends Controller
         if ($ingredients) $dish->ingredients()->sync($ingredients);
         if ($allergens) $dish->allergens()->sync($allergens);
 
-        return redirect()->route('dishes.index'); // Success
+        return redirect()->route('dishes.index')->withSuccess("¡Plato creado! Se ha creado satisfactoriamente el plato $dish->name.");
     }
 
     /**
@@ -130,6 +130,11 @@ class DishController extends Controller
             $fileName = $file->hashName();
             $file->storeAs('public/images/dishes', $fileName);
             $request->merge(['image' => $fileName]);
+
+            $imagePath = public_path('/storage/images/dishes/' . $dish['image']);
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            }
         }
 
         $dish->dcategories()->sync($dcategories);
@@ -138,7 +143,7 @@ class DishController extends Controller
 
         $dish->update($request->all());
 
-        return redirect()->route('dishes.index'); // Success
+        return redirect()->route('dishes.index')->withSuccess('¡Plato actualizado! Los cambios se han guardado correctamente.');
     }
 
     /**
@@ -170,6 +175,6 @@ class DishController extends Controller
             }
         }
 
-        return redirect()->route('dishes.index'); // Success
+        return redirect()->route('dishes.index')->withSuccess('¡Platos eliminados! Los registros han sido eliminados exitosamente .');
     }
 }

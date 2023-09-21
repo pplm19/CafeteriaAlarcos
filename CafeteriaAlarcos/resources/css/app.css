@@ -1655,10 +1655,25 @@ a.text-theme:hover {
 }
 
 #alerts {
-    z-index: 1000;
+    z-index: 980;
+    top: 10rem;
+    transition: all 0.5s;
+}
+
+#alerts.alerts-scrolled {
+    top: calc(10rem - 50px);
+}
+
+#alerts .alert {
+    transition: all 0.5s;
 }
 
 /* Fix in order not to break navbar dropdown */
 .fixed-bottom {
     z-index: 990;
+}
+
+/* Cookie consent */
+.cookie-consent {
+    background: rgba(26, 24, 22, 0.85);
 }

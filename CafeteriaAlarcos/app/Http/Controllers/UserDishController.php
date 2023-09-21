@@ -44,7 +44,7 @@ class UserDishController extends Controller
                 $ingredients = $request->input('ingredients');
                 $query->whereHas('ingredients', function ($subQuery) use ($ingredients) {
                     $subQuery->whereIn('ingredient_id', $ingredients);
-                });
+                }, '=', count($ingredients));
                 $searched = true;
             }
 

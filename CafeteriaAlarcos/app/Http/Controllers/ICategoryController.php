@@ -33,9 +33,9 @@ class ICategoryController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        ICategory::create($request->all());
+        $icategory = ICategory::create($request->all());
 
-        return redirect()->route('icategories.index'); // Success
+        return redirect()->route('icategories.index')->withSuccess("¡Categoría creada! Se ha creado satisfactoriamente la categoría $icategory->name.");
     }
 
     /**
@@ -51,7 +51,7 @@ class ICategoryController extends Controller
      */
     public function edit(ICategory $icategory)
     {
-        return view('icategories.edit', ['icategory' => $icategory]); // Success
+        return view('icategories.edit', ['icategory' => $icategory]);
     }
 
     /**
@@ -65,7 +65,7 @@ class ICategoryController extends Controller
 
         $icategory->update($request->all());
 
-        return redirect()->route('icategories.index'); // Success
+        return redirect()->route('icategories.index')->withSuccess('¡Categoría actualizada! Los cambios se han guardado correctamente.');
     }
 
     /**
@@ -88,6 +88,6 @@ class ICategoryController extends Controller
             ICategory::find($icategory)->delete();
         }
 
-        return redirect()->route('icategories.index'); // Success
+        return redirect()->route('icategories.index')->withSuccess('¡Categorías eliminadas! Los registros han sido eliminados exitosamente .');
     }
 }

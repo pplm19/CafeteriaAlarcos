@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Notifications\NewUserNotification;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Notifications\CustomNotification;
 
 class RegisterController extends Controller
 {
@@ -82,10 +82,13 @@ class RegisterController extends Controller
 
         Cache::increment('userRequests');
 
-        // $admins = User::role('SuperAdmin')->get();
-        // foreach ($admins as $admin) {
-        //     $admin->notify(new CustomNotification([]));
-        // }
+        $admins = User::role('SuperAdmin')->get();
+
+        $notification = new NewUserNotification();
+
+        foreach ($admins as $admin) {
+            $admin->notify($notification);
+        }
 
         return $user;
     }

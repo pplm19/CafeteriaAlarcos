@@ -149,13 +149,12 @@
                 @else
                     <a href="{{ route('register') }}" class="book-a-table-btn scrollto">Regístrate</a>
                 @endauth
-
             </div>
         </header><!-- End Header -->
 
-        <main id="content">
-            @include('layouts.alerts')
+        @include('layouts.alerts')
 
+        <main id="content">
             @yield('content')
         </main>
 
@@ -188,7 +187,7 @@
             <i class="bi bi-arrow-up-short"></i>
         </a>
 
-        {{-- @include('cookie-consent::index') --}}
+        @include('cookie-consent::index')
     </div>
 </body>
 

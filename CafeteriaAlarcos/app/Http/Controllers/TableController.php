@@ -38,7 +38,7 @@ class TableController extends Controller
 
         Table::create($request->all());
 
-        return redirect()->route('tables.index'); // Success
+        return redirect()->route('tables.index')->withSuccess("¡Mesa creada! Se ha creado satisfactoriamente la mesa.");
     }
 
     /**
@@ -71,7 +71,7 @@ class TableController extends Controller
 
         $table->update($request->all());
 
-        return redirect()->route('tables.index'); // Success
+        return redirect()->route('tables.index')->withSuccess('¡Mesa actualizada! Los cambios se han guardado correctamente.');
     }
 
     /**
@@ -94,6 +94,6 @@ class TableController extends Controller
             Table::find($icategory)->delete();
         }
 
-        return redirect()->route('tables.index'); // Success
+        return redirect()->route('tables.index')->withSuccess('¡Mesas eliminadas! Los registros han sido eliminados exitosamente .');
     }
 }

@@ -107,6 +107,7 @@ class BookingController extends Controller
             ]);
         }
 
-        return redirect()->route('bookings.index');
+        // return redirect()->route('bookings.index')->withSuccess('¡Reservas canceladas! Los usuarios han sido notificados exitosamente.');
+        return redirect()->route('bookings.index')->withSuccess('¡Reservas canceladas! Los registros han sido actualizados exitosamente.');
     }
 }

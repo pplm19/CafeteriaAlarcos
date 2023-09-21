@@ -33,9 +33,9 @@ class TypeController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        Type::create($request->all());
+        $type = Type::create($request->all());
 
-        return redirect()->route('types.index'); // Success
+        return redirect()->route('types.index')->withSuccess("¡Tipo creado! Se ha creado satisfactoriamente el tipo $type->name.");
     }
 
     /**
@@ -51,7 +51,7 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
-        return view('types.edit', ['type' => $type]); // Success
+        return view('types.edit', ['type' => $type]);
     }
 
     /**
@@ -65,7 +65,7 @@ class TypeController extends Controller
 
         $type->update($request->all());
 
-        return redirect()->route('types.index'); // Success
+        return redirect()->route('types.index')->withSuccess('¡Tipo actualizado! Los cambios se han guardado correctamente.');
     }
 
     /**
@@ -88,6 +88,6 @@ class TypeController extends Controller
             Type::find($type)->delete();
         }
 
-        return redirect()->route('types.index'); // Success
+        return redirect()->route('types.index')->withSuccess('¡Tipos eliminados! Los registros han sido eliminados exitosamente .');
     }
 }

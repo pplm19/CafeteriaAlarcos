@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -123,6 +124,8 @@ class UserController extends Controller
         $user = User::create($request->all());
 
         $user->assignRole(['User', 'SuperAdmin']);
+
+        event(new Registered($user));
 
         return redirect()->route('users.index');
     }

@@ -45,7 +45,7 @@ class MenuController extends Controller
 
         if ($dishes) $menu->dishes()->sync($dishes);
 
-        return redirect()->route('menus.index');
+        return redirect()->route('menus.index')->withSuccess("¡Menú creado! Se ha creado satisfactoriamente el menú $menu->name.");
     }
 
     /**
@@ -85,7 +85,7 @@ class MenuController extends Controller
 
         $menu->dishes()->sync($dishes);
 
-        return redirect()->route('menus.index');
+        return redirect()->route('menus.index')->withSuccess('¡Menú actualizado! Los cambios se han guardado correctamente.');
     }
 
     /**
@@ -108,6 +108,6 @@ class MenuController extends Controller
             Menu::find($menu)->delete();
         }
 
-        return redirect()->route('menus.index');
+        return redirect()->route('menus.index')->withSuccess('¡Menús eliminados! Los registros han sido eliminados exitosamente .');
     }
 }

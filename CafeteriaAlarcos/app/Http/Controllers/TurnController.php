@@ -57,9 +57,9 @@ class TurnController extends Controller
             'description' => ['nullable', 'string', 'max:255'],
         ]);
 
-        Turn::create($request->all());
+        $turn = Turn::create($request->all());
 
-        return redirect()->route('turns.index', ['search' => true, 'searchDate' => $request->input('date')]); // Success
+        return redirect()->route('turns.index', ['search' => true, 'searchDate' => $request->input('date')])->withSuccess("¡Turno creado! Se ha creado satisfactoriamente el turno $turn->name.");
     }
 
     /**
@@ -93,7 +93,7 @@ class TurnController extends Controller
 
         $turn->update($request->all());
 
-        return redirect()->route('turns.index'); // Success
+        return redirect()->route('turns.index', ['search' => true, 'searchDate' => $turn['date']])->withSuccess('¡Turno actualizado! Los cambios se han guardado correctamente.');
     }
 
     /**
@@ -118,7 +118,7 @@ class TurnController extends Controller
             Turn::find($turn)->delete();
         }
 
-        return back(); // Success
+        return back()->withSuccess('¡Turnos eliminados! Los registros han sido eliminados exitosamente .');
     }
 
     public function copyStructure(Request $request)
@@ -150,7 +150,7 @@ class TurnController extends Controller
             $turnCopy->save();
         }
 
-        return redirect()->route('turns.index', ['search' => true, 'searchDate' => $date]); // Success
+        return redirect()->route('turns.index', ['search' => true, 'searchDate' => $date])->withSuccess("¡Estructura copiada! Se ha copiado satisfactoriamente la estructura del $date.");
     }
 
     public function destroyStructure(Request $request)
@@ -165,6 +165,6 @@ class TurnController extends Controller
             $turn->delete();
         }
 
-        return redirect()->route('turns.index'); // Success
+        return redirect()->route('turns.index')->withSuccess('¡Estructura eliminada! Los registros han sido eliminados exitosamente .');
     }
 }

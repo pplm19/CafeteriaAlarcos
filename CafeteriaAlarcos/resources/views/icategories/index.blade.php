@@ -48,6 +48,11 @@
                     </tbody>
                 </table>
             </div>
+
+            @include('layouts.confirmModal', [
+                'title' => 'Confirmar borrado',
+                'content' => '¿Estás seguro de que quieres borrar estos registros?',
+            ])
         </form>
 
         <div class="d-flex justify-content-center d-sm-block">

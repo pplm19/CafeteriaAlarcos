@@ -35,9 +35,9 @@ class IngredientController extends Controller
             'i_category_id' => ['required', Rule::exists(ICategory::class, 'id')],
         ]);
 
-        Ingredient::create($request->all());
+        $ingredient = Ingredient::create($request->all());
 
-        return redirect()->route('ingredients.index'); // Success
+        return redirect()->route('ingredients.index')->withSuccess("¡Ingrediente creado! Se ha creado satisfactoriamente el ingrediente $ingredient->name.");
     }
 
     /**
@@ -68,7 +68,7 @@ class IngredientController extends Controller
 
         $ingredient->update($request->all());
 
-        return redirect()->route('ingredients.index'); // Success
+        return redirect()->route('ingredients.index')->withSuccess('¡Ingrediente actualizado! Los cambios se han guardado correctamente.');
     }
 
     /**
@@ -91,6 +91,6 @@ class IngredientController extends Controller
             Ingredient::find($ingredient)->delete();
         }
 
-        return redirect()->route('ingredients.index'); // Success
+        return redirect()->route('ingredients.index')->withSuccess('¡Ingredientes eliminados! Los registros han sido eliminados exitosamente .');
     }
 }

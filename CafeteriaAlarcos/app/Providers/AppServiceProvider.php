@@ -27,13 +27,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
-        // VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
-        //     return (new MailMessage)
-        //         ->subject('Test subject')
-        //         ->line('Line')
-        //         ->action('Action', $url);
-        // });
-
         if (Schema::hasTable('users')) {
             Cache::rememberForever('userRequests', function () {
                 return User::doesntHave('roles')->count();

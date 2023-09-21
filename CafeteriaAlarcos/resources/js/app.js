@@ -89,6 +89,7 @@ import { Swiper } from "swiper";
      */
     let selectHeader = select("#header");
     let selectTopbar = select("#topbar");
+    let selectAlerts = select("#alerts");
     if (selectHeader) {
         const headerScrolled = () => {
             if (window.scrollY > 100) {
@@ -96,11 +97,13 @@ import { Swiper } from "swiper";
                 if (selectTopbar) {
                     selectTopbar.classList.add("topbar-scrolled");
                 }
+                selectAlerts.classList.add("alerts-scrolled");
             } else {
                 selectHeader.classList.remove("header-scrolled");
                 if (selectTopbar) {
                     selectTopbar.classList.remove("topbar-scrolled");
                 }
+                selectAlerts.classList.remove("alerts-scrolled");
             }
         };
         window.addEventListener("load", headerScrolled);

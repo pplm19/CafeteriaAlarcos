@@ -61,7 +61,7 @@ class ConfigurationController extends Controller
 
         Session::put($configuration['name'], $configuration['value']);
 
-        return redirect()->route('configurations.index');
+        return redirect()->route('configurations.index')->withSuccess('¡Configuración actualizada! Los cambios se han guardado correctamente.');
     }
 
     /**
