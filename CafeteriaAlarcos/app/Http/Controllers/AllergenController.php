@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Allergen;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class AllergenController extends Controller
@@ -83,11 +85,20 @@ class AllergenController extends Controller
 
         $allergens = $request->input('select');
 
-        foreach ($allergens as $allergen) {
-            // [ERROR] ID dependency
-            Allergen::find($allergen)->delete();
-        }
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('allergens.index')->withSuccess('¡Alérgenos eliminados! Los registros han sido eliminados exitosamente .');
+            foreach ($allergens as $allergen) {
+                Allergen::find($allergen)->delete();
+            }
+
+            DB::commit();
+
+            return redirect()->route('allergens.index')->withSuccess('¡Alérgenos eliminados! Los registros han sido eliminados exitosamente.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('allergens.index')->withError('¡Error! No se pudieron eliminar algunos alérgenos seleccionados ya que están vinculados a un plato.');
+        }
     }
 }

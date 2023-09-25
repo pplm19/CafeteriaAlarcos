@@ -213,6 +213,8 @@ class UserBookingController extends Controller
                 'tables_remaining'
             )
             ->havingRaw('turn_remaining_guests > 0 AND tables_remaining > 0')
+            ->orderBy('date')
+            ->orderBy('start')
             ->paginate(15);
 
         return view('userbookings.available', ['turns' => $turns]);

@@ -118,7 +118,7 @@ class TurnController extends Controller
             Turn::find($turn)->delete();
         }
 
-        return back()->withSuccess('¡Turnos eliminados! Los registros han sido eliminados exitosamente .');
+        return back()->withSuccess('¡Turnos eliminados! Los registros han sido eliminados exitosamente.');
     }
 
     public function copyStructure(Request $request)
@@ -165,6 +165,6 @@ class TurnController extends Controller
             $turn->delete();
         }
 
-        return redirect()->route('turns.index')->withSuccess('¡Estructura eliminada! Los registros han sido eliminados exitosamente .');
+        return redirect()->route('turns.index')->withSuccess('¡Estructura eliminada! Los registros han sido eliminados exitosamente.');
     }
 }

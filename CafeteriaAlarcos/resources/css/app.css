@@ -1656,12 +1656,12 @@ a.text-theme:hover {
 
 #alerts {
     z-index: 980;
-    top: 10rem;
+    top: 120px;
     transition: all 0.5s;
 }
 
 #alerts.alerts-scrolled {
-    top: calc(10rem - 50px);
+    top: 70px;
 }
 
 #alerts .alert {

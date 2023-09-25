@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Type;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class TypeController extends Controller
@@ -83,11 +85,20 @@ class TypeController extends Controller
 
         $types = $request->input('select');
 
-        foreach ($types as $type) {
-            // [ERROR] ID dependency
-            Type::find($type)->delete();
-        }
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('types.index')->withSuccess('¡Tipos eliminados! Los registros han sido eliminados exitosamente .');
+            foreach ($types as $type) {
+                Type::find($type)->delete();
+            }
+
+            DB::commit();
+
+            return redirect()->route('types.index')->withSuccess('¡Tipos eliminados! Los registros han sido eliminados exitosamente.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('types.index')->withError('¡Error! No se pudieron eliminar algunos tipos seleccionados ya que están vinculados a un plato.');
+        }
     }
 }

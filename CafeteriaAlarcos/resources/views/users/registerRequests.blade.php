@@ -11,7 +11,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-bordered table-striped-columns table-hover align-middle">
+            <table class="table table-bordered table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <th scope="col" class="text-center align-middle">Nombre de usuario</th>
                     <th scope="col" class="text-center align-middle">Email</th>

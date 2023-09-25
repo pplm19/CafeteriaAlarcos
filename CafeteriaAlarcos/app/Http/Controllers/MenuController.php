@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
@@ -103,11 +105,20 @@ class MenuController extends Controller
 
         $menus = $request->input('select');
 
-        foreach ($menus as $menu) {
-            // [ERROR] ID dependency
-            Menu::find($menu)->delete();
-        }
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('menus.index')->withSuccess('¡Menús eliminados! Los registros han sido eliminados exitosamente .');
+            foreach ($menus as $menu) {
+                Menu::find($menu)->delete();
+            }
+
+            DB::commit();
+
+            return redirect()->route('menus.index')->withSuccess('¡Menús eliminados! Los registros han sido eliminados exitosamente.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('menus.index')->withError('¡Error! No se pudieron eliminar algunos menús seleccionados ya que están vinculados a varios platos.');
+        }
     }
 }

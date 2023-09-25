@@ -7,7 +7,9 @@ use App\Models\DCategory;
 use App\Models\Dish;
 use App\Models\Ingredient;
 use App\Models\Type;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 
@@ -161,20 +163,35 @@ class DishController extends Controller
 
         $dishes = $request->input('select');
 
-        foreach ($dishes as $dish) {
-            // [ERROR] ID dependency
-            $dishData = Dish::find($dish);
+        try {
+            DB::beginTransaction();
 
-            $image = $dishData['image'];
+            $deleteImages = [];
 
-            $dishData->delete();
+            foreach ($dishes as $dish) {
+                $dishData = Dish::find($dish);
 
-            $imagePath = public_path('/storage/images/dishes/' . $image);
-            if (File::exists($imagePath)) {
+                $image = $dishData['image'];
+
+                $dishData->delete();
+
+                $imagePath = public_path('/storage/images/dishes/' . $image);
+                if (File::exists($imagePath)) {
+                    array_push($deleteImages, $imagePath);
+                }
+            }
+
+            DB::commit();
+
+            foreach ($deleteImages as $imagePath) {
                 File::delete($imagePath);
             }
-        }
 
-        return redirect()->route('dishes.index')->withSuccess('¡Platos eliminados! Los registros han sido eliminados exitosamente .');
+            return redirect()->route('dishes.index')->withSuccess('¡Platos eliminados! Los registros han sido eliminados exitosamente.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('dishes.index')->withError('¡Error! No se pudieron eliminar algunos platos seleccionados ya que están vinculados a un menú.');
+        }
     }
 }

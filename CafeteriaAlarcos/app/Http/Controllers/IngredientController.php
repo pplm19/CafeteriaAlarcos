@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ICategory;
 use App\Models\Ingredient;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class IngredientController extends Controller
@@ -86,11 +88,20 @@ class IngredientController extends Controller
 
         $ingredients = $request->input('select');
 
-        foreach ($ingredients as $ingredient) {
-            // [ERROR] ID dependency
-            Ingredient::find($ingredient)->delete();
-        }
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('ingredients.index')->withSuccess('¡Ingredientes eliminados! Los registros han sido eliminados exitosamente .');
+            foreach ($ingredients as $ingredient) {
+                Ingredient::find($ingredient)->delete();
+            }
+
+            DB::commit();
+
+            return redirect()->route('ingredients.index')->withSuccess('¡Ingredientes eliminados! Los registros han sido eliminados exitosamente.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('ingredients.index')->withError('¡Error! No se pudieron eliminar algunos ingredientes seleccionados ya que están vinculados a un plato.');
+        }
     }
 }

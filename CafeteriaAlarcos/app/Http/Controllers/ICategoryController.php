@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ICategory;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class ICategoryController extends Controller
@@ -83,11 +85,20 @@ class ICategoryController extends Controller
 
         $icategories = $request->input('select');
 
-        foreach ($icategories as $icategory) {
-            // [ERROR] ID dependency
-            ICategory::find($icategory)->delete();
-        }
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('icategories.index')->withSuccess('¡Categorías eliminadas! Los registros han sido eliminados exitosamente .');
+            foreach ($icategories as $icategory) {
+                ICategory::find($icategory)->delete();
+            }
+
+            DB::commit();
+
+            return redirect()->route('icategories.index')->withSuccess('¡Categorías eliminadas! Los registros han sido eliminados exitosamente.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('icategories.index')->withError('¡Error! No se pudieron eliminar algunas categorías seleccionadas ya que están vinculadas a un ingrediente.');
+        }
     }
 }

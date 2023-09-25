@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\DCategory;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class DCategoryController extends Controller
@@ -83,11 +85,20 @@ class DCategoryController extends Controller
 
         $dcategories = $request->input('select');
 
-        foreach ($dcategories as $dcategory) {
-            // [ERROR] ID dependency
-            DCategory::find($dcategory)->delete();
-        }
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('dcategories.index')->withSuccess('¡Categorías eliminadas! Los registros han sido eliminados exitosamente .');
+            foreach ($dcategories as $dcategory) {
+                DCategory::find($dcategory)->delete();
+            }
+
+            DB::commit();
+
+            return redirect()->route('dcategories.index')->withSuccess('¡Categorías eliminadas! Los registros han sido eliminados exitosamente.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('dcategories.index')->withError('¡Error! No se pudieron eliminar algunas categorías seleccionadas ya que están vinculadas a un plato.');
+        }
     }
 }

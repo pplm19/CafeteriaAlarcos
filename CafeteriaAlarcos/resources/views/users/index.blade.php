@@ -126,7 +126,7 @@
                 </a>
             </p>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped-columns table-hover align-middle">
+                <table class="table table-bordered table-striped table-hover align-middle">
                     <thead class="table-dark">
                         <th scope="col" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'username', 'direction' => old('field') === 'username' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"

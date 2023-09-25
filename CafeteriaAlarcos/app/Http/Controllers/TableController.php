@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Table;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class TableController extends Controller
@@ -89,11 +91,20 @@ class TableController extends Controller
 
         $icategories = $request->input('select');
 
-        foreach ($icategories as $icategory) {
-            // [ERROR] ID dependency
-            Table::find($icategory)->delete();
-        }
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('tables.index')->withSuccess('¡Mesas eliminadas! Los registros han sido eliminados exitosamente .');
+            foreach ($icategories as $icategory) {
+                Table::find($icategory)->delete();
+            }
+
+            DB::commit();
+
+            return redirect()->route('tables.index')->withSuccess('¡Mesas eliminadas! Los registros han sido eliminados exitosamente.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('tables.index')->withError('¡Error! No se pudieron eliminar algunas mesas seleccionadas ya que están vinculadas a una reserva.');
+        }
     }
 }

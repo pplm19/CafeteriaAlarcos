@@ -4,7 +4,7 @@
     <div class="content py-5 px-1 px-md-5">
         <h1>Historial de reservas</h1>
 
-        <table class="table table-striped-columns">
+        <table class="table table-striped">
             <thead>
                 <th scope="col" class="text-center align-middle">#</th>
                 <th scope="col" class="text-center align-middle">Descripción</th>

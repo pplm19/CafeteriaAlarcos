@@ -7,7 +7,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-striped table-bordered">
+            <table class="table table-striped-colums table-bordered">
                 <thead>
                     <th scope="col" class="text-center align-middle">Nombre de usuario</th>
                     <th scope="col" class="text-center align-middle">Email</th>

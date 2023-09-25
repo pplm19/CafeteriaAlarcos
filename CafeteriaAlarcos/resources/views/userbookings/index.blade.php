@@ -2,11 +2,13 @@
 
 @section('content')
     <div class="content py-5 px-1 px-md-5">
-        <h1>Reservas</h1>
+        <div class="text-center mb-5">
+            <h1>Reservas</h1>
+        </div>
 
         <a class="btn btn-primary" href="{{ route('userbookings.available') }}">Realizar reserva</a>
 
-        <table class="table table-striped-columns">
+        <table class="table table-striped">
             <thead>
                 <th scope="col" class="text-center align-middle">Descripción</th>
                 <th scope="col" class="text-center align-middle">Comensales</th>
