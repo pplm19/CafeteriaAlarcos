@@ -84,7 +84,7 @@
         </div>
 
         <div
-            class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-0 row g-0 row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-4">
+            class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-0 row g-0 row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3">
             @foreach ($dishes as $dish)
                 <div class="col px-0 px-md-3 mb-4">
                     <div class="card h-100">
@@ -92,8 +92,7 @@
                         @php($hasImg = strpos($imgUrl, $dish['image']))
                         @if ($hasImg)
                             <a href="">
-                                <img src="{{ $imgUrl }}" alt="Imagen de {{ $dish['name'] }}"
-                                    class="img-fluid w-100 rounded-full aspect-ratio-1x1">
+                                <img src="{{ $imgUrl }}" alt="Imagen de {{ $dish['name'] }}" class="card-img-top">
                             </a>
                         @endif
 
