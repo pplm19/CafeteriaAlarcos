@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @pushOnce('scripts')
-    @vite(['resources/js/checkboxValidation.js'])
+    @vite(['resources/js/checkboxValidation.js', 'resources/js/rowCheckbox.js'])
 @endPushOnce
 
 @section('content')
@@ -32,7 +32,7 @@
 
                     <tbody>
                         @foreach ($types as $type)
-                            <tr>
+                            <tr class="selectable">
                                 <td class="text-center align-middle">
                                     <input class="form-check-input" type="checkbox" name="select[]"
                                         value="{{ $type['id'] }}">

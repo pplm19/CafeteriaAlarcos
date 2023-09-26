@@ -16,6 +16,6 @@ class Menu extends Model
 
     public function dishes()
     {
-        return $this->belongsToMany(Dish::class, 'dish_menus');
+        return $this->belongsToMany(Dish::class, 'dish_menus')->withPivot('order')->orderBy('order');
     }
 }

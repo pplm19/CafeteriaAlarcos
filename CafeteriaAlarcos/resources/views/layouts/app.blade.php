@@ -26,7 +26,7 @@
         rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js', 'resources/js/alerts.js'])
     @stack('scripts')
 </head>
 
@@ -147,7 +147,7 @@
                         @csrf
                     </form>
                 @else
-                    <a href="{{ route('register') }}" class="book-a-table-btn scrollto">Regístrate</a>
+                    <a href="{{ route('login') }}" class="book-a-table-btn scrollto">Iniciar sesión</a>
                 @endauth
             </div>
         </header><!-- End Header -->

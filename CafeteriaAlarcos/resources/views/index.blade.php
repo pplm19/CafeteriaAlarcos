@@ -28,9 +28,9 @@
                                     @endhasrole
                                 @else
                                     <div>
-                                        <a href="{{ route('login') }}"
-                                            class="btn-menu animate__animated animate__fadeInUp">Inicia
-                                            sesión</a>
+                                        <a href="{{ route('login') }}" class="btn-menu animate__animated animate__fadeInUp">
+                                            Iniciar sesión
+                                        </a>
                                         <a href="{{ route('register') }}"
                                             class="btn-book animate__animated animate__fadeInUp">Regístrate</a>
                                     </div>

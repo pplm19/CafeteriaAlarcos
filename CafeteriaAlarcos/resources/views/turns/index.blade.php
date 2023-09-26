@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @pushOnce('scripts')
-    @vite(['resources/js/bootstrapValidation.js', 'resources/js/checkboxValidation.js'])
+    @vite(['resources/js/bootstrapValidation.js', 'resources/js/checkboxValidation.js', 'resources/js/rowCheckbox.js'])
 @endPushOnce
 
 @section('content')
@@ -99,7 +99,7 @@
 
                             <tbody>
                                 @foreach ($turnsList as $turn)
-                                    <tr>
+                                    <tr class="selectable">
                                         <td class="text-center align-middle">
                                             <input class="form-check-input" type="checkbox" name="select[]"
                                                 value="{{ $turn['id'] }}">

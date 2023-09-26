@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @pushOnce('scripts')
-    @vite(['resources/js/bootstrapValidation.js', 'resources/js/checkboxValidation.js'])
+    @vite(['resources/js/bootstrapValidation.js', 'resources/js/checkboxValidation.js', 'resources/js/rowCheckbox.js'])
 @endPushOnce
 
 @section('content')
@@ -66,7 +66,7 @@
 
                         <tbody>
                             @foreach ($bookings as $booking)
-                                <tr>
+                                <tr class="selectable">
                                     <th>{{ $booking['description'] }}</th>
                                     <td>{{ $booking['bookingTables']->sum('guests') }}</td>
 

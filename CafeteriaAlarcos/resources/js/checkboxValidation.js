@@ -15,25 +15,18 @@ window.addEventListener("DOMContentLoaded", () => {
                 let inputError = form.querySelector("#checkbox-error");
 
                 if (!inputError) {
-                    const alertsContainer = document.getElementById("alerts");
+                    const errorModalElement =
+                        document.querySelector("#errorModal");
 
-                    const alertDiv = document.createElement("div");
-                    alertDiv.className =
-                        "alert alert-danger alert-dismissible fade show col-11 col-sm-8 col-md-7 col-lg-6 col-xl-5 col-xxl-4";
-                    alertDiv.role = "alert";
+                    if (errorModalElement) {
+                        const errorModalBody =
+                            errorModalElement.querySelector(".modal-body");
 
-                    const closeButton = document.createElement("button");
-                    closeButton.type = "button";
-                    closeButton.className = "btn-close";
-                    closeButton.setAttribute("data-bs-dismiss", "alert");
-                    closeButton.setAttribute("aria-label", "Close");
+                        errorModalBody.textContent =
+                            "Debes seleccionar al menos una opción";
 
-                    alertDiv.textContent =
-                        "Debes seleccionar al menos una opción";
-
-                    alertDiv.appendChild(closeButton);
-
-                    alertsContainer.appendChild(alertDiv);
+                        new window.bootstrap.Modal(errorModalElement).show();
+                    }
                 } else {
                     inputError.textContent =
                         "Debes seleccionar al menos una opción";

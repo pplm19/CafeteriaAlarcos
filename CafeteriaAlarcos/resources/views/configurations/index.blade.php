@@ -11,7 +11,7 @@
                 <thead class="table-dark">
                     <th scope="col" class="text-center align-middle">Nombre</th>
                     <th scope="col" class="text-center align-middle">Valor</th>
-                    <th scope="col" class="text-center align-middle">Acciones</th>
+                    <th scope="col" class="text-center align-middle w-10">Acciones</th>
                 </thead>
 
                 <tbody>

@@ -1668,6 +1668,16 @@ a.text-theme:hover {
     transition: all 0.5s;
 }
 
+.selectable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.selectable > *:has(a, button),
+.selectable img {
+    cursor: auto;
+}
+
 /* Fix in order not to break navbar dropdown */
 .fixed-bottom {
     z-index: 990;
