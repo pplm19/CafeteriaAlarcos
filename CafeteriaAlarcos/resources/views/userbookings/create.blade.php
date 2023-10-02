@@ -6,6 +6,10 @@
 
 @section('content')
     <div class="content py-5 px-1 px-md-5">
+        <a href="{{ route('userbookings.available') }}" class="btn btn-secondary">
+            <i class="bi bi-backspace me-1"></i> Volver
+        </a>
+
         <div class="text-center mb-5">
             <h1>Realizar reserva</h1>
         </div>
@@ -32,8 +36,8 @@
             </table>
         </div>
 
-        <div class="w-25 mx-auto pt-4">
-            <div class="card">
+        <div class="pt-4 row justify-content-center">
+            <div class="card col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3">
                 <div class="card-body">
                     <form action="{{ route('userbookings.store') }}" method="POST" class="needs-validation" novalidate>
                         @csrf
@@ -41,13 +45,11 @@
                         <input type="number" name="turn_id" value="{{ $turn['id'] }}" hidden>
 
                         <div class="row g-3 mb-3">
-                            <div class="col">
+                            <div class="col-12 col-xl-8">
                                 <label for="table_id" class="form-label">Mesa</label>
                                 <select name="table_id" id="table_id"
                                     class="form-select @error('table_id') is-invalid @enderror" required>
-                                    @if (old('table_id', null) === null)
-                                        <option selected disabled value="">Selecciona una mesa</option>
-                                    @endif
+                                    <option selected disabled value="">Selecciona una mesa</option>
                                     @foreach ($tables as $table)
                                         <option value="{{ $table['id'] }}" @selected($table['id'] == old('table_id', null))>
                                             Comensales: {{ $table['minNumber'] }} - {{ $table['maxNumber'] }}
@@ -62,11 +64,11 @@
                                 @enderror
                             </div>
 
-                            <div class="col-4">
-                                <label for="guests" class="form-label">Número de comensales</label>
+                            <div class="col-12 col-xl-4">
+                                <label for="guests" class="form-label">Comensales</label>
                                 <input type="number" name="guests" id="guests"
-                                    class="form-control @error('guests') is-invalid @enderror" value="{{ old('guests') }}"
-                                    required min="1" max="65535" />
+                                    class="form-control @error('guests') is-invalid @enderror"
+                                    value="{{ old('guests', 1) }}" required min="1" max="65535" />
                                 @error('guests')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -78,7 +80,9 @@
                                 <label for="description" class="form-label">Descripción</label>
                                 <input type="text" name="description" id="description"
                                     class="form-control @error('description') is-invalid @enderror"
-                                    value="{{ old('description') }}" maxlength="255" />
+                                    value="{{ old('description') }}" maxlength="255"
+                                    placeholder="Alérgenos de los comensales" />
+
                                 @error('description')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -88,7 +92,7 @@
                         </div>
 
                         @auth
-                            <div class="d-flex justify-content-end">
+                            <div class="text-center">
                                 <button type="submit" class="btn btn-theme">Realizar reserva</button>
                             </div>
                         @endauth

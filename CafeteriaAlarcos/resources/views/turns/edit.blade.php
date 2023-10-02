@@ -78,6 +78,25 @@
                                 @enderror
                             </div>
 
+                            <div class="form-floating mt-3">
+                                <select name="menu_id" id="menu_id"
+                                    class="form-select @error('menu_id') is-invalid @enderror" required>
+                                    <option selected disabled value="">Selecciona un menú</option>
+                                    @foreach ($menus as $menu)
+                                        <option value="{{ $menu['id'] }}" @selected($menu['id'] == $turn['menu']['id'])>
+                                            {{ $menu['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <label for="menu_id">Menú</label>
+
+                                @error('menu_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-theme">
                                     <i class='bx bxs-edit-alt'></i> Editar turno

@@ -89,7 +89,9 @@ class AllergenController extends Controller
             DB::beginTransaction();
 
             foreach ($allergens as $allergen) {
-                Allergen::find($allergen)->delete();
+                $allergenDB = Allergen::find($allergen);
+                $allergenDB->dishes()->detach();
+                $allergenDB->delete();
             }
 
             DB::commit();
@@ -98,7 +100,7 @@ class AllergenController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('allergens.index')->withError('¡Error! No se pudieron eliminar algunos alérgenos seleccionados ya que están vinculados a un plato.');
+            return redirect()->route('allergens.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
         }
     }
 }

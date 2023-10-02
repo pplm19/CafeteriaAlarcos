@@ -22,41 +22,50 @@
                 </thead>
 
                 <tbody>
-                    @foreach ($users as $user)
+                    @if (count($users) === 0)
                         <tr>
-                            <td>{{ $user['username'] }}</td>
-                            <td>{{ $user['email'] }}</td>
-                            <td>{{ $user['name'] }}</td>
-                            <td>{{ isset($user['lastname']) ? $user['lastname'] : 'N/A' }}</td>
-                            <td>{{ isset($user['phone']) ? $user['phone'] : 'N/A' }}</td>
-                            <td class="d-flex justify-content-center flex-wrap gap-2">
-                                @if ($user['disabled'])
-                                    <form action="{{ route('users.toggleDisable') }}" method="POST">
-                                        @csrf
-
-                                        <input type="hidden" name="user_id" value="{{ $user['id'] }}">
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="bi bi-toggle-on"></i> Habilitar
-                                        </button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('users.accept', $user['id']) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="bi bi-check-circle"></i> Aceptar
-                                        </button>
-                                    </form>
-
-                                    <button type="button" class="btn btn-danger btn-disable-user" data-bs-toggle="modal"
-                                        data-bs-target="#declineModal" data-user-id="{{ $user['id'] }}">
-                                        <i class="bi bi-x-circle"></i> Rechazar
-                                    </button>
-                                @endif
+                            <td colspan="6" class="text-center">
+                                No se ha encontrado ningún usuario pendiente de verificación
                             </td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($users as $user)
+                            <tr>
+                                <td>{{ $user['username'] }}</td>
+                                <td>{{ $user['email'] }}</td>
+                                <td>{{ $user['name'] }}</td>
+                                <td>{{ isset($user['lastname']) ? $user['lastname'] : 'N/A' }}</td>
+                                <td>{{ isset($user['phone']) ? $user['phone'] : 'N/A' }}</td>
+                                <td class="d-flex justify-content-center flex-wrap gap-2">
+                                    @if ($user['disabled'])
+                                        <form action="{{ route('users.toggleDisable') }}" method="POST">
+                                            @csrf
+
+                                            <input type="hidden" name="user_id" value="{{ $user['id'] }}">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="bi bi-toggle-on"></i> Habilitar
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('users.accept', $user['id']) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="bi bi-check-circle"></i> Aceptar
+                                            </button>
+                                        </form>
+
+                                        <button type="button" class="btn btn-danger btn-disable-user"
+                                            data-bs-toggle="modal" data-bs-target="#declineModal"
+                                            data-user-id="{{ $user['id'] }}">
+                                            <i class="bi bi-x-circle"></i> Rechazar
+                                        </button>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

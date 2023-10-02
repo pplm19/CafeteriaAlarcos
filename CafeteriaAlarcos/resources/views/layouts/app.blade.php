@@ -63,13 +63,23 @@
                         <li><a class="nav-link @if (request()->is('userdishes')) active @endif"
                                 href="{{ route('userdishes.index') }}">Platos</a></li>
                         <li><a class="nav-link scrollto" href="{{ route('index') }}#contact">Contacto</a></li>
-                        {{-- @auth
-                            <li><a class="nav-link @if (request()->is('profile*')) active @endif"
-                                    href="{{ route('profile.index') }}">Perfil</a></li>
-                        @endauth --}}
+                        @auth
+                            <li>
+                                <a class="nav-link @if (request()->is('userbookings*')) active @endif"
+                                    href="{{ route('userbookings.index') }}">
+                                    Reservas
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link @if (request()->is('profile*')) active @endif"
+                                    href="{{ route('profile.index') }}">
+                                    Perfil
+                                </a>
+                            </li>
+                        @endauth
                         @hasrole('SuperAdmin')
                             <li class="dropdown">
-                                <a href="" @class(['active' => request()->is('admin*')])>
+                                <a @class(['cursor-default', 'active' => request()->is('admin*')])>
                                     <span>Administración</span>
                                     @if (Cache::get('userRequests') > 0)
                                         <span class="badge text-bg-danger ms-2">{{ Cache::get('userRequests') }}</span>

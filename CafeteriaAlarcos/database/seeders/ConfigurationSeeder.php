@@ -28,5 +28,10 @@ class ConfigurationSeeder extends Seeder
             'name' => 'maxDiasCancelacionReserva',
             'value' => 3,
         ]);
+
+        Configuration::create([
+            'name' => 'precioMenu',
+            'value' => 12,
+        ]);
     }
 }

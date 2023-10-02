@@ -6,61 +6,76 @@
             <h1>Reservas</h1>
         </div>
 
-        <a class="btn btn-primary" href="{{ route('userbookings.available') }}">Realizar reserva</a>
+        <div class="pb-3 d-flex justify-content-end gap-2">
+            <a class="btn btn-primary btn-rounded" href="{{ route('userbookings.available') }}">
+                Disponibilidad
+            </a>
+            <a class="btn btn-secondary btn-rounded" href="{{ route('userbookings.history') }}">
+                Historial
+            </a>
+        </div>
 
-        <table class="table table-striped">
-            <thead>
-                <th scope="col" class="text-center align-middle">Descripción</th>
-                <th scope="col" class="text-center align-middle">Comensales</th>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <th scope="col" class="text-center align-middle">Descripción</th>
+                    <th scope="col" class="text-center align-middle">Comensales</th>
 
-                <th scope="col" class="text-center align-middle">Nombre del turno</th>
-                <th scope="col" class="text-center align-middle">Fecha</th>
-                <th scope="col" class="text-center align-middle">Inicio</th>
-                <th scope="col" class="text-center align-middle">Fin</th>
-                <th scope="col" class="text-center align-middle">Descripción del turno</th>
+                    <th scope="col" class="text-center align-middle">Nombre del turno</th>
+                    <th scope="col" class="text-center align-middle">Fecha</th>
+                    <th scope="col" class="text-center align-middle">Inicio</th>
+                    <th scope="col" class="text-center align-middle">Fin</th>
+                    <th scope="col" class="text-center align-middle">Descripción del turno</th>
 
-                <th scope="col" class="text-center align-middle">Mesas</th>
+                    <th scope="col" class="text-center align-middle">Mesas</th>
 
-                <th scope="col" class="text-center align-middle">Acciones</th>
-            </thead>
+                    <th scope="col" class="text-center align-middle">Acciones</th>
+                </thead>
 
-            <tbody>
-                @foreach ($userbookings as $userbooking)
-                    <tr>
-                        <th>{{ $userbooking['description'] }}</th>
-                        <td>{{ $userbooking['bookingTables']->sum('guests') }}</td>
+                <tbody>
+                    @if (count($userbookings) === 0)
+                        <tr>
+                            <td colspan="9" class="text-center">No se ha encontrado ninguna reserva pendiente</td>
+                        </tr>
+                    @else
+                        @foreach ($userbookings as $userbooking)
+                            <tr>
+                                <th>{{ $userbooking['description'] }}</th>
+                                <td>{{ $userbooking['bookingTables']->sum('guests') }}</td>
 
-                        <td>{{ $userbooking['turn']['name'] }}</td>
-                        <td>{{ $userbooking['turn']['date'] }}</td>
-                        <td>{{ $userbooking['turn']['start'] }}</td>
-                        <td>{{ $userbooking['turn']['end'] }}</td>
-                        <td>{{ $userbooking['turn']['description'] }}</td>
+                                <td>{{ $userbooking['turn']['name'] }}</td>
+                                <td>{{ $userbooking['turn']['date'] }}</td>
+                                <td>{{ $userbooking['turn']['start'] }}</td>
+                                <td>{{ $userbooking['turn']['end'] }}</td>
+                                <td>{{ $userbooking['turn']['description'] }}</td>
 
-                        <td>
-                            <ul>
-                                @foreach ($userbooking['tables'] as $table)
-                                    <li>
-                                        {{ $table['minNumber'] }} - {{ $table['maxNumber'] }} comensales
-                                        @isset($table['description'])
-                                            - {{ $table['description'] }}
-                                        @endisset
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </td>
+                                <td>
+                                    <ul>
+                                        @foreach ($userbooking['tables'] as $table)
+                                            <li>
+                                                {{ $table['minNumber'] }} - {{ $table['maxNumber'] }} comensales
+                                                @isset($table['description'])
+                                                    - {{ $table['description'] }}
+                                                @endisset
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </td>
 
-                        <td>
-                            <form action="{{ route('userbookings.cancel', $userbooking['id']) }}" method="POST">
-                                @csrf
-                                @method('PUT')
+                                <td>
+                                    <form action="{{ route('userbookings.cancel', $userbooking['id']) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
 
-                                <button type="submit" class="btn btn-danger">Cancelar reserva</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                                        <button type="submit" class="btn btn-danger">Cancelar reserva</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
 
         <div class="d-flex justify-content-center d-sm-block">
             {{ $userbookings->links() }}

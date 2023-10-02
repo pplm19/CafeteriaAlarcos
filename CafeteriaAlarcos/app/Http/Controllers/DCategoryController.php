@@ -89,7 +89,9 @@ class DCategoryController extends Controller
             DB::beginTransaction();
 
             foreach ($dcategories as $dcategory) {
-                DCategory::find($dcategory)->delete();
+                $dcategoryDB = DCategory::find($dcategory);
+                $dcategoryDB->dishes()->detach();
+                $dcategoryDB->delete();
             }
 
             DB::commit();
@@ -98,7 +100,7 @@ class DCategoryController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dcategories.index')->withError('¡Error! No se pudieron eliminar algunas categorías seleccionadas ya que están vinculadas a un plato.');
+            return redirect()->route('dcategories.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
         }
     }
 }

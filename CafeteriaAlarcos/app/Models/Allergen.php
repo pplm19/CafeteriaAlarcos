@@ -12,4 +12,9 @@ class Allergen extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function dishes()
+    {
+        return $this->belongsToMany(Dish::class, 'dish_allergens');
+    }
 }

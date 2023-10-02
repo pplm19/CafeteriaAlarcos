@@ -104,7 +104,7 @@ class TableController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('tables.index')->withError('¡Error! No se pudieron eliminar algunas mesas seleccionadas ya que están vinculadas a una reserva.');
+            return redirect()->route('tables.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
         }
     }
 }

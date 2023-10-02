@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Configuration;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 
 class ConfigurationController extends Controller
 {
@@ -59,7 +59,10 @@ class ConfigurationController extends Controller
 
         $configuration->update($request->all());
 
-        Session::put($configuration['name'], $configuration['value']);
+        Cache::forget($configuration['name']);
+        Cache::rememberForever($configuration['name'], function ($configuration) {
+            return Configuration::where('name', $configuration['name'])->value('value');
+        });
 
         return redirect()->route('configurations.index')->withSuccess('¡Configuración actualizada! Los cambios se han guardado correctamente.');
     }

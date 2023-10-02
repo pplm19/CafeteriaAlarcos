@@ -33,7 +33,7 @@
 
                             <div class="form-control mt-3">
                                 <label for="imageFile" class="form-label">Imagen</label>
-                                <input type="file" name="imageFile" id="imageFile"
+                                <input type="file" accept="image/*" name="imageFile" id="imageFile"
                                     class="form-control @error('imageFile') is-invalid @enderror"
                                     value="{{ old('imageFile') }}" />
 
@@ -44,11 +44,11 @@
                                 @enderror
                             </div>
 
-                            <div class="form-floating mt-3">
-                                <input type="text" name="recipe" id="recipe"
-                                    class="form-control @error('recipe') is-invalid @enderror" value="{{ old('recipe') }}"
-                                    placeholder="Receta" maxlength="255" />
-                                <label for="recipe"><i class='bx bxs-food-menu'></i> Receta</label>
+                            <div class="form-control mt-3">
+                                <label for="recipe">Receta</label>
+                                <input type="file" accept=".pdf" name="recipe" id="recipe"
+                                    class="form-control @error('recipe') is-invalid @enderror"
+                                    value="{{ old('recipe') }}" />
 
                                 @error('recipe')
                                     <span class="invalid-feedback" role="alert">
@@ -73,9 +73,7 @@
                             <div class="form-floating mt-3">
                                 <select name="type_id" id="type_id"
                                     class="form-select @error('type_id') is-invalid @enderror" required>
-                                    @if (old('type_id', null) === null)
-                                        <option selected disabled value="">Selecciona un tipo de plato</option>
-                                    @endif
+                                    <option selected disabled value="">Selecciona un tipo de plato</option>
                                     @foreach ($types as $type)
                                         <option value="{{ $type['id'] }}" @selected($type['id'] == old('type_id', null))>
                                             {{ $type['name'] }}

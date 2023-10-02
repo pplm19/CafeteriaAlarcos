@@ -129,21 +129,6 @@
                 <table class="table table-bordered table-striped table-hover align-middle">
                     <thead class="table-dark">
                         <th scope="col" class="text-center align-middle">
-                            <a href="{{ route('users.index', ['field' => 'username', 'direction' => old('field') === 'username' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-white">
-                                Nombre de usuario
-                                @if (old('field', null) === 'username')
-                                    @if (old('direction') === 'ASC')
-                                        <i class="bi bi-chevron-up"></i>
-                                    @else
-                                        <i class="bi bi-chevron-down"></i>
-                                    @endif
-                                @else
-                                    <i class="bi bi-chevron-expand"></i>
-                                @endif
-                            </a>
-                        </th>
-                        <th scope="col" class="text-center align-middle">
                             <a href="{{ route('users.index', ['field' => 'email', 'direction' => old('field') === 'email' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
                                 class="text-decoration-none text-white">
                                 Email
@@ -203,47 +188,42 @@
                                 @endif
                             </a>
                         </th>
-                        <th scope="col" class="text-center align-middle">
-                            Roles
-                        </th>
-                        <th scope="col" class="text-center align-middle w-10">Acciones</th>
+                        <th scope="col" class="text-center align-middle">Acciones</th>
                     </thead>
 
                     <tbody class="table-group-divider">
-                        @foreach ($users as $user)
+                        @if (count($users) === 0)
                             <tr>
-                                <td>{{ $user['username'] }}</td>
-                                <td>{{ $user['email'] }}</td>
-                                <td>{{ $user['name'] }}</td>
-                                <td>{{ isset($user['lastname']) ? $user['lastname'] : 'N/A' }}</td>
-                                <td>{{ isset($user['phone']) ? $user['phone'] : 'N/A' }}</td>
-                                <td>
-                                    <ul>
-                                        @foreach ($user->getRoleNames() as $role)
-                                            <li>{{ $role }}</li>
-                                        @endforeach
-                                    </ul>
-                                </td>
-                                <td class="text-center align-middle">
-                                    @if ($user['disabled'])
-                                        <form action="{{ route('users.toggleDisable') }}" method="POST">
-                                            @csrf
-
-                                            <input type="hidden" name="user_id" value="{{ $user['id'] }}">
-                                            <button type="submit" class="btn btn-success">
-                                                <i class="bi bi-toggle-on"></i> Habilitar usuario
-                                            </button>
-                                        </form>
-                                    @else
-                                        <button type="button" class="btn btn-danger btn-disable-user"
-                                            data-bs-toggle="modal" data-bs-target="#disableModal"
-                                            data-user-id="{{ $user['id'] }}">
-                                            <i class="bi bi-toggle-off"></i> Deshabilitar usuario
-                                        </button>
-                                    @endif
-                                </td>
+                                <td colspan="5" class="text-center">No se ha encontrado ningún usuario</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach ($users as $user)
+                                <tr>
+                                    <td>{{ $user['email'] }}</td>
+                                    <td>{{ $user['name'] }}</td>
+                                    <td>{{ isset($user['lastname']) ? $user['lastname'] : 'N/A' }}</td>
+                                    <td>{{ isset($user['phone']) ? $user['phone'] : 'N/A' }}</td>
+                                    <td class="text-center align-middle">
+                                        @if ($user['disabled'])
+                                            <form action="{{ route('users.toggleDisable') }}" method="POST">
+                                                @csrf
+
+                                                <input type="hidden" name="user_id" value="{{ $user['id'] }}">
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="bi bi-toggle-on"></i> Habilitar
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button type="button" class="btn btn-danger btn-disable-user"
+                                                data-bs-toggle="modal" data-bs-target="#disableModal"
+                                                data-user-id="{{ $user['id'] }}">
+                                                <i class="bi bi-toggle-off"></i> Deshabilitar
+                                            </button>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

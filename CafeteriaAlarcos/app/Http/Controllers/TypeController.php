@@ -98,7 +98,7 @@ class TypeController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('types.index')->withError('¡Error! No se pudieron eliminar algunos tipos seleccionados ya que están vinculados a un plato.');
+            return redirect()->route('types.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
         }
     }
 }

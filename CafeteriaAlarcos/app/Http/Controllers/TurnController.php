@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use App\Models\Turn;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -41,7 +41,7 @@ class TurnController extends Controller
      */
     public function create(Request $request)
     {
-        return view('turns.create', ['date' => $request->input('date')]);
+        return view('turns.create', ['menus' => Menu::all(), 'date' => $request->input('date')]);
     }
 
     /**
@@ -55,6 +55,7 @@ class TurnController extends Controller
             'start' => ['required', 'date_format:H:i'],
             'end' => ['nullable', 'date_format:H:i', 'after:start'],
             'description' => ['nullable', 'string', 'max:255'],
+            'menu_id' => ['required', Rule::exists(Menu::class, 'id')]
         ]);
 
         $turn = Turn::create($request->all());
@@ -75,7 +76,7 @@ class TurnController extends Controller
      */
     public function edit(Turn $turn)
     {
-        return view('turns.edit', ['turn' => $turn]);
+        return view('turns.edit', ['menus' => Menu::all(), 'turn' => $turn]);
     }
 
     /**
@@ -89,6 +90,7 @@ class TurnController extends Controller
             'start' => ['required', 'date_format:H:i:s'],
             'end' => ['nullable', 'date_format:H:i:s', 'after:start'],
             'description' => ['nullable', 'string', 'max:255'],
+            'menu_id' => ['required', Rule::exists(Menu::class, 'id')]
         ]);
 
         $turn->update($request->all());
@@ -110,61 +112,14 @@ class TurnController extends Controller
             ]
         ]);
 
-        $request->flash();
-
         $turns = $request->input('select');
 
         foreach ($turns as $turn) {
             Turn::find($turn)->delete();
         }
 
+        $request->flush();
+
         return back()->withSuccess('¡Turnos eliminados! Los registros han sido eliminados exitosamente.');
-    }
-
-    public function copyStructure(Request $request)
-    {
-        $request->validate([
-            'date' => ['required', Rule::exists(Turn::class, 'date')]
-        ]);
-
-        return view('turns.copy', ['copyFrom' => $request->input('date')]);
-    }
-
-    public function storeCopyStructure(Request $request)
-    {
-        $request->validate([
-            'copyFrom' => ['required', Rule::exists(Turn::class, 'date')],
-            'date' => ['required', 'date'],
-        ]);
-
-        $copyFrom = $request->input('copyFrom');
-        $date = $request->input('date');
-
-        $turns = Turn::whereDate('date', $copyFrom)->get();
-
-        foreach ($turns as $turn) {
-            $turnCopy = $turn->replicate()->fill([
-                'date' => $date
-            ]);
-
-            $turnCopy->save();
-        }
-
-        return redirect()->route('turns.index', ['search' => true, 'searchDate' => $date])->withSuccess("¡Estructura copiada! Se ha copiado satisfactoriamente la estructura del $date.");
-    }
-
-    public function destroyStructure(Request $request)
-    {
-        $request->validate([
-            'date' => ['required', Rule::exists(Turn::class, 'date')]
-        ]);
-
-        $turns = Turn::whereDate('date', $request->input('date'))->get();
-
-        foreach ($turns as $turn) {
-            $turn->delete();
-        }
-
-        return redirect()->route('turns.index')->withSuccess('¡Estructura eliminada! Los registros han sido eliminados exitosamente.');
     }
 }

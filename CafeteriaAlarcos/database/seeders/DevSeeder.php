@@ -5,12 +5,10 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Allergen;
+use App\Models\DCategory;
 use App\Models\Dish;
-use App\Models\DishAllergen;
-use App\Models\DishMenu;
 use App\Models\ICategory;
 use App\Models\Ingredient;
-use App\Models\IngredientDish;
 use App\Models\Menu;
 use App\Models\Table;
 use App\Models\Turn;
@@ -42,31 +40,6 @@ class DevSeeder extends Seeder
             'minNumber' => 1
         ]);
 
-
-        Turn::create([
-            'name' => 'Turno 1',
-            'date' => '2023-01-05',
-            'start' => '10:00:00'
-        ]);
-
-        Turn::create([
-            'name' => 'Turno 2',
-            'date' => '2023-07-02',
-            'start' => '09:00:00',
-            'end' => '10:00:00'
-        ]);
-
-        Turn::create([
-            'name' => 'Turno 3',
-            'date' => '2023-07-02',
-            'start' => '11:00:00'
-        ]);
-
-        Turn::create([
-            'name' => 'Turno 4',
-            'date' => '2023-12-05',
-            'start' => '10:00:00'
-        ]);
 
 
         $fruta = ICategory::create([
@@ -128,6 +101,11 @@ class DevSeeder extends Seeder
         ]);
 
 
+        $vegano = DCategory::create([
+            'name' => 'Vegano'
+        ]);
+
+
         $ensalada = Dish::create([
             'name' => 'Ensalada de manzana',
             'type_id' => $aperitivo['id']
@@ -144,49 +122,57 @@ class DevSeeder extends Seeder
         ]);
 
 
-        DishAllergen::create([
-            'dish_id' => $ensalada['id'],
-            'allergen_id' => $frutos['id'],
-        ]);
+        $ensalada->dcategories()->attach($vegano['id']);
 
 
-        IngredientDish::create([
-            'dish_id' => $ensalada['id'],
-            'ingredient_id' => $manzana['id'],
-        ]);
+        $ensalada->allergens()->attach($frutos['id']);
 
-        IngredientDish::create([
-            'dish_id' => $sopa['id'],
-            'ingredient_id' => $zanahoria['id'],
-        ]);
+        $ensalada->ingredients()->attach($manzana['id']);
 
-        IngredientDish::create([
-            'dish_id' => $polloHorno['id'],
-            'ingredient_id' => $pollo['id'],
-        ]);
+        $sopa->ingredients()->attach($zanahoria['id']);
+
+        $polloHorno->ingredients()->attach($pollo['id']);
 
 
         $menu = Menu::create([
             'name' => 'Menú 1',
+            'price' => 60.50,
+        ]);
+
+        $menu->dishes()->sync([
+            $ensalada['id'] => ['order' => 1],
+            $sopa['id'] => ['order' => 2],
+            $polloHorno['id'] => ['order' => 3]
         ]);
 
 
-        DishMenu::create([
-            'dish_id' => $ensalada['id'],
-            'menu_id' => $menu['id'],
-            'order' => 1,
+        Turn::create([
+            'name' => 'Turno 1',
+            'date' => '2023-01-05',
+            'start' => '10:00:00',
+            'menu_id' => $menu['id']
         ]);
 
-        DishMenu::create([
-            'dish_id' => $sopa['id'],
-            'menu_id' => $menu['id'],
-            'order' => 2,
+        Turn::create([
+            'name' => 'Turno 2',
+            'date' => '2023-07-02',
+            'start' => '09:00:00',
+            'end' => '10:00:00',
+            'menu_id' => $menu['id']
         ]);
 
-        DishMenu::create([
-            'dish_id' => $polloHorno['id'],
-            'menu_id' => $menu['id'],
-            'order' => 3,
+        Turn::create([
+            'name' => 'Turno 3',
+            'date' => '2023-07-02',
+            'start' => '11:00:00',
+            'menu_id' => $menu['id']
+        ]);
+
+        Turn::create([
+            'name' => 'Turno 4',
+            'date' => '2023-12-05',
+            'start' => '10:00:00',
+            'menu_id' => $menu['id']
         ]);
     }
 }

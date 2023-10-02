@@ -34,7 +34,7 @@
                                 @isset($date)
                                     <input type="date" name="date" id="date"
                                         class="form-control @error('date') is-invalid @enderror" value="{{ $date }}"
-                                        readonly />
+                                        required />
                                 @else
                                     <input type="date" name="date" id="date"
                                         class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}"
@@ -82,6 +82,39 @@
                                 <label for="description"><i class='bx bxs-food-menu'></i> Descripción</label>
 
                                 @error('description')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-floating mt-3">
+                                <input type="number" name="price" id="price"
+                                    class="form-control @error('price') is-invalid @enderror"
+                                    value="{{ old('price') || Cache::get('precioMenu') }}" placeholder="Precio"
+                                    min="0.0" max="9999.99" step="0.01" />
+                                <label for="price">Precio</label>
+
+                                @error('price')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-floating mt-3">
+                                <select name="menu_id" id="menu_id"
+                                    class="form-select @error('menu_id') is-invalid @enderror" required>
+                                    <option selected disabled value="">Selecciona un menú</option>
+                                    @foreach ($menus as $menu)
+                                        <option value="{{ $menu['id'] }}" @selected($menu['id'] == old('menu', null))>
+                                            {{ $menu['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <label for="menu_id">Menú</label>
+
+                                @error('menu_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

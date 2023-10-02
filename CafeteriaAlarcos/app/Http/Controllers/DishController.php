@@ -39,7 +39,7 @@ class DishController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'image' => ['nullable', 'image'],
-            'recipe' => ['nullable', 'string', 'max:255'],
+            'recipe' => ['nullable', 'mimes:pdf'],
             'description' => ['nullable', 'string', 'max:255'],
             'type_id' => ['required', Rule::exists(Type::class, 'id')],
             'dcategories' => [
@@ -103,7 +103,7 @@ class DishController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'imageFile' => ['nullable', 'image'],
-            'recipe' => ['nullable', 'string', 'max:255'],
+            'recipe' => ['nullable', 'mimes:pdf'],
             'description' => ['nullable', 'string', 'max:255'],
             'type_id' => ['required', Rule::exists(Type::class, 'id')],
             'dcategories' => [
@@ -166,32 +166,29 @@ class DishController extends Controller
         try {
             DB::beginTransaction();
 
-            $deleteImages = [];
-
             foreach ($dishes as $dish) {
-                $dishData = Dish::find($dish);
+                $dishDB = Dish::find($dish);
 
-                $image = $dishData['image'];
+                $dishDB->ingredients()->detach();
+                $dishDB->dcategories()->detach();
+                $dishDB->allergens()->detach();
+                $dishDB->menus()->detach();
 
-                $dishData->delete();
-
-                $imagePath = public_path('/storage/images/dishes/' . $image);
+                $imagePath = public_path('/storage/images/dishes/' . $dishDB['image']);
                 if (File::exists($imagePath)) {
-                    array_push($deleteImages, $imagePath);
+                    File::delete($imagePath);
                 }
+
+                $dishDB->delete();
             }
 
             DB::commit();
-
-            foreach ($deleteImages as $imagePath) {
-                File::delete($imagePath);
-            }
 
             return redirect()->route('dishes.index')->withSuccess('¡Platos eliminados! Los registros han sido eliminados exitosamente.');
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('dishes.index')->withError('¡Error! No se pudieron eliminar algunos platos seleccionados ya que están vinculados a un menú.');
+            return redirect()->route('dishes.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
         }
     }
 }

@@ -37,4 +37,9 @@ class Dish extends Model
     {
         return $this->belongsToMany(Allergen::class, 'dish_allergens');
     }
+
+    public function menus(): BelongsToMany
+    {
+        return $this->belongsToMany(Menu::class, 'dish_menus');
+    }
 }

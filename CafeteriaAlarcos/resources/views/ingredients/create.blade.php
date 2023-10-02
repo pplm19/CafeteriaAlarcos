@@ -33,9 +33,7 @@
                             <div class="form-floating mt-3">
                                 <select name="i_category_id" id="i_category_id"
                                     class="form-select @error('i_category_id') is-invalid @enderror" required>
-                                    @if (old('i_category_id', null) === null)
-                                        <option selected disabled value="">Selecciona una categoría</option>
-                                    @endif
+                                    <option selected disabled value="">Selecciona una categoría</option>
                                     @foreach ($icategories as $icategory)
                                         <option value="{{ $icategory['id'] }}" @selected($icategory['id'] == old('i_category_id', null))>
                                             {{ $icategory['name'] }}

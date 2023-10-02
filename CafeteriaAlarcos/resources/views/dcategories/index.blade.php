@@ -31,20 +31,26 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($dcategories as $dcategory)
-                            <tr class="selectable">
-                                <td class="text-center align-middle">
-                                    <input class="form-check-input" type="checkbox" name="select[]"
-                                        value="{{ $dcategory['id'] }}">
-                                </td>
-                                <td>{{ $dcategory['name'] }}</td>
-                                <td class="text-center align-middle">
-                                    <a class="btn btn-primary" href="{{ route('dcategories.edit', $dcategory['id']) }}">
-                                        <i class='bx bxs-edit-alt'></i> Editar
-                                    </a>
-                                </td>
+                        @if (count($dcategories) === 0)
+                            <tr>
+                                <td colspan="3" class="text-center">No se ha encontrado ninguna categoría</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach ($dcategories as $dcategory)
+                                <tr class="selectable">
+                                    <td class="text-center align-middle">
+                                        <input class="form-check-input" type="checkbox" name="select[]"
+                                            value="{{ $dcategory['id'] }}">
+                                    </td>
+                                    <td>{{ $dcategory['name'] }}</td>
+                                    <td class="text-center align-middle">
+                                        <a class="btn btn-primary" href="{{ route('dcategories.edit', $dcategory['id']) }}">
+                                            <i class='bx bxs-edit-alt'></i> Editar
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

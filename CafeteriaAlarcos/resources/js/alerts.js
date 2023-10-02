@@ -23,7 +23,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const alerts = document.querySelectorAll("#alerts .alert");
 
-    if (alerts.length > 1) {
+    if (alerts.length > 0) {
         Array.from(alerts).forEach((alert, index) => {
             setTimeout(() => {
                 window.bootstrap.Alert.getOrCreateInstance(alert).close();

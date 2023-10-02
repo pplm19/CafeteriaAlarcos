@@ -15,10 +15,16 @@ class Turn extends Model
         'start',
         'end',
         'description',
+        'menu_id'
     ];
 
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function menu()
+    {
+        return $this->belongsTo(Menu::class);
     }
 }

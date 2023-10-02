@@ -52,13 +52,7 @@ Route::resource('/userdishes', UserDishController::class)->parameters([
 Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
 
-    Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-
     Route::put('/update', [ProfileController::class, 'update'])->name('profile.update');
-
-    Route::get('/editPassword', [ProfileController::class, 'editPassword'])->name('profile.editPassword');
-
-    Route::put('/updatePassword', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
 });
 
 
@@ -95,7 +89,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
 
 
     Route::resource('/icategories', ICategoryController::class)->except(['show', 'destroy']);
-    Route::post('/icategories/destroy', [ICategoryController::class, 'destroy'])->name('icategories.destroy');
 
     Route::resource('/ingredients', IngredientController::class)->except(['show', 'destroy']);
     Route::post('/ingredients/destroy', [IngredientController::class, 'destroy'])->name('ingredients.destroy');
@@ -104,7 +97,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
     Route::post('/dishes/destroy', [DishController::class, 'destroy'])->name('dishes.destroy');
 
     Route::resource('/types', TypeController::class)->except(['show', 'destroy']);
-    Route::post('/types/destroy', [TypeController::class, 'destroy'])->name('types.destroy');
 
     Route::resource('/dcategories', DCategoryController::class)->except(['show', 'destroy']);
     Route::post('/dcategories/destroy', [DCategoryController::class, 'destroy'])->name('dcategories.destroy');
@@ -118,9 +110,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
 
     Route::resource('/turns', TurnController::class)->except(['show', 'destroy']);
     Route::post('/turns/destroy', [TurnController::class, 'destroy'])->name('turns.destroy');
-    Route::get('/turns/copyStructure', [TurnController::class, 'copyStructure'])->name('turns.copyStructure');
-    Route::post('/turns/storeCopyStructure', [TurnController::class, 'storeCopyStructure'])->name('turns.storeCopyStructure');
-    Route::get('/turns/destroyStructure', [TurnController::class, 'destroyStructure'])->name('turns.destroyStructure');
 
     Route::resource('/tables', TableController::class)->except(['show', 'destroy']);
     Route::post('/tables/destroy', [TableController::class, 'destroy'])->name('tables.destroy');

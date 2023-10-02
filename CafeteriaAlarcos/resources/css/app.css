@@ -1678,6 +1678,14 @@ a.text-theme:hover {
     cursor: auto;
 }
 
+.font-poppins {
+    font-family: "Poppins", sans-serif;
+}
+
+.cursor-default {
+    cursor: default;
+}
+
 /* Fix in order not to break navbar dropdown */
 .fixed-bottom {
     z-index: 990;

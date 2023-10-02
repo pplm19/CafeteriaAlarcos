@@ -65,31 +65,37 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($bookings as $booking)
-                                <tr class="selectable">
-                                    <th>{{ $booking['description'] }}</th>
-                                    <td>{{ $booking['bookingTables']->sum('guests') }}</td>
-
-                                    <td>{{ $booking['turn']['name'] }}</td>
-                                    <td>{{ $booking['turn']['date'] }}</td>
-                                    <td>{{ $booking['turn']['start'] }}</td>
-                                    <td>{{ $booking['turn']['end'] }}</td>
-                                    <td>{{ $booking['turn']['description'] }}</td>
-
-                                    <td>
-                                        <ul>
-                                            @foreach ($booking['tables'] as $table)
-                                                <li>
-                                                    {{ $table['minNumber'] }} - {{ $table['maxNumber'] }} comensales
-                                                    @isset($table['description'])
-                                                        - {{ $table['description'] }}
-                                                    @endisset
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
+                            @if (count($bookings) === 0)
+                                <tr>
+                                    <td colspan="9" class="text-center">No se ha encontrado ninguna reserva</td>
                                 </tr>
-                            @endforeach
+                            @else
+                                @foreach ($bookings as $booking)
+                                    <tr class="selectable">
+                                        <th>{{ $booking['description'] }}</th>
+                                        <td>{{ $booking['bookingTables']->sum('guests') }}</td>
+
+                                        <td>{{ $booking['turn']['name'] }}</td>
+                                        <td>{{ $booking['turn']['date'] }}</td>
+                                        <td>{{ $booking['turn']['start'] }}</td>
+                                        <td>{{ $booking['turn']['end'] }}</td>
+                                        <td>{{ $booking['turn']['description'] }}</td>
+
+                                        <td>
+                                            <ul>
+                                                @foreach ($booking['tables'] as $table)
+                                                    <li>
+                                                        {{ $table['minNumber'] }} - {{ $table['maxNumber'] }} comensales
+                                                        @isset($table['description'])
+                                                            - {{ $table['description'] }}
+                                                        @endisset
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>

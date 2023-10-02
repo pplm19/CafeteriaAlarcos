@@ -92,7 +92,7 @@ class UserController extends Controller
 
         if (!$request->hasAny(['search', 'field'])) $request->flush();
 
-        return view('users.index', ['users' => $query->paginate(15), 'roles' => Role::all()]);
+        return view('users.index', ['users' => $query->paginate(15), 'roles' => Role::where('name', '<>', 'user')->get()]);
     }
 
     /**

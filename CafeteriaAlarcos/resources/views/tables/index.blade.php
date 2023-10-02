@@ -34,23 +34,29 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($tables as $table)
-                            <tr class="selectable">
-                                <td class="text-center align-middle">
-                                    <input class="form-check-input" type="checkbox" name="select[]"
-                                        value="{{ $table['id'] }}">
-                                </td>
-                                <td>{{ $table['quantity'] }}</td>
-                                <td>{{ $table['maxNumber'] }}</td>
-                                <td>{{ $table['minNumber'] }}</td>
-                                <td>{{ $table['description'] }}</td>
-                                <td class="text-center align-middle">
-                                    <a class="btn btn-primary" href="{{ route('tables.edit', $table['id']) }}">
-                                        <i class='bx bxs-edit-alt'></i> Editar
-                                    </a>
-                                </td>
+                        @if (count($tables) === 0)
+                            <tr>
+                                <td colspan="6" class="text-center">No se ha encontrado ninguna mesa</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach ($tables as $table)
+                                <tr class="selectable">
+                                    <td class="text-center align-middle">
+                                        <input class="form-check-input" type="checkbox" name="select[]"
+                                            value="{{ $table['id'] }}">
+                                    </td>
+                                    <td>{{ $table['quantity'] }}</td>
+                                    <td>{{ $table['maxNumber'] }}</td>
+                                    <td>{{ $table['minNumber'] }}</td>
+                                    <td>{{ $table['description'] }}</td>
+                                    <td class="text-center align-middle">
+                                        <a class="btn btn-primary" href="{{ route('tables.edit', $table['id']) }}">
+                                            <i class='bx bxs-edit-alt'></i> Editar
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

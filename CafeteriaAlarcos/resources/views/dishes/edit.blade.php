@@ -33,7 +33,7 @@
                             </div>
 
                             <div class="form-control mt-3">
-                                <label for="imageFile" class="form-label">Imagen</label>
+                                <label for="imageFile" accept="image/*" class="form-label">Imagen</label>
                                 <input type="file" name="imageFile" id="imageFile"
                                     class="form-control @error('imageFile') is-invalid @enderror" />
 
@@ -44,11 +44,12 @@
                                 @enderror
                             </div>
 
-                            <div class="form-floating mt-3">
-                                <input type="text" name="recipe" id="recipe"
-                                    class="form-control @error('recipe') is-invalid @enderror" value="{{ $dish['recipe'] }}"
-                                    placeholder="Receta" maxlength="255" />
-                                <label for="recipe"><i class='bx bxs-food-menu'></i> Receta</label>
+
+                            <div class="form-control mt-3">
+                                <label for="recipe">Receta</label>
+                                <input type="file" accept=".pdf" name="recipe" id="recipe"
+                                    class="form-control @error('recipe') is-invalid @enderror"
+                                    value="{{ $dish['recipe'] }}" />
 
                                 @error('recipe')
                                     <span class="invalid-feedback" role="alert">
@@ -56,6 +57,7 @@
                                     </span>
                                 @enderror
                             </div>
+
 
                             <div class="form-floating mt-3">
                                 <input type="text" name="description" id="description"

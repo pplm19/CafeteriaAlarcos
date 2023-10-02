@@ -30,12 +30,6 @@
                         <div class="form-control mt-3">
                             <p class="mb-2">Ingredientes</p>
 
-                            @error('ingredients')
-                                <div class="alert alert-danger">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-
                             @foreach ($ingredients as $ingredient)
                                 <div class="form-check">
                                     <input type="checkbox" name="ingredients[]" id="ingredients"
@@ -46,16 +40,16 @@
                                     </label>
                                 </div>
                             @endforeach
-                        </div>
 
-                        <div class="form-control mt-3">
-                            <p class="mb-2">Alérgenos</p>
-
-                            @error('allergens')
+                            @error('ingredients')
                                 <div class="alert alert-danger">
                                     {{ $message }}
                                 </div>
                             @enderror
+                        </div>
+
+                        <div class="form-control mt-3">
+                            <p class="mb-2">Alérgenos</p>
 
                             @foreach ($allergens as $allergen)
                                 <div class="form-check">
@@ -66,6 +60,12 @@
                                     </label>
                                 </div>
                             @endforeach
+
+                            @error('allergens')
+                                <div class="alert alert-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="mt-3 d-flex justify-content-center gap-2 flex-wrap">
@@ -83,72 +83,79 @@
             </div>
         </div>
 
-        <div
-            class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-0 row g-0 row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3">
-            @foreach ($dishes as $dish)
-                <div class="col px-0 px-md-3 mb-4">
-                    <div class="card h-100">
-                        @php($imgUrl = asset('storage/images/dishes/' . $dish['image']))
-                        @php($hasImg = strpos($imgUrl, $dish['image']))
-                        @if ($hasImg)
-                            <a href="">
-                                <img src="{{ $imgUrl }}" alt="Imagen de {{ $dish['name'] }}" class="card-img-top">
-                            </a>
-                        @endif
 
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="card-title mb-0">
-                                <a href="">{{ $dish['name'] }}</a>
-                            </h3>
+        @if (count($dishes) === 0)
+            <div class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-5 text-center align-middle">
+                <h2>No se ha encontrado ningún plato</h2>
+            </div>
+        @else
+            <div
+                class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-0 row g-0 row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3">
+                @foreach ($dishes as $dish)
+                    <div class="col px-0 px-md-3 mb-4">
+                        <div class="card h-100">
+                            @php($imgUrl = asset('storage/images/dishes/' . $dish['image']))
+                            @php($hasImg = strpos($imgUrl, $dish['image']))
+                            @if ($hasImg)
+                                <a href="">
+                                    <img src="{{ $imgUrl }}" alt="Imagen de {{ $dish['name'] }}"
+                                        class="card-img-top">
+                                </a>
+                            @endif
 
-                            <p class="card-text"><small class="text-muted">{{ $dish['type']['name'] }}</small></p>
+                            <div class="card-body d-flex flex-column">
+                                <h3 class="card-title mb-0">
+                                    <a href="">{{ $dish['name'] }}</a>
+                                </h3>
 
-                            @isset($dish['description'])
-                                <p class="card-text">{{ $dish['description'] }}</p>
-                            @endisset
+                                <p class="card-text"><small class="text-muted">{{ $dish['type']['name'] }}</small></p>
 
-                            <ul>
-                                @if (!$dish['dcategories']->isEmpty())
-                                    <li class="mb-3">
-                                        <h4>Categorías:</h4>
-                                        <ul>
-                                            @foreach ($dish['dcategories'] as $dcategory)
-                                                <li>{{ $dcategory['name'] }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </li>
-                                @endif
+                                @isset($dish['description'])
+                                    <p class="card-text">{{ $dish['description'] }}</p>
+                                @endisset
 
-                                @if (!$dish['ingredients']->isEmpty())
-                                    <li class="mb-3">
-                                        <h4>Ingredientes:</h4>
-                                        <ul>
-                                            @foreach ($dish['ingredients'] as $ingredient)
-                                                <li>{{ $ingredient['name'] }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </li>
-                                @endif
+                                <ul>
+                                    @if (!$dish['dcategories']->isEmpty())
+                                        <li class="mb-3">
+                                            <h4>Categorías:</h4>
+                                            <ul>
+                                                @foreach ($dish['dcategories'] as $dcategory)
+                                                    <li>{{ $dcategory['name'] }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endif
 
-                                @if (!$dish['allergens']->isEmpty())
-                                    <li class="mb-3">
-                                        <h4>Alérgenos:</h4>
-                                        <ul>
-                                            @foreach ($dish['allergens'] as $allergen)
-                                                <li>{{ $allergen['name'] }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </li>
-                                @endif
-                            </ul>
+                                    @if (!$dish['ingredients']->isEmpty())
+                                        <li class="mb-3">
+                                            <h4>Ingredientes:</h4>
+                                            <ul>
+                                                @foreach ($dish['ingredients'] as $ingredient)
+                                                    <li>{{ $ingredient['name'] }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endif
+
+                                    @if (!$dish['allergens']->isEmpty())
+                                        <li class="mb-3">
+                                            <h4>Alérgenos:</h4>
+                                            <ul>
+                                                @foreach ($dish['allergens'] as $allergen)
+                                                    <li>{{ $allergen['name'] }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                @endforeach
+                <div class="w-100 ps-sm-4 pe-sm-3 d-flex justify-content-center d-sm-block">
+                    {{ $dishes->links() }}
                 </div>
-            @endforeach
-
-            <div class="w-100 ps-sm-4 pe-sm-3 d-flex justify-content-center d-sm-block">
-                {{ $dishes->links() }}
             </div>
-        </div>
+        @endif
     </div>
 @endsection

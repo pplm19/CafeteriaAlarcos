@@ -98,7 +98,7 @@ class ICategoryController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('icategories.index')->withError('¡Error! No se pudieron eliminar algunas categorías seleccionadas ya que están vinculadas a un ingrediente.');
+            return redirect()->route('icategories.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
         }
     }
 }

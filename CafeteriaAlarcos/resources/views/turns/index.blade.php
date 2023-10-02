@@ -17,9 +17,7 @@
                         <div class="form-floating mt-3">
                             <select name="searchDate" id="searchDate"
                                 class="form-select @error('searchDate') is-invalid @enderror" required>
-                                @if (old('searchDate', null) === null)
-                                    <option selected disabled value="">Selecciona una fecha</option>
-                                @endif
+                                <option selected disabled value="">Selecciona una fecha</option>
                                 @foreach ($turns as $turn)
                                     <option value="{{ $turn['date'] }}" @selected($turn['date'] == old('searchDate', null))>
                                         {{ $turn['date'] }}
@@ -51,39 +49,23 @@
         </div>
 
         <div class="col-12 col-lg-8 col-xl-9 ps-0 ps-lg-3 pt-3 pt-lg-0">
-            <p class="d-flex justify-content-end gap-2">
-                <a class="btn btn-theme" href="{{ route('turns.create') }}">
-                    <i class="bi bi-plus-circle"></i> Crear estructura
-                </a>
-                @isset($turnsList)
-                    <a href="{{ route('turns.copyStructure', ['date' => old('searchDate')]) }}"
-                        class="btn btn-secondary btn-rounded">
-                        <i class="bi bi-clipboard2-plus"></i> Copiar estructura
-                    </a>
-
-                    <a href="{{ route('turns.destroyStructure', ['date' => old('searchDate')]) }}"
-                        class="btn btn-danger btn-rounded">
-                        <i class="bi bi-trash"></i> Eliminar estructura
-                    </a>
-                @endisset
-
-            </p>
-
             @isset($turnsList)
                 <form action="{{ route('turns.destroy') }}" method="POST" class="checkbox-validation">
                     @csrf
 
                     <input type="hidden" name="searchDate" value="{{ old('searchDate') }}">
 
-                    <div class="py-3 d-flex justify-content-end gap-2">
+                    <p class="d-flex justify-content-end gap-2">
                         <a href="{{ route('turns.create', ['date' => old('searchDate')]) }}" class="btn btn-theme">
                             <i class="bi bi-plus-circle"></i> Crear turno
                         </a>
 
-                        <button type="submit" class="btn btn-danger btn-rounded">
-                            <i class="bi bi-trash"></i> Eliminar seleccionados
-                        </button>
-                    </div>
+                        @isset($turnsList)
+                            <button type="submit" class="btn btn-danger btn-rounded">
+                                <i class="bi bi-trash"></i> Eliminar seleccionados
+                            </button>
+                        @endisset
+                    </p>
 
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover align-middle">
@@ -94,28 +76,36 @@
                                 <th scope="col" class="text-center align-middle">Inicio</th>
                                 <th scope="col" class="text-center align-middle">Fin</th>
                                 <th scope="col" class="text-center align-middle">Descripción</th>
+                                <th scope="col" class="text-center align-middle">Menú</th>
                                 <th scope="col" class="text-center align-middle w-10">Acciones</th>
                             </thead>
 
                             <tbody>
-                                @foreach ($turnsList as $turn)
-                                    <tr class="selectable">
-                                        <td class="text-center align-middle">
-                                            <input class="form-check-input" type="checkbox" name="select[]"
-                                                value="{{ $turn['id'] }}">
-                                        </td>
-                                        <td>{{ $turn['name'] }}</td>
-                                        <td>{{ $turn['date'] }}</td>
-                                        <td>{{ $turn['start'] }}</td>
-                                        <td>{{ $turn['end'] }}</td>
-                                        <td>{{ $turn['description'] }}</td>
-                                        <td class="text-center align-middle">
-                                            <a class="btn btn-primary" href="{{ route('turns.edit', $turn['id']) }}">
-                                                <i class='bx bxs-edit-alt'></i> Editar
-                                            </a>
-                                        </td>
+                                @if (count($turnsList) === 0)
+                                    <tr>
+                                        <td colspan="7" class="text-center">No se ha encontrado ningún turno</td>
                                     </tr>
-                                @endforeach
+                                @else
+                                    @foreach ($turnsList as $turn)
+                                        <tr class="selectable">
+                                            <td class="text-center align-middle">
+                                                <input class="form-check-input" type="checkbox" name="select[]"
+                                                    value="{{ $turn['id'] }}">
+                                            </td>
+                                            <td>{{ $turn['name'] }}</td>
+                                            <td>{{ $turn['date'] }}</td>
+                                            <td>{{ $turn['start'] }}</td>
+                                            <td>{{ $turn['end'] }}</td>
+                                            <td>{{ $turn['description'] }}</td>
+                                            <td>{{ $turn['menu']['name'] }}</td>
+                                            <td class="text-center align-middle">
+                                                <a class="btn btn-primary" href="{{ route('turns.edit', $turn['id']) }}">
+                                                    <i class='bx bxs-edit-alt'></i> Editar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -125,6 +115,12 @@
                         'content' => '¿Estás seguro de que quieres borrar estos registros?',
                     ])
                 </form>
+            @else
+                <div class="text-end">
+                    <a href="{{ route('turns.create') }}" class="btn btn-theme">
+                        <i class="bi bi-plus-circle"></i> Crear turno
+                    </a>
+                </div>
             @endisset
         </div>
     </div>

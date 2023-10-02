@@ -101,7 +101,7 @@ class IngredientController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('ingredients.index')->withError('¡Error! No se pudieron eliminar algunos ingredientes seleccionados ya que están vinculados a un plato.');
+            return redirect()->route('ingredients.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
         }
     }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->time('start');
             $table->time('end')->nullable();
             $table->string('description')->nullable();
+            $table->foreignId('menu_id')->constrained();
 
             $table->timestamps();
         });
