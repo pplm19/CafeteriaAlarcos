@@ -1674,8 +1674,18 @@ a.text-theme:hover {
 }
 
 .selectable > *:has(a, button),
-.selectable img {
+.selectable img,
+.selectable .orderable-buttons {
     cursor: auto;
+}
+
+.orderable-buttons i {
+    cursor: pointer;
+    user-select: none;
+}
+
+table tbody:has(> tr:not(.show-empty)) .show-empty {
+    display: none;
 }
 
 .font-poppins {
@@ -1684,6 +1694,32 @@ a.text-theme:hover {
 
 .cursor-default {
     cursor: default;
+}
+
+.form-check-input.add-checkbox,
+.form-check-input.remove-checkbox {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    margin: 0 !important;
+}
+
+.form-check-input.add-checkbox:hover,
+.form-check-input.remove-checkbox:hover {
+    cursor: pointer;
+}
+
+.form-check-input.add-checkbox:checked {
+    background-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' class='bi bi-plus-lg' viewBox='0 0 16 16'><path fill='none' stroke='rgb(13, 109, 253)' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill-rule='evenodd' d='M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z'/></svg>") !important;
+}
+
+.form-check-input.remove-checkbox:checked {
+    background-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' class='bi bi-x-lg' viewBox='0 0 16 16'><path fill='none' stroke='rgb(220, 53, 69)' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z'/></svg>") !important;
+}
+
+.form-check-input.add-checkbox:focus,
+.form-check-input.remove-checkbox:focus {
+    border: transparent !important;
+    box-shadow: none !important;
 }
 
 /* Fix in order not to break navbar dropdown */

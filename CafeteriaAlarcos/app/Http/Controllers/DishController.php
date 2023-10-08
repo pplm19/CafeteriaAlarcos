@@ -28,7 +28,7 @@ class DishController extends Controller
      */
     public function create()
     {
-        return view('dishes.create', ['types' => Type::all(), 'dcategories' => DCategory::all(), 'ingredients' => Ingredient::all(), 'allergens' => Allergen::all()]);
+        return view('dishes.create', ['types' => Type::all(), 'dcategories' => DCategory::all(), 'ingredientTypes' => Ingredient::all()->groupBy('i_category_id'), 'allergens' => Allergen::all()]);
     }
 
     /**
@@ -92,7 +92,7 @@ class DishController extends Controller
      */
     public function edit(Dish $dish)
     {
-        return view('dishes.edit', ['dish' => $dish, 'types' => Type::all(), 'dcategories' => DCategory::all(), 'ingredients' => Ingredient::all(), 'allergens' => Allergen::all()]);
+        return view('dishes.edit', ['dish' => $dish, 'types' => Type::all(), 'dcategories' => DCategory::all(), 'ingredientTypes' => Ingredient::all()->groupBy('i_category_id'), 'allergens' => Allergen::all()]);
     }
 
     /**

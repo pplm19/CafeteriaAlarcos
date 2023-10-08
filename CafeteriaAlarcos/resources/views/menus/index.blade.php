@@ -28,33 +28,41 @@
                         <th scope="col" class="text-center align-middle w-10">#</th>
                         <th scope="col" class="text-center align-middle">Nombre</th>
                         <th scope="col" class="text-center align-middle">Descripción</th>
+                        <th scope="col" class="text-center align-middle">Precio</th>
                         <th scope="col" class="text-center align-middle">Platos</th>
                         <th scope="col" class="text-center align-middle w-10">Acciones</th>
                     </thead>
 
                     <tbody>
-                        @foreach ($menus as $menu)
-                            <tr class="selectable">
-                                <td class="text-center align-middle">
-                                    <input class="form-check-input" type="checkbox" name="select[]"
-                                        value="{{ $menu['id'] }}">
-                                </td>
-                                <td>{{ $menu['name'] }}</td>
-                                <td>{{ $menu['description'] }}</td>
-                                <td>
-                                    <ol>
-                                        @foreach ($menu['dishes'] as $dish)
-                                            <li>{{ $dish['name'] }}</li>
-                                        @endforeach
-                                    </ol>
-                                </td>
-                                <td class="text-center align-middle">
-                                    <a class="btn btn-primary" href="{{ route('menus.edit', $menu['id']) }}">
-                                        <i class='bx bxs-edit-alt'></i> Editar
-                                    </a>
-                                </td>
+                        @if (count($menus) === 0)
+                            <tr>
+                                <td colspan="6" class="text-center">No se ha encontrado ningún menú</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach ($menus as $menu)
+                                <tr class="selectable">
+                                    <td class="text-center align-middle">
+                                        <input class="form-check-input" type="checkbox" name="select[]"
+                                            value="{{ $menu['id'] }}">
+                                    </td>
+                                    <td>{{ $menu['name'] }}</td>
+                                    <td>{{ $menu['description'] }}</td>
+                                    <td>@money($menu['price'])</td>
+                                    <td>
+                                        <ol>
+                                            @foreach ($menu['dishes'] as $dish)
+                                                <li>{{ $dish['name'] }}</li>
+                                            @endforeach
+                                        </ol>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <a class="btn btn-primary" href="{{ route('menus.edit', $menu['id']) }}">
+                                            <i class='bx bxs-edit-alt'></i> Editar
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

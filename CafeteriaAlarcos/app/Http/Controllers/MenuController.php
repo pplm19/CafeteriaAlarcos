@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dish;
 use App\Models\Menu;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class MenuController extends Controller
      */
     public function create()
     {
-        return view('menus.create');
+        return view('menus.create', ['dishTypes' => Dish::all()->groupBy('type_id')]);
     }
 
     /**
@@ -35,17 +36,21 @@ class MenuController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'dishes' => [
-                'nullable',
+                'required',
                 'array',
                 Rule::exists(Dish::class, 'id')
             ],
         ]);
 
-        $dishes = $request->input('dishes');
-
         $menu = Menu::create($request->all());
 
-        if ($dishes) $menu->dishes()->sync($dishes);
+        $dishes = $request->input('dishes');
+
+        if (!empty($dishes)) {
+            foreach ($dishes as $pos => $dish) {
+                $menu->dishes()->attach([$dish => ['order' => $pos]]);
+            }
+        }
 
         return redirect()->route('menus.index')->withSuccess("¡Menú creado! Se ha creado satisfactoriamente el menú $menu->name.");
     }
@@ -63,7 +68,7 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        return view('menus.edit', ['menu' => $menu]);
+        return view('menus.edit', ['menu' => $menu, 'dishTypes' => Dish::all()->groupBy('type_id')]);
     }
 
     /**
@@ -81,11 +86,19 @@ class MenuController extends Controller
             ],
         ]);
 
-        $dishes = $request->input('dishes');
-
         $menu->update($request->all());
 
-        $menu->dishes()->sync($dishes);
+        $dishes = $request->input('dishes');
+
+        $dishesSync = [];
+
+        if (!empty($dishes)) {
+            foreach ($dishes as $pos => $dish) {
+                $dishesSync[$dish] = ['order' => $pos];
+            }
+        }
+
+        $menu->dishes()->sync($dishesSync);
 
         return redirect()->route('menus.index')->withSuccess('¡Menú actualizado! Los cambios se han guardado correctamente.');
     }
@@ -105,11 +118,14 @@ class MenuController extends Controller
 
         $menus = $request->input('select');
 
+        // [ERROR]
         try {
             DB::beginTransaction();
 
             foreach ($menus as $menu) {
-                Menu::find($menu)->delete();
+                $menuDB = Menu::find($menu);
+                $menuDB->dishes()->detach();
+                $menuDB->delete();
             }
 
             DB::commit();
@@ -118,7 +134,7 @@ class MenuController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('menus.index')->withError('¡Error! No se pudieron eliminar algunos menús seleccionados ya que están vinculados a varios platos.');
+            return redirect()->route('menus.index')->withError('¡Error! No se pudieron eliminar algunos menús seleccionados ya que están vinculados uno o varios turnos.');
         }
     }
 }
