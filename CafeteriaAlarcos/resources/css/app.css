@@ -1650,10 +1650,6 @@ a.text-theme:hover {
     width: 35%;
 }
 
-.aspect-ratio-1x1 {
-    aspect-ratio: 1;
-}
-
 #alerts {
     z-index: 980;
     top: 120px;
@@ -1720,6 +1716,34 @@ table tbody:has(> tr:not(.show-empty)) .show-empty {
 .form-check-input.remove-checkbox:focus {
     border: transparent !important;
     box-shadow: none !important;
+}
+
+/* Calendar */
+#calendar a {
+    color: inherit;
+}
+
+.fc-toolbar .fc-toolbar-title::first-letter,
+.fc-col-header .fc-col-header-cell-cushion::first-letter {
+    text-transform: uppercase;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: var(--fc-today-bg-color) !important;
+}
+
+.fc-bg-event {
+    background-color: transparent !important;
+    border: 2px solid #ffb03b;
+    opacity: unset !important;
+}
+
+.fc-daygrid-event-dot {
+    border-color: #ffb03b !important;
+}
+
+.fc-daygrid-event-harness {
+    cursor: pointer;
 }
 
 /* Fix in order not to break navbar dropdown */

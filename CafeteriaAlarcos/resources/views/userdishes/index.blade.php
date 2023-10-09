@@ -90,7 +90,7 @@
             </div>
         @else
             <div
-                class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-0 row g-0 row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3">
+                class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-0 row g-0 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
                 @foreach ($dishes as $dish)
                     <div class="col px-0 px-md-3 mb-4">
                         <div class="card h-100">

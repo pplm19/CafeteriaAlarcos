@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Turn;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -14,7 +15,7 @@ class BookingController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('search')) {
+        if ($request->has('date')) {
             $request->validate([
                 'date' => ['date']
             ]);
@@ -37,7 +38,8 @@ class BookingController extends Controller
                 ->whereHas('turn', function ($query) use ($date) {
                     $query->whereDate('date', '=', $date)->orderBy('date', 'DESC')->orderBy('start', 'DESC');
                 })
-                ->paginate(15)
+                ->paginate(15),
+            'turns' => Turn::all()
         ]);
     }
 

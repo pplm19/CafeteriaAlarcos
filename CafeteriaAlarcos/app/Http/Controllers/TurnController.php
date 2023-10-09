@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\Turn;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -84,11 +85,23 @@ class TurnController extends Controller
      */
     public function update(Request $request, Turn $turn)
     {
+        if (!blank($request['start'])) {
+            $request->merge([
+                'start' => Carbon::parse($request['start'])->format('H:i')
+            ]);
+        }
+
+        if (!blank($request['end'])) {
+            $request->merge([
+                'end' => Carbon::parse($request['end'])->format('H:i')
+            ]);
+        }
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'date' => ['required', 'date'],
-            'start' => ['required', 'date_format:H:i:s'],
-            'end' => ['nullable', 'date_format:H:i:s', 'after:start'],
+            'start' => ['required', 'date_format:H:i'],
+            'end' => ['nullable', 'date_format:H:i', 'after:start'],
             'description' => ['nullable', 'string', 'max:255'],
             'menu_id' => ['required', Rule::exists(Menu::class, 'id')]
         ]);

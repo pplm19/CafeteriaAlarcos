@@ -14,30 +14,34 @@
             <h1>Realizar reserva</h1>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover align-middle">
-                <thead class="table-dark">
-                    <th scope="col" class="text-center align-middle">Nombre del turno</th>
-                    <th scope="col" class="text-center align-middle">Fecha</th>
-                    <th scope="col" class="text-center align-middle">Inicio</th>
-                    <th scope="col" class="text-center align-middle">Fin</th>
-                    <th scope="col" class="text-center align-middle">Descripción del turno</th>
-                </thead>
+        <div class="row justify-content-center">
+            <div class="col-11 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover align-middle">
+                        <thead class="table-dark">
+                            <th scope="col" class="text-center align-middle">Nombre del turno</th>
+                            <th scope="col" class="text-center align-middle">Fecha</th>
+                            <th scope="col" class="text-center align-middle">Inicio</th>
+                            <th scope="col" class="text-center align-middle">Fin</th>
+                            <th scope="col" class="text-center align-middle">Descripción del turno</th>
+                        </thead>
 
-                <tbody>
-                    <tr>
-                        <td>{{ $turn['name'] }}</td>
-                        <td>{{ $turn['date'] }}</td>
-                        <td>{{ $turn['start'] }}</td>
-                        <td>{{ $turn['end'] }}</td>
-                        <td>{{ $turn['description'] }}</td>
-                    </tr>
-                </tbody>
-            </table>
+                        <tbody>
+                            <tr>
+                                <td>{{ $turn['name'] }}</td>
+                                <td>{{ $turn['date'] }}</td>
+                                <td>{{ $turn['start'] }}</td>
+                                <td>{{ $turn['end'] }}</td>
+                                <td>{{ $turn['description'] }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <div class="pt-4 row justify-content-center">
-            <div class="card col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3">
+            <div class="card col-11 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
                 <div class="card-body">
                     <form action="{{ route('userbookings.store') }}" method="POST" class="needs-validation" novalidate>
                         @csrf

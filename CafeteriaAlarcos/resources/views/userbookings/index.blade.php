@@ -29,7 +29,7 @@
 
                     <th scope="col" class="text-center align-middle">Mesas</th>
 
-                    <th scope="col" class="text-center align-middle">Acciones</th>
+                    <th scope="col" class="text-center align-middle w-10">Acciones</th>
                 </thead>
 
                 <tbody>
@@ -62,7 +62,7 @@
                                     </ul>
                                 </td>
 
-                                <td>
+                                <td class="text-center align-middle">
                                     <form action="{{ route('userbookings.cancel', $userbooking['id']) }}" method="POST">
                                         @csrf
                                         @method('PUT')

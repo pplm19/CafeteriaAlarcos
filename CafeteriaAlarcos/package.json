@@ -18,6 +18,10 @@
         "vite": "^4.3.9"
     },
     "dependencies": {
+        "@fullcalendar/bootstrap5": "6.1.9",
+        "@fullcalendar/core": "6.1.9",
+        "@fullcalendar/daygrid": "6.1.9",
+        "@fullcalendar/interaction": "6.1.9",
         "animate.css": "4.1.1",
         "bootstrap-icons": "1.10.5",
         "boxicons": "2.1.4",

@@ -1,43 +1,26 @@
 @extends('layouts.app')
 
 @pushOnce('scripts')
-    @vite(['resources/js/bootstrapValidation.js', 'resources/js/checkboxValidation.js', 'resources/js/rowCheckbox.js'])
+    @vite(['resources/js/checkboxValidation.js', 'resources/js/rowCheckbox.js', 'resources/js/adminCalendar.js'])
 @endPushOnce
+
+<script>
+    const baseUrl = {{ Js::from(route('bookings.index')) }};
+    const date = {{ Js::from(old('date', null)) }};
+    const turns = {{ Js::from($turns) }};
+</script>
 
 @section('content')
     <div class="content py-5 px-2 px-md-4 px-lg-5 row g-0">
-        <div class="col-12 col-lg-4 col-xl-3">
-            <div class="card">
+        <div class="col-12 col-lg-5 col-xxl-4 row">
+            <div class="card col-12 col-md-8 col-lg-12 mx-auto">
                 <div class="card-body">
-                    <h1 class="card-title">Reservas</h1>
-
-                    <form action="{{ route('bookings.index') }}" method="GET" class="needs-validation" novalidate>
-                        @csrf
-
-                        <div class="mt-3">
-                            <label for="date" class="form-label">Fecha de las reservas</label>
-                            <input type="date" name="date" id="date"
-                                class="form-control @error('username') is-invalid @enderror" value="{{ old('date') }}"
-                                required>
-
-                            @error('date')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="mt-3 d-flex justify-content-center gap-2 flex-wrap">
-                            <button type="submit" name="search" class="btn btn-theme">
-                                <i class='bx bxs-search align-middle'></i> Buscar
-                            </button>
-                        </div>
-                    </form>
+                    <div id="calendar"></div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-lg-8 col-xl-9 ps-0 ps-lg-3 pt-3 pt-lg-0">
+        <div class="col-12 col-lg-7 col-xxl-8 ps-0 ps-lg-3 pt-3 pt-lg-0">
             <form action="{{ route('bookings.cancel') }}" method="POST" class="checkbox-validation">
                 @csrf
 
