@@ -16,23 +16,28 @@ class TurnController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'searchDate' => ['nullable', 'date'],
+            'date' => ['nullable', 'date']
         ]);
 
         $data = [
-            'turns' => Turn::distinct('date')->orderBy('date', 'DESC')->get('date')
+            'turns' => Turn::all()
         ];
 
-        if ($request->has('searchDate')) {
-            $data['turnsList'] = Turn::whereDate('date', $request->input('searchDate'))->get();
-
-            $request->merge(['search' => true]);
+        if ($request->has('date')) {
+            $data['turnsList'] = Turn::whereDate('date', $request->input('date'))->get();
 
             $request->flash();
+
+            $date = $request->input('date');
         } else {
             $request->flush();
-        }
 
+            $date = Carbon::now()->toDateString();
+
+            $request->merge(['date' => $date]);
+
+            $request->flash();
+        }
 
         return view('turns.index', $data);
     }
@@ -40,9 +45,9 @@ class TurnController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create()
     {
-        return view('turns.create', ['menus' => Menu::all(), 'date' => $request->input('date')]);
+        return view('turns.create', ['turns' => Turn::all(), 'menus' => Menu::all()]);
     }
 
     /**

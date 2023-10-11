@@ -1728,22 +1728,41 @@ table tbody:has(> tr:not(.show-empty)) .show-empty {
     text-transform: uppercase;
 }
 
-.fc .fc-daygrid-day.fc-day-today {
-    background-color: var(--fc-today-bg-color) !important;
+.fc-daygrid-event-harness {
+    overflow: hidden;
+}
+#calendar:not(.dayClick) .fc-daygrid-event-harness {
+    cursor: pointer;
+}
+#calendar.dayClick .fc-daygrid-event-harness {
+    cursor: default;
 }
 
-.fc-bg-event {
-    background-color: transparent !important;
-    border: 2px solid #ffb03b;
-    opacity: unset !important;
+#calendar.dayClick .fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
+    cursor: pointer;
 }
 
 .fc-daygrid-event-dot {
     border-color: #ffb03b !important;
 }
 
-.fc-daygrid-event-harness {
-    cursor: pointer;
+#calendar:not(.reverse) .fc-daygrid-day.fc-day-today {
+    background-color: var(--fc-today-bg-color) !important;
+}
+#calendar.reverse .fc-daygrid-day.fc-day-today {
+    background-color: transparent !important;
+    border: 2px solid #ffb03b;
+}
+
+.fc-bg-event {
+    opacity: unset !important;
+}
+#calendar:not(.reverse) .fc-bg-event {
+    background-color: transparent !important;
+    border: 2px solid #ffb03b;
+}
+#calendar.reverse .fc-bg-event {
+    background-color: var(--fc-today-bg-color) !important;
 }
 
 /* Fix in order not to break navbar dropdown */

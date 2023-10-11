@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use App\Notifications\NewUserNotification;
+use App\Notifications\MailNotification;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -84,7 +84,13 @@ class RegisterController extends Controller
 
         $admins = User::role('SuperAdmin')->get();
 
-        $notification = new NewUserNotification();
+        $notification = new MailNotification([
+            'subject' => 'Nuevo usuario por verificar en la aplicación',
+            'greeting' => 'Estimado administrador,',
+            'line' => 'Le informamos que un nuevo usuario se ha registrado en nuestra aplicación y está pendiente de verificación.',
+            'action' => ['text' => 'Verificar Usuario', 'url' => route('users.registerRequests')],
+            'salutation' => "En servicio,  \r\n " . config('app.name'),
+        ]);
 
         foreach ($admins as $admin) {
             $admin->notify($notification);

@@ -38,31 +38,31 @@ class UserController extends Controller
             $searched = false;
 
             $username = $request->input('username');
-            if (strlen($username) > 0) {
+            if (!blank($username)) {
                 $query->where('username', 'LIKE', '%' . $username . '%');
                 $searched = true;
             }
 
             $email = $request->input('email');
-            if (strlen($email) > 0) {
+            if (!blank($email)) {
                 $query->where('email', 'LIKE', '%' . $email . '%');
                 $searched = true;
             }
 
             $name = $request->input('name');
-            if (strlen($name) > 0) {
+            if (!blank($name)) {
                 $query->where('name', 'LIKE', '%' . $name . '%');
                 $searched = true;
             }
 
             $lastname = $request->input('lastname');
-            if (strlen($lastname) > 0) {
+            if (!blank($lastname)) {
                 $query->where('lastname', 'LIKE', '%' . $lastname . '%');
                 $searched = true;
             }
 
             $phone = $request->input('phone');
-            if (strlen($phone) > 0) {
+            if (!blank($phone)) {
                 $query->where('phone', 'LIKE', '%' . $phone . '%');
                 $searched = true;
             }
@@ -202,5 +202,10 @@ class UserController extends Controller
         Cache::decrement('userRequests');
 
         return redirect()->route('users.registerRequests')->with('success', sprintf('El usuario %s ha sido aceptado.', $user->username));
+    }
+
+    public function profile(User $user)
+    {
+        return view('users.profile', ['user' => $user]);
     }
 }

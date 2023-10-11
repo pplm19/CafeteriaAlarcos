@@ -6,18 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\HtmlString;
 
-class NewUserNotification extends Notification implements ShouldQueue
+class MailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    private $data;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(array $data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -35,12 +36,14 @@ class NewUserNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject('Nuevo usuario por verificar en la aplicación')
-            ->greeting('Estimado administrador,')
-            ->line('Le informamos que un nuevo usuario se ha registrado en nuestra aplicación y está pendiente de verificación.')
-            ->action('Verificar Usuario', route('users.registerRequests'))
-            ->salutation("En servicio,  \r\n " . config('app.name'));
+        $mail = (new MailMessage);
+
+        foreach ($this->data as $action => $message) {
+            if ($action === 'action') $mail->action($message['text'], $message['url']);
+            else $mail->$action($message);
+        }
+
+        return $mail;
     }
 
     /**

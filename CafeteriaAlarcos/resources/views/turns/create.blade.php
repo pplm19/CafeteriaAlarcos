@@ -1,20 +1,36 @@
 @extends('layouts.app')
 
 @pushOnce('scripts')
-    @vite(['resources/js/bootstrapValidation.js'])
+    @vite(['resources/js/bootstrapValidation.js', 'resources/js/createCalendar.js'])
 @endPushOnce
 
-@section('content')
-    <div class="container content pt-10rem">
-        <div class="row justify-content-center">
-            <div class="col-11 col-md-10 col-lg-8 col-xl-7">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            Crear estructura de turnos
-                        </h3>
+<script>
+    const turns = {{ Js::from($turns) }};
+</script>
 
-                        <form action="{{ route('turns.store') }}" method="POST" class="needs-validation" novalidate>
+@section('content')
+    <div class="content py-5 px-1 px-md-5">
+        <div class="text-center mb-5">
+            <h1>Crear turno</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-11 col-md-9 col-lg-7 col-xl-6 mx-auto">
+                <div id="calendar" class="dayClick"></div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="createTurnModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="createTurnModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="createTurnModalLabel">Crear turno</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form action="{{ route('turns.store') }}" method="POST" class="needs-validation" novalidate>
+                        <div class="modal-body">
                             @csrf
 
                             <div class="form-floating mt-3">
@@ -31,15 +47,9 @@
                             </div>
 
                             <div class="form-floating mt-3">
-                                @isset($date)
-                                    <input type="date" name="date" id="date"
-                                        class="form-control @error('date') is-invalid @enderror" value="{{ $date }}"
-                                        required />
-                                @else
-                                    <input type="date" name="date" id="date"
-                                        class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}"
-                                        required />
-                                @endisset
+                                <input type="date" name="date" id="date"
+                                    class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}"
+                                    required />
                                 <label for="date"><i class='bx bxs-food-menu'></i> Fecha</label>
 
                                 @error('date')
@@ -120,14 +130,14 @@
                                     </span>
                                 @enderror
                             </div>
+                        </div>
 
-                            <div class="text-center mt-3">
-                                <button type="submit" class="btn btn-theme">
-                                    <i class="bi bi-plus-circle"></i> Crear estructura
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-theme">
+                                <i class="bi bi-plus-circle"></i> Crear estructura
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

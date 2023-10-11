@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Turn;
+use App\Models\User;
+use App\Notifications\MailNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -15,14 +17,27 @@ class BookingController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('date')) {
-            $request->validate([
-                'date' => ['date']
-            ]);
+        $request->validate([
+            'date' => ['nullable', 'date'],
+            'turn' => [
+                'nullable',
+                Rule::exists(Turn::class, 'id')
+            ]
+        ]);
 
+        $data = [
+            'turns' => Turn::all()
+        ];
+
+        if ($request->has(['turn', 'date'])) {
             $request->flash();
 
-            $date = $request->input('date');
+            $turn = $request->input('turn');
+
+            $data['turnData'] = Turn::find($turn);
+            $data['bookings'] = Booking::where('cancelled', false)->whereHas('turn', function ($query) use ($turn) {
+                $query->where('id', '=', $turn);
+            })->paginate(15);
         } else {
             $request->flush();
 
@@ -33,14 +48,7 @@ class BookingController extends Controller
             $request->flash();
         }
 
-        return view('bookings.index', [
-            'bookings' => Booking::where('cancelled', false)
-                ->whereHas('turn', function ($query) use ($date) {
-                    $query->whereDate('date', '=', $date)->orderBy('date', 'DESC')->orderBy('start', 'DESC');
-                })
-                ->paginate(15),
-            'turns' => Turn::all()
-        ]);
+        return view('bookings.index', $data);
     }
 
     /**
@@ -101,15 +109,22 @@ class BookingController extends Controller
             ]
         ]);
 
-        $icategories = $request->input('select');
+        $bookings = $request->input('select');
 
-        foreach ($icategories as $icategory) {
-            Booking::find($icategory)->update([
+        foreach ($bookings as $bookingId) {
+            $booking = Booking::find($bookingId);
+            $booking->update([
                 'cancelled' => true
             ]);
+            $booking['user']->notify(new MailNotification([
+                'subject' => 'Reserva Cancelada en ' . config('app.name'),
+                'greeting' => 'Estimado/a ' . $booking['user']['name'] . ',',
+                'line' => 'Lamentamos informarle que su reserva el día ' . date('d-m-Y', strtotime($booking['turn']['date'])) . ' en ' . config('app.name') . ' ha sido cancelada.',
+                'action' => ['text' => 'Volver a realizar una reserva', 'url' => route('userbookings.available')],
+                'salutation' => "Sentimos la inconveniencia y esperamos poder servirle en el futuro. \r\n Atentamente, \r\n " . config('app.name'),
+            ]));
         }
 
-        // return redirect()->route('bookings.index')->withSuccess('¡Reservas canceladas! Los usuarios han sido notificados exitosamente.');
-        return redirect()->route('bookings.index')->withSuccess('¡Reservas canceladas! Los registros han sido actualizados exitosamente.');
+        return redirect()->route('bookings.index')->withSuccess('¡Reservas canceladas! Los usuarios han sido notificados exitosamente.');
     }
 }

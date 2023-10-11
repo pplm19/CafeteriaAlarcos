@@ -29,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
+        Blade::directive('ifNull', function ($text) {
+            return "{{ $text ?? 'N/A' }}";
+        });
+
         Blade::directive('money', function ($money) {
             return "{{ number_format($money, 2) }}€";
         });

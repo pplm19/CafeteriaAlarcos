@@ -7,6 +7,7 @@ use App\Models\BookingTables;
 use App\Models\Configuration;
 use App\Models\Table;
 use App\Models\Turn;
+use App\Notifications\MailNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -130,8 +131,10 @@ class UserBookingController extends Controller
             return back()->withInput()->withError("El aforo está al máximo en este turno");
         }
 
+        $user = Auth::user();
+
         $request->merge([
-            'user_id' => Auth::user()['id'],
+            'user_id' => $user['id'],
         ]);
 
         $booking = Booking::create($request->all());
@@ -141,6 +144,16 @@ class UserBookingController extends Controller
         ]);
 
         $booking->refresh();
+
+        $notification = new MailNotification([
+            'subject' => 'Confirmación de Reserva en ' . config('app.name'),
+            'greeting' => "Estimado/a $user->name,",
+            'line' => '¡Gracias por reservar con nosotros! Su reserva del día ' . date('d-m-Y', strtotime($booking['turn']['date'])) . ' ha sido recibida y está siendo procesada.',
+            'action' => ['text' => 'Reservas realizadas', 'url' => route('userbookings.index')],
+            'salutation' => "Gracias por elegir " . config('app.name') . ". \r\n ¡Esperamos darle la bienvenida pronto!",
+        ]);
+
+        $user->notify($notification);
 
         return redirect()->route('userbookings.index');
     }

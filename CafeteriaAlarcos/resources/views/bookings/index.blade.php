@@ -15,12 +15,35 @@
         <div class="col-12 col-lg-5 col-xxl-4 row">
             <div class="card col-12 col-md-8 col-lg-12 mx-auto">
                 <div class="card-body">
-                    <div id="calendar"></div>
+                    <div id="calendar" class="reverse"></div>
                 </div>
             </div>
         </div>
 
+
+
         <div class="col-12 col-lg-7 col-xxl-8 ps-0 ps-lg-3 pt-3 pt-lg-0">
+            @isset($turnData)
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover align-middle">
+                        <thead class="table-dark">
+                            <th scope="col" class="text-center align-middle">Nombre del turno</th>
+                            <th scope="col" class="text-center align-middle">Descripción del turno</th>
+                            <th scope="col" class="text-center align-middle">Fecha</th>
+                            <th scope="col" class="text-center align-middle">Inicio</th>
+                            <th scope="col" class="text-center align-middle">Fin</th>
+                        </thead>
+                        <tbody>
+                            <td>{{ $turnData['name'] }}</td>
+                            <td>{{ $turnData['description'] }}</td>
+                            <td>{{ $turnData['date'] }}</td>
+                            <td>{{ $turnData['start'] }}</td>
+                            <td>@ifNull($turnData['end'])</td>
+                        </tbody>
+                    </table>
+                </div>
+            @endisset
+
             <form action="{{ route('bookings.cancel') }}" method="POST" class="checkbox-validation">
                 @csrf
 
@@ -34,35 +57,28 @@
                     <table class="table table-bordered table-striped table-hover align-middle">
                         <thead class="table-dark">
                             <th scope="col" class="text-center align-middle w-10">#</th>
-
+                            <th scope="col" class="text-center align-middle">Usuario</th>
                             <th scope="col" class="text-center align-middle">Descripción</th>
                             <th scope="col" class="text-center align-middle">Comensales</th>
-
-                            <th scope="col" class="text-center align-middle">Nombre del turno</th>
-                            <th scope="col" class="text-center align-middle">Fecha</th>
-                            <th scope="col" class="text-center align-middle">Inicio</th>
-                            <th scope="col" class="text-center align-middle">Fin</th>
-                            <th scope="col" class="text-center align-middle">Descripción del turno</th>
-
                             <th scope="col" class="text-center align-middle">Mesas</th>
                         </thead>
 
                         <tbody>
-                            @if (count($bookings) === 0)
-                                <tr>
-                                    <td colspan="9" class="text-center">No se ha encontrado ninguna reserva</td>
-                                </tr>
-                            @else
+                            @isset($bookings)
                                 @foreach ($bookings as $booking)
                                     <tr class="selectable">
-                                        <th>{{ $booking['description'] }}</th>
+                                        <td class="text-center align-middle">
+                                            <input class="form-check-input" type="checkbox" name="select[]"
+                                                value="{{ $booking['id'] }}">
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('users.profile', ['user' => $booking['user']['id']]) }}"
+                                                class="text-theme">
+                                                {{ $booking['user']['name'] }}
+                                            </a>
+                                        </td>
+                                        <td>@ifNull($booking['description'])</td>
                                         <td>{{ $booking['bookingTables']->sum('guests') }}</td>
-
-                                        <td>{{ $booking['turn']['name'] }}</td>
-                                        <td>{{ $booking['turn']['date'] }}</td>
-                                        <td>{{ $booking['turn']['start'] }}</td>
-                                        <td>{{ $booking['turn']['end'] }}</td>
-                                        <td>{{ $booking['turn']['description'] }}</td>
 
                                         <td>
                                             <ul>
@@ -78,7 +94,11 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            @endif
+                            @else
+                                <tr>
+                                    <td colspan="9" class="text-center">No se ha encontrado ninguna reserva</td>
+                                </tr>
+                            @endisset
                         </tbody>
                     </table>
                 </div>
@@ -89,9 +109,11 @@
                 ])
             </form>
 
-            <div class="d-flex justify-content-center d-sm-block">
-                {{ $bookings->links() }}
-            </div>
+            @isset($bookings)
+                <div class="d-flex justify-content-center d-sm-block">
+                    {{ $bookings->links() }}
+                </div>
+            @endisset
         </div>
     </div>
 @endsection

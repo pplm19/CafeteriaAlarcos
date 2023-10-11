@@ -51,7 +51,6 @@ Route::resource('/userdishes', UserDishController::class)->parameters([
 /////////////////
 Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
-
     Route::put('/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
@@ -86,6 +85,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
     Route::post('/users/toggleDisable', [UserController::class, 'toggleDisable'])->name('users.toggleDisable');
     Route::get('/users/registerRequests', [UserController::class, 'registerRequests'])->name('users.registerRequests');
     Route::put('/users/accept/{user}', [UserController::class, 'accept'])->name('users.accept');
+    Route::get('/users/profile/{user}', [UserController::class, 'profile'])->name('users.profile');
 
 
     Route::resource('/icategories', ICategoryController::class)->except(['show', 'destroy']);

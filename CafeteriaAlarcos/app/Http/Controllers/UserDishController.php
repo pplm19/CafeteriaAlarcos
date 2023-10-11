@@ -35,7 +35,7 @@ class UserDishController extends Controller
             $searched = false;
 
             $name = $request->input('name');
-            if (strlen($name) > 0) {
+            if (!blank($name)) {
                 $query->where('name', 'LIKE', '%' . $name . '%');
                 $searched = true;
             }

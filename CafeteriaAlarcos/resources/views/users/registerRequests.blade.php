@@ -34,8 +34,8 @@
                                 <td>{{ $user['username'] }}</td>
                                 <td>{{ $user['email'] }}</td>
                                 <td>{{ $user['name'] }}</td>
-                                <td>{{ isset($user['lastname']) ? $user['lastname'] : 'N/A' }}</td>
-                                <td>{{ isset($user['phone']) ? $user['phone'] : 'N/A' }}</td>
+                                <td>@ifNull($user['lastname'])</td>
+                                <td>@ifNull($user['phone'])</td>
                                 <td class="d-flex justify-content-center flex-wrap gap-2">
                                     @if ($user['disabled'])
                                         <form action="{{ route('users.toggleDisable') }}" method="POST">
