@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded", () => {
     const userIdInput = document.querySelector(".modal #user_id");
     const disableButtons = document.querySelectorAll(
-        "#content table .btn-disable-user"
+        "main table .btn-disable-user"
     );
 
     Array.from(disableButtons).forEach((button) => {

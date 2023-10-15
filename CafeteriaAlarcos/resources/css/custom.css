@@ -1,0 +1,202 @@
+/*--------------------------------------------------------------
+  # Back to top button
+  --------------------------------------------------------------*/
+.back-to-top {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    right: 15px;
+    bottom: 15px;
+    z-index: 996;
+    background: #ffb03b;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    transition: all 0.4s;
+}
+
+.back-to-top i {
+    font-size: 28px;
+    color: #fff;
+    line-height: 0;
+}
+
+.back-to-top:hover {
+    background: #ffc064;
+    color: #fff;
+}
+
+.back-to-top.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Theme */
+.text-theme {
+    color: #ffb03b;
+}
+
+a.text-theme:hover {
+    color: #ffa012;
+}
+
+.content {
+    margin-top: 120px;
+}
+
+.pt-10rem {
+    padding: 10rem 0;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.btn-theme {
+    padding: 10px 24px;
+    border: 0;
+    color: #fff;
+    background: #ffb03b;
+    border-radius: 50px;
+    transition: 0.4s;
+    -webkit-transition: 0.4s;
+    -moz-transition: 0.4s;
+    -ms-transition: 0.4s;
+    -o-transition: 0.4s;
+}
+
+.btn-rounded {
+    padding: 10px 24px;
+    border: 0;
+    border-radius: 50px;
+}
+
+.btn-theme:hover {
+    color: #fff;
+    background: #ffa012;
+}
+
+.tdImg {
+    max-height: 200px;
+}
+
+/* Add asterisk to required fields */
+.form-control:required + label:after {
+    content: "*";
+    color: red;
+}
+
+.w-35 {
+    width: 35%;
+}
+
+.selectable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.selectable > *:has(a, button),
+.selectable img,
+.selectable .orderable-buttons {
+    cursor: auto;
+}
+
+.orderable-buttons i {
+    cursor: pointer;
+    user-select: none;
+}
+
+table tbody:has(> tr:not(.show-empty)) .show-empty {
+    display: none;
+}
+
+.font-poppins {
+    font-family: "Poppins", sans-serif;
+}
+
+.cursor-default {
+    cursor: default;
+}
+
+.form-check-input.add-checkbox,
+.form-check-input.remove-checkbox {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    margin: 0 !important;
+}
+
+.form-check-input.add-checkbox:hover,
+.form-check-input.remove-checkbox:hover {
+    cursor: pointer;
+}
+
+.form-check-input.add-checkbox:checked {
+    background-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' class='bi bi-plus-lg' viewBox='0 0 16 16'><path fill='none' stroke='rgb(13, 109, 253)' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill-rule='evenodd' d='M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z'/></svg>") !important;
+}
+
+.form-check-input.remove-checkbox:checked {
+    background-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' class='bi bi-x-lg' viewBox='0 0 16 16'><path fill='none' stroke='rgb(220, 53, 69)' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z'/></svg>") !important;
+}
+
+.form-check-input.add-checkbox:focus,
+.form-check-input.remove-checkbox:focus {
+    border: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Calendar */
+#calendar a {
+    color: inherit;
+}
+
+.fc-toolbar .fc-toolbar-title::first-letter,
+.fc-col-header .fc-col-header-cell-cushion::first-letter {
+    text-transform: uppercase;
+}
+
+.fc-daygrid-event-harness {
+    overflow: hidden;
+}
+#calendar:not(.dayClick) .fc-daygrid-event-harness {
+    cursor: pointer;
+}
+#calendar.dayClick .fc-daygrid-event-harness {
+    cursor: default;
+}
+
+#calendar.dayClick .fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
+    cursor: pointer;
+}
+
+.fc-daygrid-event-dot {
+    border-color: #ffb03b !important;
+}
+
+#calendar:not(.reverse) .fc-daygrid-day.fc-day-today {
+    background-color: var(--fc-today-bg-color) !important;
+}
+#calendar.reverse .fc-daygrid-day.fc-day-today {
+    background-color: transparent !important;
+    border: 2px solid #ffb03b;
+}
+
+.fc-bg-event {
+    opacity: unset !important;
+}
+#calendar:not(.reverse) .fc-bg-event {
+    background-color: transparent !important;
+    border: 2px solid #ffb03b;
+}
+#calendar.reverse .fc-bg-event {
+    background-color: var(--fc-today-bg-color) !important;
+}
+
+/* Cookie consent */
+.cookie-consent {
+    background: rgba(26, 24, 22, 0.85);
+}
+
+/* Alerts */
+#alerts .alert {
+    transition: all 0.5s;
+}

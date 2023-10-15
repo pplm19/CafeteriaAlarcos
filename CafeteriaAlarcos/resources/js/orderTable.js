@@ -1,7 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
-    const orderableTables = document.querySelectorAll(
-        ".content table .orderable"
-    );
+    const orderableTables = document.querySelectorAll("main table .orderable");
 
     const orderClick = (event) => {
         const classList = Array.from(event.target.classList);

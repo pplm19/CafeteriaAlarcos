@@ -1,4 +1,3 @@
-import "./bootstrap";
 import GLightbox from "glightbox";
 import "isotope-layout";
 import { Swiper } from "swiper";

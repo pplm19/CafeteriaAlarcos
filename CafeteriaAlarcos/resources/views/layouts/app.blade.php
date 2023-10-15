@@ -26,7 +26,7 @@
         rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js', 'resources/js/alerts.js'])
+    @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/css/custom.css', 'resources/js/bootstrap.js', 'resources/js/app.js', 'resources/js/alerts.js'])
     @stack('scripts')
 </head>
 
@@ -181,7 +181,8 @@
                     <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
                 </div>
                 <div class="copyright">
-                    &copy; Copyright <strong><span>Cafetería Alarcos</span></strong>. Todos los derechos reservados
+                    &copy; Copyright <strong><span>{{ config('app.name') }}</span></strong>. Todos los derechos
+                    reservados
                 </div>
                 <div class="credits">
                     <!-- All the links in the footer should remain intact. -->

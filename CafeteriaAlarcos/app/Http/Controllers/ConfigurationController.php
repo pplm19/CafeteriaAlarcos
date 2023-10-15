@@ -59,8 +59,8 @@ class ConfigurationController extends Controller
 
         $configuration->update($request->all());
 
-        Cache::forget($configuration['name']);
-        Cache::rememberForever($configuration['name'], function ($configuration) {
+        Cache::forget($configuration);
+        Cache::rememberForever($configuration['name'], function () use ($configuration) {
             return Configuration::where('name', $configuration['name'])->value('value');
         });
 

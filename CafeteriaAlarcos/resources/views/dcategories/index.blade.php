@@ -1,69 +1,71 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @pushOnce('scripts')
     @vite(['resources/js/checkboxValidation.js', 'resources/js/rowCheckbox.js'])
 @endPushOnce
 
+@section('pagetitle')
+    <h1>Categorías de platos</h1>
+@endsection
+
 @section('content')
-    <div class="content py-5 px-1 px-md-5">
-        <div class="text-center mb-5">
-            <h1>Categorías de platos</h1>
-        </div>
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ route('dcategories.destroy') }}" method="POST" class="checkbox-validation">
+                @csrf
 
-        <form action="{{ route('dcategories.destroy') }}" method="POST" class="checkbox-validation">
-            @csrf
+                <p class="d-flex justify-content-end gap-2">
+                    <a class="btn btn-theme" href="{{ route('dcategories.create') }}">
+                        <i class="bi bi-plus-circle"></i> Crear categoría
+                    </a>
+                    <button type="submit" class="btn btn-danger btn-rounded">
+                        <i class="bi bi-trash"></i> Eliminar seleccionados
+                    </button>
+                </p>
 
-            <p class="d-flex justify-content-end gap-2">
-                <a class="btn btn-theme" href="{{ route('dcategories.create') }}">
-                    <i class="bi bi-plus-circle"></i> Crear categoría
-                </a>
-                <button type="submit" class="btn btn-danger btn-rounded">
-                    <i class="bi bi-trash"></i> Eliminar seleccionados
-                </button>
-            </p>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover align-middle">
+                        <thead class="table-dark">
+                            <th scope="col" class="text-center align-middle w-10">#</th>
+                            <th scope="col" class="text-center align-middle">Nombre</th>
+                            <th scope="col" class="text-center align-middle w-10">Acciones</th>
+                        </thead>
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover align-middle">
-                    <thead class="table-dark">
-                        <th scope="col" class="text-center align-middle w-10">#</th>
-                        <th scope="col" class="text-center align-middle">Nombre</th>
-                        <th scope="col" class="text-center align-middle w-10">Acciones</th>
-                    </thead>
-
-                    <tbody>
-                        @if (count($dcategories) === 0)
-                            <tr>
-                                <td colspan="3" class="text-center">No se ha encontrado ninguna categoría</td>
-                            </tr>
-                        @else
-                            @foreach ($dcategories as $dcategory)
-                                <tr class="selectable">
-                                    <td class="text-center align-middle">
-                                        <input class="form-check-input" type="checkbox" name="select[]"
-                                            value="{{ $dcategory['id'] }}">
-                                    </td>
-                                    <td>{{ $dcategory['name'] }}</td>
-                                    <td class="text-center align-middle">
-                                        <a class="btn btn-primary" href="{{ route('dcategories.edit', $dcategory['id']) }}">
-                                            <i class='bx bxs-edit-alt'></i> Editar
-                                        </a>
-                                    </td>
+                        <tbody>
+                            @if (count($dcategories) === 0)
+                                <tr>
+                                    <td colspan="3" class="text-center">No se ha encontrado ninguna categoría</td>
                                 </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
+                            @else
+                                @foreach ($dcategories as $dcategory)
+                                    <tr class="selectable">
+                                        <td class="text-center align-middle">
+                                            <input class="form-check-input" type="checkbox" name="select[]"
+                                                value="{{ $dcategory['id'] }}">
+                                        </td>
+                                        <td>{{ $dcategory['name'] }}</td>
+                                        <td class="text-center align-middle">
+                                            <a class="btn btn-primary"
+                                                href="{{ route('dcategories.edit', $dcategory['id']) }}">
+                                                <i class='bx bxs-edit-alt'></i> Editar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+
+                @include('layouts.confirmModal', [
+                    'title' => 'Confirmar borrado',
+                    'content' => '¿Estás seguro de que quieres borrar estos registros?',
+                ])
+            </form>
+
+            <div class="d-flex justify-content-center d-sm-block">
+                {{ $dcategories->links() }}
             </div>
-
-            @include('layouts.confirmModal', [
-                'title' => 'Confirmar borrado',
-                'content' => '¿Estás seguro de que quieres borrar estos registros?',
-            ])
-        </form>
-
-        <div class="d-flex justify-content-center d-sm-block">
-            {{ $dcategories->links() }}
         </div>
-    </div>
     </div>
 @endsection

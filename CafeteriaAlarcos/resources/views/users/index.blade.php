@@ -1,15 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @pushOnce('scripts')
     @vite(['resources/js/bootstrapValidation.js', 'resources/js/disabledUserModal.js'])
 @endPushOnce
 
+@section('pagetitle')
+    <h1>Usuarios</h1>
+@endsection
+
 @section('content')
-    <div class="content py-5 px-2 px-md-4 px-lg-5 row g-0">
-        <div class="col-12 col-lg-4 col-xl-3">
+    <div class="row">
+        <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title">Usuarios</h1>
+                    <h1 class="card-title">Buscador</h1>
 
                     <form action="{{ route('users.index') }}" method="GET" class="needs-validation" novalidate>
                         @csrf
@@ -19,7 +23,7 @@
                             <input type="hidden" name="direction" value="{{ old('direction') }}">
                         @endif
 
-                        <div class="form-floating mt-3">
+                        <div class="form-floating">
                             <input type="text" name="username" id="username"
                                 class="form-control @error('username') is-invalid @enderror" value="{{ old('username') }}"
                                 placeholder="Nombre de usuario" maxlength="255" />
@@ -119,152 +123,158 @@
             </div>
         </div>
 
-        <div class="col-12 col-lg-8 col-xl-9 ps-0 ps-lg-3 pt-3 pt-lg-0">
-            <p class="d-flex justify-content-end">
-                <a class="btn btn-theme" href="{{ route('users.create') }}">
-                    <i class="bx bx-user-plus"></i> Crear administrador
-                </a>
-            </p>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover align-middle">
-                    <thead class="table-dark">
-                        <th scope="col" class="text-center align-middle">
-                            <a href="{{ route('users.index', ['field' => 'email', 'direction' => old('field') === 'email' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-white">
-                                Email
-                                @if (old('field', null) === 'email')
-                                    @if (old('direction') === 'ASC')
-                                        <i class="bi bi-chevron-up"></i>
-                                    @else
-                                        <i class="bi bi-chevron-down"></i>
-                                    @endif
-                                @else
-                                    <i class="bi bi-chevron-expand"></i>
-                                @endif
-                            </a>
-                        </th>
-                        <th scope="col" class="text-center align-middle">
-                            <a href="{{ route('users.index', ['field' => 'name', 'direction' => old('field') === 'name' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-white">
-                                Nombre
-                                @if (old('field', null) === 'name')
-                                    @if (old('direction') === 'ASC')
-                                        <i class="bi bi-chevron-up"></i>
-                                    @else
-                                        <i class="bi bi-chevron-down"></i>
-                                    @endif
-                                @else
-                                    <i class="bi bi-chevron-expand"></i>
-                                @endif
-                            </a>
-                        </th>
-                        <th scope="col" class="text-center align-middle">
-                            <a href="{{ route('users.index', ['field' => 'lastname', 'direction' => old('field') === 'lastname' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-white">
-                                Apellido
-                                @if (old('field', null) === 'lastname')
-                                    @if (old('direction') === 'ASC')
-                                        <i class="bi bi-chevron-up"></i>
-                                    @else
-                                        <i class="bi bi-chevron-down"></i>
-                                    @endif
-                                @else
-                                    <i class="bi bi-chevron-expand"></i>
-                                @endif
-                            </a>
-                        </th>
-                        <th scope="col" class="text-center align-middle">
-                            <a href="{{ route('users.index', ['field' => 'phone', 'direction' => old('field') === 'phone' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
-                                class="text-decoration-none text-white">
-                                Teléfono
-                                @if (old('field', null) === 'phone')
-                                    @if (old('direction') === 'ASC')
-                                        <i class="bi bi-chevron-up"></i>
-                                    @else
-                                        <i class="bi bi-chevron-down"></i>
-                                    @endif
-                                @else
-                                    <i class="bi bi-chevron-expand"></i>
-                                @endif
-                            </a>
-                        </th>
-                        <th scope="col" class="text-center align-middle">Acciones</th>
-                    </thead>
-
-                    <tbody class="table-group-divider">
-                        @if (count($users) === 0)
-                            <tr>
-                                <td colspan="5" class="text-center">No se ha encontrado ningún usuario</td>
-                            </tr>
-                        @else
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td>{{ $user['email'] }}</td>
-                                    <td>{{ $user['name'] }}</td>
-                                    <td>@ifNull($user['lastname'])</td>
-                                    <td>@ifNull($user['phone'])</td>
-                                    <td class="text-center align-middle">
-                                        @if ($user['disabled'])
-                                            <form action="{{ route('users.toggleDisable') }}" method="POST">
-                                                @csrf
-
-                                                <input type="hidden" name="user_id" value="{{ $user['id'] }}">
-                                                <button type="submit" class="btn btn-success">
-                                                    <i class="bi bi-toggle-on"></i> Habilitar
-                                                </button>
-                                            </form>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <p class="d-flex justify-content-end">
+                        <a class="btn btn-theme" href="{{ route('users.create') }}">
+                            <i class="bx bx-user-plus"></i> Crear administrador
+                        </a>
+                    </p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover align-middle">
+                            <thead class="table-dark">
+                                <th scope="col" class="text-center align-middle">
+                                    <a href="{{ route('users.index', ['field' => 'email', 'direction' => old('field') === 'email' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
+                                        class="text-decoration-none text-white">
+                                        Email
+                                        @if (old('field', null) === 'email')
+                                            @if (old('direction') === 'ASC')
+                                                <i class="bi bi-chevron-up"></i>
+                                            @else
+                                                <i class="bi bi-chevron-down"></i>
+                                            @endif
                                         @else
-                                            <button type="button" class="btn btn-danger btn-disable-user"
-                                                data-bs-toggle="modal" data-bs-target="#disableModal"
-                                                data-user-id="{{ $user['id'] }}">
-                                                <i class="bi bi-toggle-off"></i> Deshabilitar
-                                            </button>
+                                            <i class="bi bi-chevron-expand"></i>
                                         @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-            </div>
+                                    </a>
+                                </th>
+                                <th scope="col" class="text-center align-middle">
+                                    <a href="{{ route('users.index', ['field' => 'name', 'direction' => old('field') === 'name' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
+                                        class="text-decoration-none text-white">
+                                        Nombre
+                                        @if (old('field', null) === 'name')
+                                            @if (old('direction') === 'ASC')
+                                                <i class="bi bi-chevron-up"></i>
+                                            @else
+                                                <i class="bi bi-chevron-down"></i>
+                                            @endif
+                                        @else
+                                            <i class="bi bi-chevron-expand"></i>
+                                        @endif
+                                    </a>
+                                </th>
+                                <th scope="col" class="text-center align-middle">
+                                    <a href="{{ route('users.index', ['field' => 'lastname', 'direction' => old('field') === 'lastname' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
+                                        class="text-decoration-none text-white">
+                                        Apellido
+                                        @if (old('field', null) === 'lastname')
+                                            @if (old('direction') === 'ASC')
+                                                <i class="bi bi-chevron-up"></i>
+                                            @else
+                                                <i class="bi bi-chevron-down"></i>
+                                            @endif
+                                        @else
+                                            <i class="bi bi-chevron-expand"></i>
+                                        @endif
+                                    </a>
+                                </th>
+                                <th scope="col" class="text-center align-middle">
+                                    <a href="{{ route('users.index', ['field' => 'phone', 'direction' => old('field') === 'phone' ? (old('direction') === 'ASC' ? 'DESC' : 'ASC') : 'ASC']) }}"
+                                        class="text-decoration-none text-white">
+                                        Teléfono
+                                        @if (old('field', null) === 'phone')
+                                            @if (old('direction') === 'ASC')
+                                                <i class="bi bi-chevron-up"></i>
+                                            @else
+                                                <i class="bi bi-chevron-down"></i>
+                                            @endif
+                                        @else
+                                            <i class="bi bi-chevron-expand"></i>
+                                        @endif
+                                    </a>
+                                </th>
+                                <th scope="col" class="text-center align-middle">Acciones</th>
+                            </thead>
 
-            <div class="w-100 ps-sm-4 pe-sm-3 d-flex justify-content-center d-sm-block">
-                {{ $users->links() }}
+                            <tbody class="table-group-divider">
+                                @if (count($users) === 0)
+                                    <tr>
+                                        <td colspan="5" class="text-center">No se ha encontrado ningún usuario</td>
+                                    </tr>
+                                @else
+                                    @foreach ($users as $user)
+                                        <tr>
+                                            <td>{{ $user['email'] }}</td>
+                                            <td>{{ $user['name'] }}</td>
+                                            <td>@ifNull($user['lastname'])</td>
+                                            <td>@ifNull($user['phone'])</td>
+                                            <td class="text-center align-middle">
+                                                @if ($user['disabled'])
+                                                    <form action="{{ route('users.toggleDisable') }}" method="POST">
+                                                        @csrf
+
+                                                        <input type="hidden" name="user_id"
+                                                            value="{{ $user['id'] }}">
+                                                        <button type="submit" class="btn btn-success">
+                                                            <i class="bi bi-toggle-on"></i> Habilitar
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <button type="button" class="btn btn-danger btn-disable-user"
+                                                        data-bs-toggle="modal" data-bs-target="#disableModal"
+                                                        data-user-id="{{ $user['id'] }}">
+                                                        <i class="bi bi-toggle-off"></i> Deshabilitar
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="w-100 ps-sm-4 pe-sm-3 d-flex justify-content-center d-sm-block">
+                        {{ $users->links() }}
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="modal fade" id="disableModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="disableModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="disableModalLabel">Motivo de supensión</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal fade" id="disableModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="disableModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="disableModalLabel">Motivo de supensión</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form action="{{ route('users.toggleDisable') }}" method="POST" class="needs-validation m-0"
+                    novalidate>
+                    @csrf
+
+                    <div class="modal-body">
+                        <input type="hidden" name="user_id" id="user_id">
+                        <textarea type="text" name="disable_reason" id="disable_reason"
+                            class="form-control @error('disable_reason') is-invalid @enderror"
+                            placeholder="Tu cuenta ha sido deshabilitada, contacta con un administrador para obtener más información"
+                            maxlength="255" style="resize: none"></textarea>
+
+                        @error('disable_reason')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
-                    <form action="{{ route('users.toggleDisable') }}" method="POST" class="needs-validation m-0"
-                        novalidate>
-                        @csrf
-
-                        <div class="modal-body">
-                            <input type="hidden" name="user_id" id="user_id">
-                            <textarea type="text" name="disable_reason" id="disable_reason"
-                                class="form-control @error('disable_reason') is-invalid @enderror"
-                                placeholder="Tu cuenta ha sido deshabilitada, contacta con un administrador para obtener más información"
-                                maxlength="255" style="resize: none"></textarea>
-
-                            @error('disable_reason')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-theme">Suspender cuenta</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-theme">Suspender cuenta</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

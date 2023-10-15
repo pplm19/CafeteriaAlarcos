@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
-    const forms = document.querySelectorAll("#content .selectable");
+    const forms = document.querySelectorAll("main .selectable");
     const invalidChildTags = ["a", "button"];
     const invalidTags = ["input", ...invalidChildTags, "img"];
 

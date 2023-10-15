@@ -2,11 +2,11 @@ window.addEventListener("DOMContentLoaded", () => {
     // Global variables
     let selectList = {};
 
-    const formSelectList = document.querySelector(".content form #select_list");
+    const formSelectList = document.querySelector("main form #select_list");
 
     let checkboxStatus = {};
 
-    const selectModal = document.querySelector(".content #selectModal");
+    const selectModal = document.querySelector("main #selectModal");
     const modal = new window.bootstrap.Modal(selectModal);
     const modalSelectList = selectModal.querySelector("#modal_select_list");
     const isOrderable = Array.from(modalSelectList.classList).includes(

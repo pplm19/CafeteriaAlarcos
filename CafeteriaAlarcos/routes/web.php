@@ -36,6 +36,8 @@ use App\Http\Controllers\UserDishController;
 // Public routes //
 ///////////////////
 Route::get('/', function () {
+    $user = Auth::user();
+    if ($user && $user->hasRole('SuperAdmin')) return redirect()->route('admin.index');
     return view('index');
 })->name('index');
 
@@ -77,8 +79,8 @@ Route::group(['prefix' => 'userbookings', 'middleware' =>  ['role:User', 'verifi
 //////////////////
 Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function () {
     Route::get('/', function () {
-        return view('admin.home');
-    })->name('admin');
+        return view('admin');
+    })->name('admin.index');
 
 
     Route::resource('/users', UserController::class)->only(['index', 'create', 'store']);

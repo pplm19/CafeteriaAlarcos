@@ -18,7 +18,7 @@
                             <input type="text" name="name" id="name"
                                 class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
                                 placeholder="Nombre" maxlength="255" />
-                            <label for="name"><i class='bx bxs-food-menu'></i> Nombre</label>
+                            <label for="name">Nombre</label>
 
                             @error('name')
                                 <div class="invalid-feedback">

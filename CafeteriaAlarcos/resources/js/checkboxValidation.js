@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
-    const forms = document.querySelectorAll("#content .checkbox-validation");
+    const forms = document.querySelectorAll("main .checkbox-validation");
 
     Array.from(forms).forEach((form) => {
         form.addEventListener("submit", (event) => {
