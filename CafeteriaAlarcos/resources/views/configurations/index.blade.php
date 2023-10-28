@@ -18,7 +18,7 @@
                     <tbody>
                         @foreach ($configurations as $configuration)
                             <tr>
-                                <td>{{ $configuration['name'] }}</td>
+                                <td>{{ __($configuration['name']) }}</td>
                                 <td>{{ $configuration['value'] }}</td>
                                 <td class="text-center align-middle">
                                     <a class="btn btn-primary"

@@ -13,14 +13,13 @@
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover align-middle">
                 <thead class="table-dark">
-                    <th scope="col" class="text-center align-middle">Descripción</th>
-                    <th scope="col" class="text-center align-middle">Comensales</th>
-
                     <th scope="col" class="text-center align-middle">Nombre del turno</th>
                     <th scope="col" class="text-center align-middle">Fecha</th>
                     <th scope="col" class="text-center align-middle">Inicio</th>
                     <th scope="col" class="text-center align-middle">Fin</th>
                     <th scope="col" class="text-center align-middle">Descripción del turno</th>
+
+                    <th scope="col" class="text-center align-middle">Comensales</th>
 
                     <th scope="col" class="text-center align-middle">Mesas</th>
 
@@ -35,14 +34,13 @@
                     @else
                         @foreach ($userbookings as $userbooking)
                             <tr>
-                                <th>{{ $userbooking['description'] }}</th>
-                                <td>{{ $userbooking['bookingTables']->sum('guests') }}</td>
-
                                 <td>{{ $userbooking['turn']['name'] }}</td>
                                 <td>{{ $userbooking['turn']['date'] }}</td>
                                 <td>{{ $userbooking['turn']['start'] }}</td>
-                                <td>{{ $userbooking['turn']['end'] }}</td>
-                                <td>{{ $userbooking['turn']['description'] }}</td>
+                                <td>@ifNull($userbooking['turn']['end'])</td>
+                                <td>@ifNull($userbooking['turn']['description'])</td>
+
+                                <td>{{ $userbooking['bookingTables']->sum('guests') }}</td>
 
                                 <td>
                                     <ul>

@@ -73,32 +73,8 @@ class TypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
-    {
-        $request->validate([
-            'select' => [
-                'required',
-                'array',
-                Rule::exists(Type::class, 'id')
-            ]
-        ]);
-
-        $types = $request->input('select');
-
-        try {
-            DB::beginTransaction();
-
-            foreach ($types as $type) {
-                Type::find($type)->delete();
-            }
-
-            DB::commit();
-
-            return redirect()->route('types.index')->withSuccess('¡Tipos eliminados! Los registros han sido eliminados exitosamente.');
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            return redirect()->route('types.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
-        }
-    }
+    // public function destroy(Request $request)
+    // {
+    //     //
+    // }
 }

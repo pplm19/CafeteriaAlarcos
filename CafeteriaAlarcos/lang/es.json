@@ -52,5 +52,9 @@
     "Phone": "Teléfono",
     "Username": "Nombre de usuario",
     "Already have an account? Sign in": "¿Ya tienes una cuenta? Inicia sesión",
-    "Register new admin": "Registrar nuevo administrador"
+    "Register new admin": "Registrar nuevo administrador",
+    "maxComensalesTurno": "Máximo de comensales por turno",
+    "minDiasReserva": "Días de antelación para realizar una reserva",
+    "maxDiasCancelacionReserva": "Días de antelación para cancelar una reserva",
+    "precioMenu": "Precio por defecto del menú"
 }

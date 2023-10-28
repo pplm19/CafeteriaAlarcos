@@ -127,7 +127,7 @@ class UserController extends Controller
 
         event(new Registered($user));
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->withSuccess('La cuenta ha sido creada, revisa el correo para verificar el email.');
     }
 
     /**

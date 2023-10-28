@@ -200,3 +200,16 @@ table tbody:has(> tr:not(.show-empty)) .show-empty {
 #alerts .alert {
     transition: all 0.5s;
 }
+
+/* Grid */
+@media (min-width: 1400px) {
+    .row-cols-xxl-custom {
+        margin: 0 -8px;
+    }
+
+    .row-cols-xxl-custom > * {
+        flex: 0 0 325px;
+        max-width: 325px;
+        padding: 0 8px;
+    }
+}

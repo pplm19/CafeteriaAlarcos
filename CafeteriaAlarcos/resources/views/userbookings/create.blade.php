@@ -15,7 +15,7 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-11 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+            <div class="col-11 col-md-7 col-lg-6 col-xl-5 col-xxl-4 p-0">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover align-middle">
                         <thead class="table-dark">

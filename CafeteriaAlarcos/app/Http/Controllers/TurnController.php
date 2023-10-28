@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\Turn;
+use App\Notifications\MailNotification;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class TurnController extends Controller
@@ -132,12 +135,39 @@ class TurnController extends Controller
 
         $turns = $request->input('select');
 
-        foreach ($turns as $turn) {
-            Turn::find($turn)->delete();
+        try {
+            DB::beginTransaction();
+
+            foreach ($turns as $turnId) {
+                $turn = Turn::find($turnId);
+
+                if ($turn->bookings()->exists()) {
+                    foreach ($turn->bookings()->get() as $booking) {
+                        $booking['user']->notify(new MailNotification([
+                            'subject' => 'Reserva Cancelada en ' . config('app.name'),
+                            'greeting' => 'Estimado/a ' . $booking['user']['name'] . ',',
+                            'line' => 'Lamentamos informarle que su reserva el día ' . date('d-m-Y', strtotime($booking['turn']['date'])) . ' en ' . config('app.name') . ' ha sido cancelada debido a que el turno ha sido cancelado.',
+                            'action' => ['text' => 'Volver a realizar una reserva', 'url' => route('userbookings.available')],
+                            'salutation' => "Sentimos la inconveniencia y esperamos poder servirle en el futuro. \r\n Atentamente, \r\n " . config('app.name'),
+                        ]));
+
+                        $booking->tables()->detach();
+                        $booking->delete();
+                    }
+                }
+
+                $turn->delete();
+            }
+
+            DB::commit();
+
+            $request->flush();
+
+            return back()->withSuccess('¡Turnos eliminados! Los usuarios han sido notificados exitosamente.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return back()->withError('¡Error! No se pudieron eliminar los turnos seleccionados ya que algunos están vinculados a una o varias reservas.');
         }
-
-        $request->flush();
-
-        return back()->withSuccess('¡Turnos eliminados! Los registros han sido eliminados exitosamente.');
     }
 }

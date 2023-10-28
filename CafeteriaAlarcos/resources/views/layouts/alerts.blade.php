@@ -51,7 +51,7 @@
 
             <div class="modal-body">
                 {{ __(session('error')) }}
-                @if (request()->is('register') && $errors->has('email'))
+                @if ((request()->is('register') || request()->is('admin/users/create')) && $errors->has('email'))
                     {{ __($errors->first('email')) }}
                 @endif
             </div>

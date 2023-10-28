@@ -107,14 +107,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role:SuperAdmin'], function 
     Route::post('/allergens/destroy', [AllergenController::class, 'destroy'])->name('allergens.destroy');
 
     Route::resource('/menus', MenuController::class)->except(['show', 'destroy']);
-    Route::post('/menus/destroy', [MenuController::class, 'destroy'])->name('menus.destroy');
+    // Route::post('/menus/destroy', [MenuController::class, 'destroy'])->name('menus.destroy');
 
 
     Route::resource('/turns', TurnController::class)->except(['show', 'destroy']);
     Route::post('/turns/destroy', [TurnController::class, 'destroy'])->name('turns.destroy');
 
     Route::resource('/tables', TableController::class)->except(['show', 'destroy']);
-    Route::post('/tables/destroy', [TableController::class, 'destroy'])->name('tables.destroy');
+    // Route::post('/tables/destroy', [TableController::class, 'destroy'])->name('tables.destroy');
 
     Route::resource('/bookings', BookingController::class)->only(['index']);
     Route::post('/bookings/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');

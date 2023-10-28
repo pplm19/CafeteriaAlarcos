@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\BookingTables;
-use App\Models\Configuration;
 use App\Models\Table;
 use App\Models\Turn;
 use App\Notifications\MailNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
 class UserBookingController extends Controller
@@ -55,7 +53,8 @@ class UserBookingController extends Controller
             ->leftJoin('booking_tables', 'tables.id', '=', 'booking_tables.table_id')
             ->leftJoin('bookings', function ($join) use ($turnId) {
                 $join->on('booking_tables.booking_id', '=', 'bookings.id')
-                    ->where('bookings.turn_id', '=', $turnId);
+                    ->where('bookings.turn_id', '=', $turnId)
+                    ->where('bookings.cancelled', false);
             })
             ->groupByRaw('tables.id, tables.quantity, tables.maxNumber, tables.minNumber')
             ->havingRaw('remaining_tables > 0')
@@ -84,13 +83,14 @@ class UserBookingController extends Controller
             ->leftJoin('booking_tables', 'tables.id', '=', 'booking_tables.table_id')
             ->leftJoin('bookings', function ($join) use ($turnId) {
                 $join->on('booking_tables.booking_id', '=', 'bookings.id')
-                    ->where('bookings.turn_id', '=', $turnId);
+                    ->where('bookings.turn_id', '=', $turnId)
+                    ->where('bookings.cancelled', false);
             })
             ->groupByRaw('tables.id, tables.quantity, tables.maxNumber, tables.minNumber')
             ->first();
 
         if ($selectedTable['remaining_tables'] <= 0) {
-            return back()->withInput()->withError("La mesa que has seleccionado no está disponible para este turno");
+            return back()->withInput()->withError("La mesa que has seleccionado no está disponible para este turno. Recarga la página para actualizar la información.");
         }
 
         $guests = $request->input('guests');
@@ -99,9 +99,7 @@ class UserBookingController extends Controller
             return back()->withInput()->withError("Debes seleccionar una mesa habilidata para $guests comensales");
         }
 
-        $minBookingDays = Cache::remember('minDiasReserva', now()->addHour(), function () {
-            return Configuration::where('name', 'minDiasReserva')->value('value');
-        });
+        $minBookingDays = config('minDiasReserva');
 
         $selectedTurnId = $request->input('turn_id');
         $selectedTurnDate = Turn::select('date')->find($selectedTurnId)['date'];
@@ -109,26 +107,22 @@ class UserBookingController extends Controller
         $now = Carbon::now();
         $date = Carbon::parse($selectedTurnDate);
 
-        if ($now > $date) {
-            return back()->withInput()->withError("Debes reservar antes de la fecha");
-        }
-
         $days = $date->diffInDays($now);
 
         if ($days < $minBookingDays) {
-            return back()->withInput()->withError("Debes reservar con un mínimo de $minBookingDays días de antelación");
+            return back()->withInput()->withError("Debe realizar la reserva con un mínimo de $minBookingDays días de antelación");
         }
 
         $turnGuests = Booking::where('turn_id', $selectedTurnId)
+            ->where('bookings.cancelled', false)
             ->join('booking_tables', 'booking_tables.booking_id', '=', 'bookings.id')
             ->sum('guests');
 
-        $maxGuestsTurn = Cache::remember('maxComensalesTurno', now()->addHour(), function () {
-            return Configuration::where('name', 'maxComensalesTurno')->value('value');
-        });
+        $maxGuestsTurn = config('maxComensalesTurno');
 
-        if (($turnGuests + $guests) > $maxGuestsTurn) {
-            return back()->withInput()->withError("El aforo está al máximo en este turno");
+        $aforoRestante = $maxGuestsTurn - $turnGuests;
+        if ($aforoRestante < $guests) {
+            return back()->withInput()->withError("¡Lo sentimos! La reserva no se ha completado debido a que hemos alcanzado nuestro límite de aforo en este turno. Aforo restante: $aforoRestante.");
         }
 
         $user = Auth::user();
@@ -140,7 +134,7 @@ class UserBookingController extends Controller
         $booking = Booking::create($request->all());
 
         $booking->bookingTables()->saveMany([
-            new BookingTables(['table_id' => $request->input('table_id'), 'guests' => $request->input('guests')]),
+            new BookingTables(['table_id' => $tableId, 'guests' => $guests]),
         ]);
 
         $booking->refresh();
@@ -155,7 +149,7 @@ class UserBookingController extends Controller
 
         $user->notify($notification);
 
-        return redirect()->route('userbookings.index');
+        return redirect()->route('userbookings.index')->withSuccess('¡Reserva confirmada! Hemos recibido tu solicitud y te hemos enviado un correo de confirmación.');
     }
 
     /**
@@ -192,19 +186,18 @@ class UserBookingController extends Controller
 
     public function available()
     {
-        $minBookingDays = Cache::remember('minBookingDays', now()->addHour(), function () {
-            return Configuration::where('name', 'minBookingDays')->value('value');
-        });
-        $maxGuestsTurn = Cache::remember('maxComensalesTurno', now()->addHour(), function () {
-            return Configuration::where('name', 'maxComensalesTurno')->value('value');
-        });
+        $minBookingDays = config('minBookingDays');
+        $maxGuestsTurn = config('maxComensalesTurno');
 
         $turns = Turn::select('turns.*')
             ->whereDate('date', '>', Carbon::now()->addDays($minBookingDays))
             ->selectSub(
                 function ($query) use ($maxGuestsTurn) {
                     $query->from('booking_tables')
-                        ->join('bookings', 'booking_tables.booking_id', '=', 'bookings.id')
+                        ->join('bookings', function ($join) {
+                            $join->on('booking_tables.booking_id', '=', 'bookings.id')
+                                ->where('bookings.cancelled', false);
+                        })
                         ->selectRaw('? - COALESCE(SUM(guests), 0)', [$maxGuestsTurn])
                         ->whereColumn('turns.id', 'bookings.turn_id');
                 },
@@ -216,7 +209,10 @@ class UserBookingController extends Controller
                         ->selectRaw('COUNT(*)')
                         ->whereNotIn('tables.id', function ($subquery) {
                             $subquery->from('booking_tables')
-                                ->join('bookings', 'booking_tables.booking_id', '=', 'bookings.id')
+                                ->join('bookings', function ($join) {
+                                    $join->on('booking_tables.booking_id', '=', 'bookings.id')
+                                        ->where('bookings.cancelled', false);
+                                })
                                 ->select('booking_tables.table_id')
                                 ->whereColumn('turns.id', 'bookings.turn_id')
                                 ->groupBy('booking_tables.table_id')
@@ -235,9 +231,7 @@ class UserBookingController extends Controller
 
     public function cancel(Booking $booking)
     {
-        $maxCancelBookingDays = Cache::remember('maxDiasCancelacionReserva', now()->addHour(), function () {
-            return Configuration::where('name', 'maxDiasCancelacionReserva')->value('value');
-        });
+        $maxCancelBookingDays = config('maxDiasCancelacionReserva');
 
         $now = Carbon::now();
         $date = Carbon::parse($booking['turn']['date']);
@@ -249,14 +243,14 @@ class UserBookingController extends Controller
         $days = $date->diffInDays($now);
 
         if ($days < $maxCancelBookingDays) {
-            return back()->withError("Debes cancelar la reserva con un mínimo $maxCancelBookingDays días de antelación");
+            return back()->withError("Debes cancelar la reserva con un mínimo de $maxCancelBookingDays días de antelación");
         }
 
         $booking->update([
             'cancelled' => true
         ]);
 
-        return redirect()->route('userbookings.index');
+        return redirect()->route('userbookings.index')->withSuccess('Reserva cancelada. Esperamos poder recibirte en nuestro restaurante en un futuro.');
     }
 
     public function history()

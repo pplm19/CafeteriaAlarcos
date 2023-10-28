@@ -81,7 +81,7 @@
                         <div class="form-floating mt-3">
                             <input type="number" name="price" id="price"
                                 class="form-control @error('price') is-invalid @enderror"
-                                value="{{ old('price', Cache::get('precioMenu')) }}" placeholder="Precio" min="0.0"
+                                value="{{ old('price', config('precioMenu')) }}" placeholder="Precio" min="0.0"
                                 max="9999.99" step="0.01" />
                             <label for="price">Precio</label>
 

@@ -62,7 +62,6 @@
                         <li><a class="nav-link scrollto" href="{{ route('index') }}#gallery">Galería</a></li>
                         <li><a class="nav-link @if (request()->is('userdishes')) active @endif"
                                 href="{{ route('userdishes.index') }}">Platos</a></li>
-                        <li><a class="nav-link scrollto" href="{{ route('index') }}#contact">Contacto</a></li>
                         @auth
                             <li>
                                 <a class="nav-link @if (request()->is('userbookings*')) active @endif"
@@ -77,71 +76,6 @@
                                 </a>
                             </li>
                         @endauth
-                        @hasrole('SuperAdmin')
-                            <li class="dropdown">
-                                <a @class(['cursor-default', 'active' => request()->is('admin*')])>
-                                    <span>Administración</span>
-                                    @if (Cache::get('userRequests') > 0)
-                                        <span class="badge text-bg-danger ms-2">{{ Cache::get('userRequests') }}</span>
-                                    @endif
-                                    <i class="bi bi-chevron-down"></i>
-                                </a>
-                                <ul>
-                                    <li class="dropdown">
-                                        <a href="" @class(['active' => request()->is('admin/users*')])>
-                                            <div class="d-flex align-items-center">
-                                                <span>
-                                                    Usuarios
-                                                </span>
-                                                @if (Cache::get('userRequests') > 0)
-                                                    <span
-                                                        class="badge text-bg-danger ms-2">{{ Cache::get('userRequests') }}</span>
-                                                @endif
-                                            </div>
-                                            <i class="bi bi-chevron-right"></i>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="{{ route('users.index') }}" @class([
-                                                    'active' =>
-                                                        request()->path() !== 'admin/users/registerRequests' &&
-                                                        request()->is('admin/users*'),
-                                                ])>Gestionar
-                                                    usuarios</a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('users.registerRequests') }}"
-                                                    @class(['active' => request()->is('admin/users/registerRequests')])>
-                                                    Solicitudes de registro
-                                                    @if (Cache::get('userRequests') > 0)
-                                                        <span
-                                                            class="badge text-bg-danger ms-2">{{ Cache::get('userRequests') }}</span>
-                                                    @endif
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="{{ route('icategories.index') }}" @class(['active' => request()->is('admin/icategories*')])>Categorías
-                                            de ingredientes</a></li>
-                                    <li><a href="{{ route('ingredients.index') }}"
-                                            @class(['active' => request()->is('admin/ingredients*')])>Ingredientes</a></li>
-                                    <li><a href="{{ route('types.index') }}" @class(['active' => request()->is('admin/types*')])>Tipos de
-                                            platos</a></li>
-                                    <li><a href="{{ route('dcategories.index') }}" @class(['active' => request()->is('admin/dcategories*')])>Categorías
-                                            de platos</a></li>
-                                    <li><a href="{{ route('allergens.index') }}"
-                                            @class(['active' => request()->is('admin/allergens*')])>Alérgeneos</a></li>
-                                    <li><a href="{{ route('dishes.index') }}" @class(['active' => request()->is('admin/dishes*')])>Platos</a></li>
-                                    <li><a href="{{ route('menus.index') }}" @class(['active' => request()->is('admin/menus*')])>Menús</a></li>
-                                    <li><a href="{{ route('turns.index') }}" @class(['active' => request()->is('admin/turns*')])>Turnos</a></li>
-                                    <li><a href="{{ route('tables.index') }}" @class(['active' => request()->is('admin/tables*')])>Mesas</a></li>
-                                    <li><a href="{{ route('bookings.index') }}" @class(['active' => request()->is('admin/bookings*')])>Reservas</a>
-                                    </li>
-                                    <li><a href="{{ route('configurations.index') }}"
-                                            @class(['active' => request()->is('admin/configurations*')])>Configuración</a></li>
-                                </ul>
-                            </li>
-                        @endhasrole
                     </ul>
 
                     <i class="bi bi-list mobile-nav-toggle"></i>

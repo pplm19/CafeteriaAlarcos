@@ -79,32 +79,32 @@ class TableController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
-    {
-        $request->validate([
-            'select' => [
-                'required',
-                'array',
-                Rule::exists(Table::class, 'id')
-            ]
-        ]);
+    // public function destroy(Request $request)
+    // {
+    //     $request->validate([
+    //         'select' => [
+    //             'required',
+    //             'array',
+    //             Rule::exists(Table::class, 'id')
+    //         ]
+    //     ]);
 
-        $icategories = $request->input('select');
+    //     $icategories = $request->input('select');
 
-        try {
-            DB::beginTransaction();
+    //     try {
+    //         DB::beginTransaction();
 
-            foreach ($icategories as $icategory) {
-                Table::find($icategory)->delete();
-            }
+    //         foreach ($icategories as $icategory) {
+    //             Table::find($icategory)->delete();
+    //         }
 
-            DB::commit();
+    //         DB::commit();
 
-            return redirect()->route('tables.index')->withSuccess('¡Mesas eliminadas! Los registros han sido eliminados exitosamente.');
-        } catch (Exception $e) {
-            DB::rollBack();
+    //         return redirect()->route('tables.index')->withSuccess('¡Mesas eliminadas! Los registros han sido eliminados exitosamente.');
+    //     } catch (Exception $e) {
+    //         DB::rollBack();
 
-            return redirect()->route('tables.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
-        }
-    }
+    //         return redirect()->route('tables.index')->withError('¡Error! Ha ocurrido un error inesperado al borrar los registros, inténtelo de nuevo más tarde.');
+    //     }
+    // }
 }

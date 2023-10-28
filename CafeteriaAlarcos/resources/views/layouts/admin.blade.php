@@ -15,10 +15,6 @@
     <!-- Favicons -->
     <link rel="icon" type="image/jpg" href="{{ asset('img/favicon.png') }}">
 
-    <!-- Fonts -->
-    {{-- <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet"> --}}
-
     <!-- Google Fonts -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link
@@ -26,7 +22,7 @@
         rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/css/admin.css', 'resources/css/custom.css', 'resources/js/bootstrap.js', 'resources/js/admin.js'])
+    @vite(['resources/sass/app.scss', 'resources/css/admin.css', 'resources/css/custom.css', 'resources/js/bootstrap.js', 'resources/js/admin.js', 'resources/js/alerts.js'])
     @stack('scripts')
 </head>
 

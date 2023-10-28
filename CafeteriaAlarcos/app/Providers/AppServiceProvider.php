@@ -6,8 +6,6 @@ use App\Models\Configuration;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
@@ -44,9 +42,11 @@ class AppServiceProvider extends ServiceProvider
         }
 
         if (Schema::hasTable('configurations')) {
-            Cache::rememberForever('precioMenu', function () {
-                return Configuration::where('name', 'precioMenu')->value('value');
-            });
+            $configurations = Configuration::all();
+
+            foreach ($configurations as $config) {
+                config([$config['name'] => $config['value']]);
+            }
         }
     }
 }

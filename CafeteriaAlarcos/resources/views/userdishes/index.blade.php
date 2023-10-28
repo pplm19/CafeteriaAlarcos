@@ -90,22 +90,22 @@
             </div>
         @else
             <div
-                class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-0 row g-0 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
+                class="col-12 col-lg-8 col-xl-9 ps-lg-3 pt-3 pt-lg-0 row g-0 row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-custom justify-content-center flex-wrap">
                 @foreach ($dishes as $dish)
-                    <div class="col px-0 px-md-3 mb-4">
+                    <div class="col px-1 px-md-3 mb-4">
                         <div class="card h-100">
                             @php($imgUrl = asset('storage/images/dishes/' . $dish['image']))
                             @php($hasImg = strpos($imgUrl, $dish['image']))
                             @if ($hasImg)
-                                <a href="">
-                                    <img src="{{ $imgUrl }}" alt="Imagen de {{ $dish['name'] }}"
-                                        class="card-img-top">
-                                </a>
+                                {{-- <a href=""> --}}
+                                <img src="{{ $imgUrl }}" alt="Imagen de {{ $dish['name'] }}" class="card-img-top">
+                                {{-- </a> --}}
                             @endif
 
                             <div class="card-body d-flex flex-column">
                                 <h3 class="card-title mb-0">
-                                    <a href="">{{ $dish['name'] }}</a>
+                                    {{ $dish['name'] }}
+                                    {{-- <a href="">{{ $dish['name'] }}</a> --}}
                                 </h3>
 
                                 <p class="card-text"><small class="text-muted">{{ $dish['type']['name'] }}</small></p>
@@ -152,6 +152,7 @@
                         </div>
                     </div>
                 @endforeach
+
                 <div class="w-100 ps-sm-4 pe-sm-3 d-flex justify-content-center d-sm-block">
                     {{ $dishes->links() }}
                 </div>
